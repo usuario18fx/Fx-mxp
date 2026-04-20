@@ -95,7 +95,9 @@ const LocationDetail = ({ location, onClose, onUpdate }) => {
   const handleAnalyze = async () => {
     setAnalyzing(true);
     try {
-      const res = await axios.post(`${API}/ai/analyze?location_id=${location.id}`);
+      const res = await axios.post(`${API}/ai/analyze`, {
+        location_id: location.id
+      });
       setAnalysis(res.data.analysis);
       setActiveTab('ai');
     } catch (error) {

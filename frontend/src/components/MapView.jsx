@@ -14,6 +14,7 @@ const API = `${BACKEND_URL}/api`;
 const MapView = () => {
   const mapContainer = useRef(null);
   const map = useRef(null);
+  const mapInitialized = useRef(false);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -23,7 +24,8 @@ const MapView = () => {
 
   // Initialize map
   useEffect(() => {
-    if (map.current) return;
+    if (map.current || mapInitialized.current) return;
+    mapInitialized.current = true;
 
     const initMap = async () => {
       try {
@@ -43,58 +45,64 @@ const MapView = () => {
         });
 
         map.current.on('load', () => {
-          // Add 3D terrain
-          map.current.addSource('mapbox-dem', {
-            type: 'raster-dem',
-            url: 'mapbox://mapbox.mapbox-terrain-dem-v1',
-            tileSize: 512,
-            maxzoom: 14
-          });
+          // Add 3D terrain - guard against duplicate
+          if (!map.current.getSource('mapbox-dem')) {
+            map.current.addSource('mapbox-dem', {
+              type: 'raster-dem',
+              url: 'mapbox://mapbox.mapbox-terrain-dem-v1',
+              tileSize: 512,
+              maxzoom: 14
+            });
+          }
 
-          map.current.setTerrain({
-            source: 'mapbox-dem',
-            exaggeration: 1.5
-          });
+          if (map.current.getTerrain() === null) {
+            map.current.setTerrain({
+              source: 'mapbox-dem',
+              exaggeration: 1.5
+            });
+          }
 
-          // Add 3D buildings
-          const layers = map.current.getStyle().layers;
-          const labelLayerId = layers.find(
-            layer => layer.type === 'symbol' && layer.layout['text-field']
-          )?.id;
+          // Add 3D buildings - guard against duplicate
+          if (!map.current.getLayer('3d-buildings')) {
+            const layers = map.current.getStyle().layers;
+            const labelLayerId = layers.find(
+              layer => layer.type === 'symbol' && layer.layout['text-field']
+            )?.id;
 
-          map.current.addLayer(
-            {
-              id: '3d-buildings',
-              source: 'composite',
-              'source-layer': 'building',
-              filter: ['==', 'extrude', 'true'],
-              type: 'fill-extrusion',
-              minzoom: 14,
-              paint: {
-                'fill-extrusion-color': '#4D7C59',
-                'fill-extrusion-height': [
-                  'interpolate',
-                  ['linear'],
-                  ['zoom'],
-                  14,
-                  0,
-                  14.05,
-                  ['get', 'height']
-                ],
-                'fill-extrusion-base': [
-                  'interpolate',
-                  ['linear'],
-                  ['zoom'],
-                  14,
-                  0,
-                  14.05,
-                  ['get', 'min_height']
-                ],
-                'fill-extrusion-opacity': 0.6
-              }
-            },
-            labelLayerId
-          );
+            map.current.addLayer(
+              {
+                id: '3d-buildings',
+                source: 'composite',
+                'source-layer': 'building',
+                filter: ['==', 'extrude', 'true'],
+                type: 'fill-extrusion',
+                minzoom: 14,
+                paint: {
+                  'fill-extrusion-color': '#4D7C59',
+                  'fill-extrusion-height': [
+                    'interpolate',
+                    ['linear'],
+                    ['zoom'],
+                    14,
+                    0,
+                    14.05,
+                    ['get', 'height']
+                  ],
+                  'fill-extrusion-base': [
+                    'interpolate',
+                    ['linear'],
+                    ['zoom'],
+                    14,
+                    0,
+                    14.05,
+                    ['get', 'min_height']
+                  ],
+                  'fill-extrusion-opacity': 0.6
+                }
+              },
+              labelLayerId
+            );
+          }
 
           // Add fog
           map.current.setFog({
@@ -126,6 +134,8 @@ const MapView = () => {
     return () => {
       if (map.current) {
         map.current.remove();
+        map.current = null;
+        mapInitialized.current = false;
       }
     };
   }, []);

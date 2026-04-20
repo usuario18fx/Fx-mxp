@@ -17,6 +17,13 @@ from emergentintegrations.llm.chat import LlmChat, UserMessage
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
+# Configure logging EARLY
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
 # MongoDB connection
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
@@ -276,10 +283,13 @@ async def get_image(path: str):
     except Exception as e:
         raise HTTPException(status_code=404, detail="Image not found")
 
+class AIAnalyzeRequest(BaseModel):
+    location_id: str
+
 @api_router.post("/ai/analyze")
-async def analyze_with_ai(location_id: str):
+async def analyze_with_ai(input: AIAnalyzeRequest):
     # Get location data
-    location = await db.locations.find_one({"id": location_id}, {"_id": 0})
+    location = await db.locations.find_one({"id": input.location_id}, {"_id": 0})
     if not location:
         raise HTTPException(status_code=404, detail="Location not found")
     
@@ -298,7 +308,7 @@ Otras ubicaciones:
 """
     
     for loc in all_locations:
-        if loc['id'] != location_id:
+        if loc['id'] != input.location_id:
             context += f"- {loc['name']}: {', '.join(loc.get('tags', []))}\n"
     
     context += "\nProporciona un análisis breve y útil sobre relaciones, patrones o insights interesantes."
@@ -307,7 +317,7 @@ Otras ubicaciones:
         # Initialize LLM chat
         chat = LlmChat(
             api_key=EMERGENT_KEY,
-            session_id=f"analysis-{location_id}",
+            session_id=f"analysis-{input.location_id}",
             system_message="Eres un asistente que analiza ubicaciones geográficas y encuentra patrones y relaciones interesantes."
         )
         chat.with_model("openai", "gpt-5.2")
@@ -361,13 +371,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
 
 @app.on_event("startup")
 async def startup():
