@@ -1,0 +1,102 @@
+{
+  "theme": "dark",
+  "archetype": "5",
+  "archetype_name": "Jewel & Luxury / Tactical Minimalism",
+  "design_philosophy": "A deeply immersive, tactical 3D map dashboard. The design uses extremely dark navy and charcoal tones to let the Mapbox 3D 'Night/Dusk' style shine. Surfaces are glassmorphic and minimal to avoid distracting from the map. Accents are strictly functional, using glowing moss green and vivid amber for interactions and emergencies.",
+  "typography": {
+    "heading_font": "Chivo",
+    "body_font": "IBM Plex Sans",
+    "mono_font": "JetBrains Mono",
+    "hierarchy": {
+      "h1": "text-4xl sm:text-5xl tracking-tighter font-black",
+      "h2": "text-2xl sm:text-3xl tracking-tight font-bold",
+      "h3": "text-xl sm:text-2xl tracking-tight font-semibold",
+      "h4": "text-lg font-medium",
+      "body": "text-base leading-relaxed",
+      "small_label": "text-xs tracking-[0.2em] uppercase font-bold"
+    }
+  },
+  "colors": {
+    "background": "#07090F",
+    "surface": "#131620",
+    "surface_glass": "rgba(19, 22, 32, 0.7)",
+    "border": "rgba(255, 255, 255, 0.08)",
+    "text_primary": "#FFFFFF",
+    "text_secondary": "#94A3B8",
+    "accent_primary": "#F59E0B",
+    "accent_secondary": "#4ADE80",
+    "danger": "#EF4444",
+    "moss_green": "#4D7C59",
+    "dark_purple": "#4C3B5E",
+    "navy_blue": "#1E293B",
+    "dark_grey": "#0F1115",
+    "cta_background": "#EF4444",
+    "cta_text": "#FFFFFF"
+  },
+  "layout_and_spacing": {
+    "philosophy": "Control Room Grid. Edge-to-edge map canvas with floating, glassmorphic control panels. Massive internal padding within the panels.",
+    "sidebar": "w-80 or w-96 floating panel with backdrop-blur-2xl border-r border-white/10",
+    "container_padding": "p-6 sm:p-8",
+    "gap_standard": "gap-6",
+    "radius": {
+      "container": "rounded-2xl",
+      "button": "rounded-xl",
+      "card": "rounded-xl"
+    }
+  },
+  "surfaces": {
+    "map_overlay_panel": "backdrop-blur-2xl bg-[#07090F]/60 border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)]",
+    "card": "bg-[#131620] border border-white/5 shadow-sm",
+    "active_state": "bg-white/5 border border-white/20"
+  },
+  "components": {
+    "map_container": {
+      "style": "absolute inset-0 z-0",
+      "instructions": "Use Mapbox GL JS with a custom 'Night' or 'Dusk' style. Enable 3D buildings, terrain, and custom lighting. The map is the background of the entire app."
+    },
+    "emergency_button": {
+      "style": "bg-red-600 hover:bg-red-500 text-white rounded-full p-4 shadow-[0_0_20px_rgba(239,68,68,0.5)] transition-all flex items-center justify-center font-bold",
+      "instructions": "Place floating at the bottom right. Must have an intense pulse animation."
+    },
+    "location_card": {
+      "style": "p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors cursor-pointer",
+      "instructions": "Used in the sidebar list. Minimal info: Title, Time, Tags."
+    },
+    "tags": {
+      "style": "px-2 py-1 rounded-md text-xs font-mono bg-white/10 text-white/80"
+    },
+    "time_selector": {
+      "style": "flex space-x-2 p-1 bg-black/50 backdrop-blur-md rounded-lg border border-white/10",
+      "instructions": "Floating control to switch map between Dawn/Day/Dusk/Night. Use glowing active states."
+    }
+  },
+  "motion": {
+    "hover": "transition-all duration-300 ease-out",
+    "map_flyto": "Smooth cinematic easing when clicking a location in the list to view it on the 3D map.",
+    "panel_slide": "Slide in from left/right with Framer Motion, using spring physics (stiffness: 300, damping: 30)."
+  },
+  "assets": {
+    "icons": {
+      "library": "lucide-react",
+      "style": "stroke-[1.5px]"
+    },
+    "images": {
+      "map_background_placeholder": "https://images.unsplash.com/photo-1629044932273-259127aec85b?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzR8MHwxfHNlYXJjaHwyfHxjeWJlcnB1bmslMjBjaXR5JTIwbmlnaHQlMjBtYXAlMjBhZXJpYWx8ZW58MHx8fHwxNzc2NzI2NjE0fDA&ixlib=rb-4.1.0&q=85",
+      "location_photo_1": "https://images.unsplash.com/photo-1771784970156-02083a4d26e5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA3MDR8MHwxfHNlYXJjaHwyfHxjaW5lbWF0aWMlMjBsb2NhdGlvbiUyMHBob3RvZ3JhcGh5JTIwbmlnaHR8ZW58MHx8fHwxNzc2NzI2NjE0fDA&ixlib=rb-4.1.0&q=85",
+      "location_photo_2": "https://images.pexels.com/photos/16158304/pexels-photo-16158304.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+    }
+  },
+  "testing": {
+    "attributes": "All interactive elements MUST include `data-testid` (e.g., `data-testid=\"emergency-call-button\"`, `data-testid=\"add-location-btn\"`)."
+  },
+  "instructions_to_main_agent": [
+    "1. Setup Mapbox with react-map-gl or mapbox-gl directly. You will need a placeholder token if none is provided, or mock the map visual if Mapbox is strictly unavailable.",
+    "2. Implement a full-screen layout: the map takes up 100% vw/vh, and all UI panels (sidebar, time selector, emergency button) float above it using absolute/fixed positioning with glassmorphic (`backdrop-blur`) surfaces.",
+    "3. Sidebar (Left/Right): Contains the list of saved locations, and toggles to a 'Detail View' when a location is clicked. Detail view shows photos, AI analysis, comments, and tags.",
+    "4. The Time Selector (Dawn/Day/Dusk/Night) should visibly change the map's lighting properties if supported, or at least change the UI theme slightly to reflect the time.",
+    "5. Emergency Button: A prominent red/amber button. When clicked, it should simulate sending real-time location to a contact (mock this action with a success toast).",
+    "6. AI Features: Mock an AI analysis section in the location detail that says 'AI Insight: This location correlates with 3 other photos in your gallery based on architectural style and lighting.'",
+    "7. Strictly adhere to the dark color palette: Midnight Blue (#07090F) and Slate, with NO pure black or pure white backgrounds. Use the provided Moss Green or Amber for accents, never Teal or Purple for CTAs.",
+    "8. Use pure HTML/Tailwind for the structural layout. Use Shadcn for interactive components (Dialogs for adding notes, dropdowns for tags). Override Shadcn's default borders to match the `border-white/10` aesthetic."
+  ]
+}
