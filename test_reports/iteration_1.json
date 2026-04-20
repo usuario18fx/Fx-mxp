@@ -1,0 +1,46 @@
+{
+  "summary": "Tested backend (9/9 pytest passed) and frontend UI. Backend APIs all healthy: config, locations CRUD, comments, tags, images (upload+fetch via object storage), AI analyze (emergentintegrations gpt-5.2), emergency/send. Frontend: Mapbox map loads and renders canvas, sidebar shows seeded 'Torre Latinoamericana' location, time selector (Amanecer/Día/Atardecer/Noche) buttons are rendered. However a CRITICAL runtime error overlay covers the entire app: 'There is already a source with ID \"mapbox-dem\"' thrown inside Mapbox Map._render. This blocks all user interactions in the rendered dev build (error overlay intercepts clicks on sidebar/emergency/detail/etc.).",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "/api/ai/analyze", "issue": "Uses location_id as QUERY PARAM on a POST (semantics inconsistent with rest of API which uses path params or JSON body). Works but error-prone for client consumers."},
+      {"endpoint": "/api/emergency/send", "issue": "MOCKED behavior: endpoint only logs the alert and returns success; no real SMS/WhatsApp/email is sent. Highlight to user that emergency alerts are not actually delivered."},
+      {"endpoint": "server.py init_storage", "issue": "Uses `logger` inside init_storage() exception handler but `logger` is defined later in the file (after app/router setup). If storage init fails at import-time of init_storage call, will raise NameError. Currently benign because startup path succeeds, but is a latent bug."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "MapView.jsx", "issue": "CRITICAL: Mapbox runtime error 'There is already a source with ID mapbox-dem' is thrown from Map._render pipeline, causing a full-screen red CRA error overlay that blocks ALL user interactions (sidebar toggle, emergency button, location cards, time selector, detail panel). Likely triggers because the 'load' event handler runs more than once (React 18 StrictMode double-invoke or style re-load) and addSource/addLayer is called without existence guards. Fix: wrap addSource('mapbox-dem') and addLayer('3d-buildings') with `if (!map.current.getSource(...))` / `if (!map.current.getLayer(...))` guards, and idempotently init terrain/buildings. Also consider using a ref flag to avoid double-init.", "selector": "[data-testid=\"map-container\"]", "priority": "CRITICAL"},
+      {"component": "MapView.jsx handleMapClick", "issue": "Uses window.prompt() for naming a new location. Works but not aligned with the 'diseño minimalista' dark theme; consider shadcn Dialog input.", "selector": "[data-testid=\"map-container\"]", "priority": "LOW"}
+    ],
+    "integration_issues": [
+      {"flow": "All UI flows (sidebar, emergency, location detail, tags, comments, image upload, AI analyze)", "issue": "Could not be interactively exercised because the mapbox-dem runtime error overlay blocks the viewport. Backend equivalents were validated via pytest and pass.", "affected_selectors": ["[data-testid=\"sidebar-toggle-button\"]", "[data-testid=\"emergency-button\"]", "[data-testid=\"location-card-*\"]", "[data-testid=\"analyze-button\"]"]}
+    ],
+    "design_issues": [
+      {"screen": "Global", "issues": ["When the runtime error overlay is dismissed, core dark-theme glassmorphism looks correct; time selector and sidebar are visually aligned per screenshot."]}
+    ]
+  },
+  "test_report_links": ["/app/backend/tests/backend_test.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [
+    "FIX CRITICAL: Guard Mapbox addSource('mapbox-dem') / addLayer('3d-buildings') with getSource/getLayer existence checks inside MapView.jsx 'load' handler to stop the 'already a source' error overlay.",
+    "Also ensure map init useEffect is not re-running (track via ref) OR is safely idempotent; React 18 StrictMode in dev invokes effects twice.",
+    "Consider moving /api/ai/analyze to accept {location_id} in JSON body for consistency.",
+    "Clarify to user that /api/emergency/send is MOCKED (no real SMS). Add real Twilio/WhatsApp integration if production use is intended.",
+    "Move `logger` configuration to the top of server.py (before init_storage definition) to avoid NameError on storage init failure."
+  ],
+  "critical_code_review_comments": [
+    "MapView.jsx: addSource/addLayer not idempotent - must guard with getSource/getLayer.",
+    "server.py: `logger` used in init_storage before it is configured; move logging.basicConfig() + logger = ... above helper functions.",
+    "server.py: /api/ai/analyze accepts location_id as query param on POST - unusual; prefer Pydantic body model.",
+    "server.py: Image upload does not validate content-type/size; should enforce JPEG/PNG/WEBP and a max size per image_testing.md rules.",
+    "Emergency send is not actually sending; must be clearly flagged as MOCKED to the user."
+  ],
+  "updated_files": ["/app/backend/tests/backend_test.py"],
+  "success_rate": {"backend": "100%", "frontend": "20% (map loads but app unusable due to runtime error overlay)"},
+  "test_credentials": "N/A - app has no authentication (personal use per spec).",
+  "seed_data_creation": "Created & cleaned up TEST_Location_PyTest via pytest fixtures. Existing 'Torre Latinoamericana' seed remains intact.",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend is solid (9/9 pytest passed). Only blocker is the Mapbox 'mapbox-dem' duplicate source runtime error in MapView.jsx. After main agent applies existence guards in the 'load' handler (and/or a one-shot ref to prevent double init from React StrictMode), re-run playwright flows for: sidebar open/close, click existing location card -> LocationDetail -> add tag/comment -> switch to AI tab -> analyze, image upload via [data-testid=image-upload-input], emergency dialog submit, time selector presets. All backend endpoints listed in the review request are verified working; use backend_test.py for regression.",
+  "rca of the issue": "MapView.jsx registers a 'load' handler on the Mapbox Map that unconditionally calls addSource('mapbox-dem') and addLayer('3d-buildings'). In React 18 dev (StrictMode) the initMap effect can be invoked twice, and Mapbox may also emit 'load' on style reinitialization. The second invocation throws 'There is already a source with ID mapbox-dem' from Po.addSource -> Map.addSource (bundle.js stack confirmed). CRA dev overlay then renders a fixed red overlay on top of the app, making [data-testid=map-container] effectively hidden and blocking all pointer interactions. Mitigation: add `if (!map.current.getSource('mapbox-dem')) { map.current.addSource(...) }` and `if (!map.current.getLayer('3d-buildings')) { map.current.addLayer(...) }`, plus a `const initializedRef = useRef(false)` guard in initMap() to prevent duplicate init across StrictMode double-invocation."
+}
