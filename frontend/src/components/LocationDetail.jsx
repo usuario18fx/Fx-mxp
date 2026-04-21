@@ -222,10 +222,29 @@ const LocationDetail = ({ location, onClose, onUpdate }) => {
                     className="p-3 rounded-xl bg-white/5 border border-white/10"
                     data-testid={`comment-${idx}`}
                   >
-                    <p className="text-sm text-white">{c.text}</p>
-                    <p className="text-xs text-[#94A3B8] mt-2">
-                      {new Date(c.created_at).toLocaleString('es-ES')}
-                    </p>
+                    <p className="text-sm text-white leading-relaxed">{c.text}</p>
+                    <div className="flex items-center gap-2 mt-2 text-xs text-[#94A3B8]">
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      <span>
+                        {new Date(c.created_at).toLocaleDateString('es-ES', {
+                          day: '2-digit',
+                          month: 'short',
+                          year: 'numeric'
+                        })}
+                      </span>
+                      <span className="text-white/30">•</span>
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span>
+                        {new Date(c.created_at).toLocaleTimeString('es-ES', {
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </span>
+                    </div>
                   </div>
                 ))}
                 {(!location.comments || location.comments.length === 0) && (

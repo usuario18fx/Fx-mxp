@@ -60,6 +60,19 @@ const Sidebar = ({ locations, onLocationClick, onRefresh, isOpen, onToggle }) =>
                 </div>
               </div>
 
+              <div className="flex items-center gap-2 mb-2 text-xs text-[#94A3B8]">
+                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>
+                  {new Date(location.created_at).toLocaleDateString('es-ES', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                  })}
+                </span>
+              </div>
+
               {location.tags && location.tags.length > 0 && (
                 <div className="flex flex-wrap gap-1 mb-2" data-testid={`location-tags-${location.id}`}>
                   {location.tags.slice(0, 3).map((tag, idx) => (
