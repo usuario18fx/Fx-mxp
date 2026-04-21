@@ -3,7 +3,7 @@
 ## 🚀 Acceso a la Aplicación
 
 Tu aplicación está desplegada y lista para usar en:
-**URL**: https://cm62gk848ckg1sk9dgmg.preview.emergentagent.com
+**URL**: https://tagged-location-feed.preview.emergentagent.com
 
 ### ⚠️ Nota Importante sobre la Pantalla Negra
 Si ves una pantalla negra en lugar del mapa, es porque el agente de Emergent está en modo "sleep". Para activarlo:

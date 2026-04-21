@@ -4,7 +4,6 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import axios from 'axios';
 import Sidebar from './Sidebar.jsx';
 import LocationDetail from './LocationDetail.jsx';
-import TimeSelector from './TimeSelector.jsx';
 import EmergencyButton from './EmergencyButton.jsx';
 import { toast } from 'sonner';
 
@@ -18,7 +17,6 @@ const MapView = () => {
   const [mapLoaded, setMapLoaded] = useState(false);
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
-  const [timeOfDay, setTimeOfDay] = useState('dusk');
   const [showSidebar, setShowSidebar] = useState(true);
   const markers = useRef([]);
 
@@ -36,12 +34,11 @@ const MapView = () => {
 
         map.current = new mapboxgl.Map({
           container: mapContainer.current,
-          style: 'mapbox://styles/mapbox/dark-v11',
+          style: 'mapbox://styles/mapbox/streets-v12',
           center: config.center,
-          zoom: config.zoom,
-          pitch: config.pitch,
-          bearing: config.bearing,
-          projection: 'globe'
+          zoom: config.zoom - 1,
+          pitch: 0,
+          bearing: 0
         });
 
         map.current.on('load', () => {
@@ -104,13 +101,18 @@ const MapView = () => {
             );
           }
 
-          // Add fog
-          map.current.setFog({
-            range: [-1, 2],
-            color: '#d4a89e',
-            'high-color': '#ff6347',
-            'space-color': '#8b4513',
-            'horizon-blend': 0.05
+          // Apply dark filter to make it look like night
+          map.current.on('styledata', () => {
+            const layers = map.current.getStyle().layers;
+            layers.forEach((layer) => {
+              if (layer.type === 'background') {
+                map.current.setPaintProperty(layer.id, 'background-color', '#0a0a0a');
+              } else if (layer.type === 'fill') {
+                map.current.setPaintProperty(layer.id, 'fill-color', '#1a1a2e');
+              } else if (layer.type === 'line') {
+                map.current.setPaintProperty(layer.id, 'line-color', '#2a2a3e');
+              }
+            });
           });
 
           // Add navigation control
@@ -206,29 +208,6 @@ const MapView = () => {
     });
   };
 
-  const handleTimeChange = (time) => {
-    setTimeOfDay(time);
-    
-    // Update fog color based on time of day
-    const fogConfigs = {
-      dawn: { color: '#e8d4c4', highColor: '#ffb347', spaceColor: '#e0d4c4' },
-      day: { color: '#ffffff', highColor: '#87ceeb', spaceColor: '#d7e7ff' },
-      dusk: { color: '#d4a89e', highColor: '#ff6347', spaceColor: '#8b4513' },
-      night: { color: '#1a1a2e', highColor: '#001a4d', spaceColor: '#0d0d1a' }
-    };
-
-    const config = fogConfigs[time];
-    if (map.current && config) {
-      map.current.setFog({
-        range: [-1, 2],
-        color: config.color,
-        'high-color': config.highColor,
-        'space-color': config.spaceColor,
-        'horizon-blend': 0.05
-      });
-    }
-  };
-
   const flyToLocation = (location) => {
     if (map.current) {
       map.current.flyTo({
@@ -244,11 +223,6 @@ const MapView = () => {
   return (
     <div className="relative w-full h-screen" data-testid="map-view-container">
       <div ref={mapContainer} className="absolute inset-0" data-testid="map-container" />
-      
-      <TimeSelector 
-        currentTime={timeOfDay} 
-        onTimeChange={handleTimeChange} 
-      />
 
       <Sidebar
         locations={locations}
