@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
+<meta name="theme-color" content="#05070b"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="FX MAP X8"/>
+<title>FX MAP X8</title>
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet"/>
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+<style>
+:root{
+  --bg:#05070b;--surface:rgba(13,17,24,.96);--surface2:rgba(18,22,31,.98);
+  --border:rgba(100,168,255,.15);--border2:rgba(255,255,255,.07);
+  --text:#eaf1fb;--muted:#7a92ae;--muted2:rgba(122,146,174,.55);
+  --blue:#64a8ff;--green:#4ecf7a;--yellow:#f5cf58;
+  --red:#ff6a74;--purple:#b58cff;--orange:#ff8c42;--cyan:#45d4e8;
+  --shadow:0 18px 44px rgba(0,0,0,.42);--shadow2:0 8px 22px rgba(0,0,0,.34);
+  --safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg)}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;color:var(--text);position:fixed;inset:0}
+button,input,textarea,select{font:inherit;border:none;background:none;color:inherit}
+button{cursor:pointer}
+#map{position:absolute;inset:0}
+.mapboxgl-ctrl-attrib,.mapboxgl-compact-button,.mapboxgl-ctrl-logo{display:none!important}
+.mapboxgl-ctrl-bottom-right,.mapboxgl-ctrl-bottom-left,.mapboxgl-ctrl-top-right,.mapboxgl-ctrl-top-left{display:none!important}
+
+/* HUD */
+#hud{position:fixed;top:calc(14px + var(--safe-top));left:14px;z-index:60;display:flex;flex-direction:column;gap:6px}
+.brand-pill{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 14px;border-radius:12px;font-size:10px;font-weight:900;letter-spacing:.2em;text-transform:uppercase;border:1px solid var(--border);background:var(--surface);backdrop-filter:blur(20px);box-shadow:var(--shadow2);color:var(--blue);cursor:pointer;transition:background .15s}
+.brand-pill:hover{background:rgba(100,168,255,.1)}
+.brand-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pdot 2s ease-in-out infinite}
+@keyframes pdot{0%,100%{opacity:1}50%{opacity:.35}}
+.mode-pill{display:inline-flex;align-items:center;height:34px;padding:0 12px;border-radius:10px;font-size:9px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;border:1px solid var(--border2);background:rgba(13,17,24,.88);backdrop-filter:blur(14px);color:var(--muted);box-shadow:var(--shadow2);pointer-events:none;transition:all .2s}
+.mode-pill.explore{color:var(--cyan);border-color:rgba(69,212,232,.3)}
+.counter-pill{display:inline-flex;align-items:center;gap:5px;height:28px;padding:0 10px;border-radius:8px;font-size:9px;font-weight:800;letter-spacing:.1em;color:var(--muted);border:1px solid var(--border2);background:rgba(13,17,24,.7);backdrop-filter:blur(10px)}
+.counter-pill b{color:var(--blue)}
+
+/* RIGHT COL */
+#right-col{position:fixed;top:calc(14px + var(--safe-top));right:14px;z-index:70;display:flex;flex-direction:column;gap:7px;align-items:center}
+.rc-btn{width:44px;height:44px;border-radius:13px;border:1px solid var(--border);background:var(--surface);backdrop-filter:blur(20px);box-shadow:var(--shadow2);color:var(--muted);font-size:18px;display:grid;place-items:center;transition:all .15s;position:relative}
+.rc-btn:hover,.rc-btn:active{color:var(--blue);background:rgba(100,168,255,.1)}
+.rc-btn.active{color:var(--blue);background:rgba(100,168,255,.12);border-color:rgba(100,168,255,.35)}
+.rc-btn.danger{color:var(--red);border-color:rgba(255,106,116,.25)}
+.rc-sep{width:30px;height:1px;background:var(--border2)}
+.rc-badge{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;border-radius:999px;background:var(--red);color:#fff;font-size:9px;font-weight:900;display:flex;align-items:center;justify-content:center;padding:0 4px;border:1.5px solid var(--bg)}
+.menu-icon{display:flex;flex-direction:column;gap:3.5px;align-items:center;width:20px}
+.menu-icon span{display:block;width:18px;height:2px;border-radius:1px;background:currentColor}
+
+/* SEARCH */
+#search-explore-btn{position:fixed;top:calc(14px + var(--safe-top));left:50%;transform:translateX(-50%);z-index:64;height:46px;padding:0 18px;border-radius:14px;border:1px solid var(--border);background:var(--surface);backdrop-filter:blur(20px);box-shadow:var(--shadow2);color:var(--muted);font-size:12px;font-weight:700;display:flex;align-items:center;gap:9px;transition:all .2s;white-space:nowrap}
+#search-explore-btn.active{border-color:rgba(69,212,232,.4);color:var(--cyan);background:rgba(69,212,232,.07)}
+#search-wrap{position:fixed;top:calc(14px + var(--safe-top));left:50%;transform:translateX(-50%) translateY(-8px);z-index:65;width:min(360px,calc(100vw - 160px));display:flex;flex-direction:column;gap:6px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+#search-wrap.open{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+.sbox{display:flex;align-items:center;gap:8px;height:46px;padding:0 14px;border-radius:14px;border:1px solid rgba(100,168,255,.3);background:var(--surface);backdrop-filter:blur(20px);box-shadow:var(--shadow)}
+.sbox input{flex:1;background:transparent;color:var(--text);font-size:12px;outline:none;min-width:0}
+.sbox input::placeholder{color:var(--muted)}
+.sbox-icon{color:var(--muted);font-size:15px;flex:0 0 auto}
+.sbox-clear{color:var(--muted);font-size:18px;padding:0 2px;display:none;flex:0 0 auto;cursor:pointer}
+.has-text .sbox-clear{display:block}
+#search-results{border-radius:14px;border:1px solid rgba(100,168,255,.3);background:var(--surface2);backdrop-filter:blur(20px);box-shadow:var(--shadow);overflow:hidden;display:none;max-height:260px;overflow-y:auto}
+#search-results.open{display:block}
+.sr-confirm{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:8px;padding:10px 12px;border-top:1px solid var(--border2);background:rgba(255,255,255,.03)}
+.sr-confirm-btn{height:34px;padding:0 12px;border-radius:10px;border:1px solid rgba(100,168,255,.35);background:rgba(100,168,255,.12);color:var(--blue);font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+#save-modal{align-items:flex-end;background:rgba(0,0,0,.68);backdrop-filter:blur(16px)}
+.save-box{width:min(760px,100%);margin:0 auto;max-width:none;border-radius:28px 28px 0 0;padding:18px 16px calc(18px + var(--safe-bottom));max-height:86dvh;background:rgba(7,12,20,.985);box-shadow:0 -18px 45px rgba(0,0,0,.55);border:2px solid rgba(255,60,60,.7)}
+.save-box::before{content:'';display:block;width:42px;height:4px;border-radius:999px;background:rgba(255,255,255,.22);margin:0 auto 14px}
+.save-hd{margin-bottom:10px}
+.save-sub{opacity:.85}
+.save-hero{padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid var(--border2);margin-bottom:10px}
+.save-hero-main{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.save-hash{width:34px;height:34px;border-radius:10px;background:#0c0d11;color:#fff;display:grid;place-items:center;font-weight:900;font-size:24px;line-height:1;border:1px solid rgba(255,255,255,.06)}
+.save-hero-title{font-size:18px;font-weight:900;color:var(--text)}
+.save-hero-note{font-size:11px;color:rgba(255,255,255,.86)}
+.save-actrow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:12px 0 14px}
+.save-act{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:74px;border-radius:16px;border:1px solid rgba(255,255,255,.06);background:linear-gradient(180deg,rgba(20,28,42,.95),rgba(11,16,26,.98));color:#c7d5ea;font-size:10px;font-weight:800;letter-spacing:.04em;text-align:center;padding:8px 4px;box-shadow:inset 0 1px 0 rgba(255,255,255,.04), 0 10px 20px rgba(0,0,0,.18)}
+.save-act.primary{background:linear-gradient(180deg,rgba(53,97,165,.88),rgba(30,55,98,.96));border-color:rgba(100,168,255,.4);color:#fff}
+.save-act .ico{font-size:28px;line-height:1}
+.save-colors{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:8px;padding-top:4px}
+.color-tile{height:74px;border-radius:18px;border:2px solid rgba(255,255,255,.12);box-shadow:0 0 0 1px rgba(255,255,255,.04) inset, 0 0 28px color-mix(in srgb, var(--tile) 68%, transparent), 0 0 12px color-mix(in srgb, var(--tile) 45%, transparent);background:var(--tile);cursor:pointer;transition:transform .12s,border-color .12s, box-shadow .12s}
+.color-tile.active{transform:translateY(-2px) scale(1.03);border-color:rgba(255,255,255,.72);box-shadow:0 0 0 1px rgba(255,255,255,.14) inset,0 0 26px color-mix(in srgb, var(--tile) 70%, transparent)}
+.save-mini-actions{display:flex;gap:10px;margin-top:12px}
+.save-mini{flex:1;min-height:42px;border-radius:12px;border:1px solid var(--border2);background:rgba(255,255,255,.03);color:var(--muted);font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
+.search-confirm-marker{width:18px;height:18px;border-radius:50%;background:#b8d98a;border:2px solid rgba(255,255,255,.9);box-shadow:0 0 0 4px rgba(184,217,138,.18),0 8px 18px rgba(0,0,0,.32);position:relative}
+.search-confirm-marker::after{content:'';position:absolute;left:50%;top:100%;width:2px;height:14px;background:rgba(225,236,210,.95);transform:translateX(-50%)}
+.search-confirm-marker::before{content:'';position:absolute;left:50%;top:calc(100% + 12px);width:14px;height:5px;border-radius:50%;border:2px solid rgba(225,236,210,.95);transform:translateX(-50%);background:transparent}
+@media (max-width:560px){.save-actrow,.save-colors{gap:8px}.save-act{min-height:68px}.color-tile{height:66px}.save-act .ico{font-size:24px}}
+.sr{padding:12px 14px;font-size:12px;color:var(--text);cursor:pointer;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:9px}
+.sr:last-child{border-bottom:none}
+.sr:hover{background:rgba(100,168,255,.08)}
+.sr-local{background:rgba(78,207,122,.04);border-left:2px solid var(--green)}
+.sr-tag{font-size:8.5px;font-weight:900;padding:2px 6px;border-radius:4px;text-transform:uppercase;letter-spacing:.08em;flex:0 0 auto}
+.sr-tag.local{background:rgba(78,207,122,.18);color:var(--green)}
+.sr-tag.map{background:rgba(100,168,255,.18);color:var(--blue)}
+
+/* ORBITAL D-PAD */
+#orbital{position:fixed;bottom:calc(88px + var(--safe-bottom));right:18px;z-index:80;display:flex;flex-direction:column;align-items:center;gap:8px;transition:opacity .25s,transform .25s}
+#orbital.hidden{opacity:0;transform:translateY(16px) scale(.94);pointer-events:none}
+.dpad{display:grid;grid-template-areas:". up ." "lt mid rt" ". dn .";grid-template-columns:50px 44px 50px;grid-template-rows:38px 44px 38px;gap:0}
+.dp-ud{width:38px;height:34px;border-radius:10px;background:linear-gradient(160deg,rgba(30,38,56,.97),rgba(15,20,32,.98));border:1px solid rgba(100,168,255,.18);box-shadow:0 3px 10px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.06);color:#c8dcf4;font-size:15px;display:grid;place-items:center;cursor:pointer;transition:transform .1s;justify-self:center}
+.dp-ud:active{transform:scale(.87)}
+#dp-up{grid-area:up}.#dp-dn{grid-area:dn}
+.dp-lr{width:46px;height:40px;border-radius:12px;background:linear-gradient(180deg,#c8d4e8,#8899bb 50%,#6680a8);border:1px solid rgba(255,255,255,.35);box-shadow:0 4px 12px rgba(0,0,0,.4),inset 0 1.5px 0 rgba(255,255,255,.5);color:#1a2540;font-size:17px;display:grid;place-items:center;cursor:pointer;transition:transform .1s}
+.dp-lr:active{transform:scale(.87)}
+#dp-lt{grid-area:lt;justify-self:end}
+#dp-rt{grid-area:rt;justify-self:start}
+#dp-home{grid-area:mid;width:40px;height:40px;border-radius:50%;background:rgba(100,168,255,.12);border:1px solid rgba(100,168,255,.4);box-shadow:0 0 14px rgba(100,168,255,.2);color:var(--blue);font-size:20px;display:grid;place-items:center;cursor:pointer;transition:all .15s}
+#dp-home:active{transform:scale(.88)}
+#orb-mode{height:30px;padding:0 14px;border-radius:9px;background:rgba(15,20,32,.94);border:1px solid rgba(100,168,255,.25);color:var(--blue);font-size:9px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .15s}
+#orb-mode.tilt{color:var(--purple);border-color:rgba(181,140,255,.35);background:rgba(181,140,255,.07)}
+
+/* SOS + SETTINGS side btns */
+#sos-btn{position:fixed;left:14px;bottom:calc(88px + var(--safe-bottom));z-index:70;width:44px;height:44px;border-radius:13px;background:rgba(255,60,70,.1);border:1px solid rgba(255,106,116,.28);backdrop-filter:blur(16px);box-shadow:var(--shadow2);color:var(--red);font-size:15px;font-weight:900;display:grid;place-items:center}
+#sos-btn:active{transform:scale(.93);background:rgba(255,60,70,.22)}
+#settings-btn{position:fixed;left:14px;bottom:calc(40px + var(--safe-bottom));z-index:70;width:44px;height:44px;border-radius:13px;border:1px solid var(--border);background:var(--surface);backdrop-filter:blur(16px);box-shadow:var(--shadow2);color:var(--muted);font-size:18px;display:grid;place-items:center;transition:all .15s}
+#settings-btn:hover{color:var(--text)}
+
+/* LOCATION POPUP */
+#loc-popup{position:fixed;z-index:200;display:none;flex-direction:column;align-items:center;transform:translateX(-50%)}
+#loc-popup.show{display:flex}
+.loc-emoji{font-size:30px;cursor:pointer;filter:drop-shadow(0 3px 8px rgba(0,0,0,.5));animation:bounce-in .3s cubic-bezier(.34,1.56,.64,1)}
+@keyframes bounce-in{0%{transform:scale(0)}100%{transform:scale(1)}}
+.loc-card{background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:var(--shadow);min-width:200px;max-width:280px;margin-top:7px;position:relative}
+.loc-address{font-size:11px;color:var(--text);font-weight:700;margin-bottom:8px;line-height:1.4}
+.loc-coords{font-size:9px;color:var(--muted);margin-bottom:10px;font-family:monospace}
+.loc-actions{display:flex;gap:5px;flex-wrap:wrap}
+.loc-act{width:36px;height:36px;border-radius:10px;border:1px solid var(--border2);background:rgba(255,255,255,.04);font-size:16px;display:grid;place-items:center;cursor:pointer;transition:all .13s}
+.loc-act:hover{background:rgba(100,168,255,.1);transform:scale(1.1)}
+.loc-x{position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.05);color:var(--muted);font-size:11px;display:grid;place-items:center;cursor:pointer}
+
+/* PRESS RING */
+#press-ring{position:fixed;z-index:150;width:60px;height:60px;border-radius:50%;border:2.5px solid var(--cyan);display:none;transform:translate(-50%,-50%);pointer-events:none;animation:ring-grow .3s ease forwards}
+@keyframes ring-grow{0%{width:20px;height:20px;opacity:0}100%{width:60px;height:60px;opacity:1}}
+
+/* SETTINGS DRAWER */
+#settings-drawer{position:fixed;bottom:0;left:0;right:0;z-index:110;background:rgba(8,12,20,.98);border-top:1px solid var(--border);border-radius:22px 22px 0 0;transform:translateY(100%);transition:transform .3s cubic-bezier(.22,1,.36,1);max-height:88vh;display:flex;flex-direction:column;backdrop-filter:blur(30px)}
+#settings-drawer.open{transform:translateY(0)}
+.drawer-handle{display:flex;align-items:center;justify-content:center;padding:10px 0 4px;flex:0 0 auto;position:relative}
+.drawer-bar{width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,.14)}
+.drawer-close{position:absolute;right:14px;top:8px;width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,.05);color:var(--muted);font-size:13px;display:grid;place-items:center;border:1px solid var(--border2);cursor:pointer}
+.dtabs{display:flex;border-bottom:1px solid var(--border2);padding:0 16px;flex:0 0 auto}
+.dtab{flex:1;height:44px;background:none;color:var(--muted);font-size:9px;font-weight:900;letter-spacing:.15em;text-transform:uppercase;border-bottom:2px solid transparent;transition:all .15s;cursor:pointer}
+.dtab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.drawer-body{flex:1;overflow:auto;-webkit-overflow-scrolling:touch}
+.dpane{display:none;padding:14px 16px 32px}
+.dpane.active{display:block}
+
+/* BOARD */
+.board-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(138px,1fr));gap:9px;margin-top:10px}
+.bcard{border-radius:13px;border:1px solid var(--border2);background:rgba(255,255,255,.025);overflow:hidden;cursor:pointer;transition:all .16s}
+.bcard:hover{border-color:var(--border);transform:translateY(-2px)}
+.bcard-img{width:100%;height:86px;object-fit:cover;display:block;background:rgba(255,255,255,.04)}
+.bcard-img.noimg{display:flex;align-items:center;justify-content:center;font-size:30px}
+.bcard-body{padding:9px 10px}
+.bcard-title{font-size:11px;font-weight:800;color:var(--text);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bcard-sub{font-size:9px;color:var(--muted);line-height:1.4}
+.bcard-tags{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap}
+.ctag{font-size:8px;font-weight:900;padding:2px 6px;border-radius:4px;text-transform:uppercase;letter-spacing:.07em}
+.ctag.danger{background:rgba(255,106,116,.15);color:var(--red)}
+.ctag.caution{background:rgba(245,207,88,.15);color:var(--yellow)}
+.ctag.safe{background:rgba(78,207,122,.15);color:var(--green)}
+.ctag.watch{background:rgba(181,140,255,.15);color:var(--purple)}
+.ctag.dealer{background:rgba(255,140,66,.15);color:var(--orange)}
+.ctag.like{background:rgba(100,168,255,.15);color:var(--blue)}
+.conn-section{margin-top:16px}
+.conn-lbl{font-size:9px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.conn-item{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:11px;border:1px solid var(--border2);background:rgba(255,255,255,.02);margin-bottom:6px;cursor:pointer;transition:background .14s}
+.conn-item:hover{background:rgba(100,168,255,.05)}
+.conn-dot{width:10px;height:10px;border-radius:50%;flex:0 0 auto}
+.conn-name{font-size:11px;font-weight:700;color:var(--text)}
+.conn-dist{font-size:9px;color:var(--muted)}
+
+/* PRIVATE TAB */
+.priv-lock{display:flex;flex-direction:column;align-items:center;gap:14px;padding:36px 20px;text-align:center}
+.priv-lock-icon{font-size:44px}
+.priv-lock h3{font-size:14px;font-weight:900;color:var(--text)}
+.priv-lock p{font-size:11px;color:var(--muted);line-height:1.6}
+.priv-input{width:100%;height:48px;padding:0 16px;border-radius:13px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);font-size:16px;outline:none;letter-spacing:.12em;text-align:center;transition:border-color .15s;margin:4px 0}
+.priv-input:focus{border-color:rgba(100,168,255,.4)}
+.priv-content{display:none}
+.priv-content.unlocked{display:block}
+.priv-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border2)}
+.priv-hdr h3{font-size:11px;font-weight:900;color:var(--green);letter-spacing:.1em;text-transform:uppercase}
+.quick-list{display:flex;flex-direction:column;gap:6px}
+.qi{padding:10px 12px;border-radius:12px;border:1px solid var(--border2);background:rgba(255,255,255,.02);cursor:pointer;display:flex;align-items:center;gap:9px;transition:background .14s}
+.qi:hover{background:rgba(100,168,255,.06)}
+.qi-dot{width:10px;height:10px;border-radius:50%;flex:0 0 auto}
+.qi-name{font-size:12px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qi-sub{font-size:9px;color:var(--muted);margin-top:2px}
+
+/* MENU PANEL */
+#menu-panel{position:fixed;top:0;right:0;width:min(360px,94vw);height:100%;background:rgba(8,12,20,.98);border-left:1px solid var(--border);backdrop-filter:blur(28px);transform:translateX(100%);transition:transform .28s cubic-bezier(.22,1,.36,1);display:flex;flex-direction:column;z-index:120}
+#menu-panel.open{transform:translateX(0)}
+.ph{display:flex;align-items:center;justify-content:space-between;padding:calc(18px + var(--safe-top)) 16px 14px;border-bottom:1px solid var(--border2);flex:0 0 auto}
+.ph-title{color:var(--blue);font-size:10px;font-weight:900;letter-spacing:.22em;text-transform:uppercase}
+.pclose{width:36px;height:36px;border-radius:10px;border:1px solid var(--border2);background:rgba(255,255,255,.03);color:var(--muted);font-size:17px;display:grid;place-items:center;cursor:pointer;transition:all .14s}
+.pclose:hover{background:rgba(255,255,255,.08);color:var(--text)}
+.ptabs{display:flex;border-bottom:1px solid var(--border2);overflow-x:auto;flex:0 0 auto}
+.ptabs::-webkit-scrollbar{display:none}
+.ptab{flex:0 0 auto;height:44px;padding:0 13px;background:none;color:var(--muted);font-size:8.5px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;border-bottom:2px solid transparent;white-space:nowrap;cursor:pointer;transition:all .14s}
+.ptab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.pbody{flex:1;overflow:auto;padding:14px;-webkit-overflow-scrolling:touch;padding-bottom:calc(20px + var(--safe-bottom))}
+.ppane{display:none}
+.ppane.active{display:block}
+.plbl{font-size:9px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+
+/* ROUTE CARDS */
+.rcard{border-radius:14px;border:1px solid var(--border2);background:rgba(255,255,255,.025);margin-bottom:10px;overflow:hidden}
+.rcard-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;cursor:pointer}
+.rcard-head:hover{background:rgba(100,168,255,.04)}
+.rcard-name{font-size:13px;font-weight:800;color:var(--text)}
+.rcard-meta{font-size:9px;color:var(--muted);margin-top:2px}
+.rcard-badge{font-size:8px;font-weight:900;padding:3px 8px;border-radius:5px;background:rgba(100,168,255,.15);color:var(--blue);letter-spacing:.08em;text-transform:uppercase}
+.rcard-stops{padding:0 14px 12px}
+.rstop{display:flex;align-items:center;gap:9px;padding:7px 0;border-top:1px solid var(--border2)}
+.rstop-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);flex:0 0 auto}
+.rstop-name{font-size:11px;color:var(--muted)}
+
+/* LABEL CHIPS */
+.lbl-group{margin-bottom:14px}
+.lbl-group-hd{font-size:9px;font-weight:900;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.lchip{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:999px;border:1px solid var(--border2);background:rgba(255,255,255,.02);font-size:11px;font-weight:700;cursor:pointer;margin:3px;transition:all .14s}
+.lchip:hover{background:rgba(100,168,255,.07)}
+
+/* PLACE LIST */
+.pli{padding:11px 12px;border-radius:13px;border:1px solid var(--border2);background:rgba(255,255,255,.02);margin-bottom:7px;cursor:pointer;transition:background .14s}
+.pli:hover{background:rgba(100,168,255,.05)}
+.pli-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.pli-name{font-size:12px;font-weight:800;color:var(--text);line-height:1.3;flex:1;min-width:0}
+.pli-del{width:30px;height:30px;border-radius:8px;border:1px solid var(--border2);color:var(--muted);font-size:13px;display:grid;place-items:center;flex:0 0 auto;background:rgba(255,255,255,.02);cursor:pointer;transition:all .14s}
+.pli-del:hover{background:rgba(255,106,116,.1);color:var(--red)}
+.pli-sub{font-size:10px;color:var(--muted);line-height:1.5;margin-top:3px}
+.pli-meta{font-size:9px;color:var(--muted2);margin-top:2px}
+.pli-imgs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:6px}
+.pli-img{aspect-ratio:1;border-radius:7px;overflow:hidden;border:1px solid var(--border2)}
+.pli-img img{width:100%;height:100%;object-fit:cover}
+
+/* AI */
+.ai-wrap textarea{width:100%;min-height:64px;padding:11px 13px;border-radius:11px;border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--text);outline:none;resize:none;line-height:1.6;font-size:11px;transition:border-color .15s;font-family:inherit}
+.ai-wrap textarea:focus{border-color:rgba(100,168,255,.35)}
+.ai-wrap textarea::placeholder{color:var(--muted)}
+.ai-out{display:none;margin-top:10px;padding:12px;border-radius:11px;border:1px solid var(--border);background:rgba(100,168,255,.04);color:var(--text);font-size:11px;line-height:1.75;white-space:pre-wrap}
+.ai-out.show{display:block}
+.ai-spin{display:none;margin-top:10px;color:var(--blue);font-size:10px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;align-items:center;gap:8px}
+.ai-spin.show{display:flex}
+.dots{display:flex;gap:4px}
+.dots span{width:5px;height:5px;border-radius:50%;background:currentColor;animation:da 1s ease-in-out infinite}
+.dots span:nth-child(2){animation-delay:.16s}
+.dots span:nth-child(3){animation-delay:.32s}
+@keyframes da{0%,80%,100%{opacity:.2;transform:scale(.7)}40%{opacity:1;transform:scale(1)}}
+.ai-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:8px;background:rgba(100,168,255,.1);color:var(--blue);font-size:9px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;margin:3px 0;cursor:pointer}
+.ai-chip:hover{background:rgba(100,168,255,.18)}
+
+/* CONFIG */
+.cfield{display:grid;gap:6px;margin-bottom:13px}
+.clbl{font-size:9px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.cinput{width:100%;height:44px;padding:0 13px;border-radius:11px;border:1px solid var(--border2);background:rgba(255,255,255,.03);color:var(--text);outline:none;transition:border-color .15s}
+.cinput:focus{border-color:rgba(100,168,255,.35)}
+.cinput::placeholder{color:var(--muted)}
+
+/* NOTIFICATIONS */
+#notif-panel{position:fixed;top:0;left:0;right:0;z-index:115;background:rgba(8,12,20,.97);border-bottom:1px solid var(--border);border-radius:0 0 20px 20px;backdrop-filter:blur(28px);transform:translateY(-100%);transition:transform .28s cubic-bezier(.22,1,.36,1);max-height:70vh;display:flex;flex-direction:column}
+#notif-panel.open{transform:translateY(0)}
+.nh{display:flex;align-items:center;justify-content:space-between;padding:calc(18px + var(--safe-top)) 16px 12px;border-bottom:1px solid var(--border2)}
+.nh-title{color:var(--blue);font-size:10px;font-weight:900;letter-spacing:.2em;text-transform:uppercase}
+.nlist{flex:1;overflow:auto;padding:10px 14px 16px}
+.ni{display:flex;align-items:flex-start;gap:11px;padding:12px;border-radius:13px;border:1px solid var(--border2);background:rgba(255,255,255,.02);margin-bottom:7px;cursor:pointer;transition:background .14s}
+.ni:hover{background:rgba(100,168,255,.05)}
+.ni.unread{border-left:2px solid var(--blue);background:rgba(100,168,255,.04)}
+.ni-icon{font-size:19px;flex:0 0 auto;margin-top:1px}
+.ni-text{font-size:11px;color:var(--text);line-height:1.5;font-weight:600}
+.ni-time{font-size:9px;color:var(--muted);margin-top:3px}
+.notif-empty{text-align:center;padding:32px;color:var(--muted);font-size:11px}
+.nclear{height:34px;border-radius:9px;border:1px solid var(--border2);background:rgba(255,255,255,.02);color:var(--muted);font-size:9px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;padding:0 14px;cursor:pointer;transition:all .14s}
+.nclear:hover{background:rgba(255,106,116,.08);color:var(--red)}
+
+/* ENCRYPT MODAL */
+#enc-modal{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.78);backdrop-filter:blur(10px)}
+#enc-modal.open{display:flex}
+.enc-box{width:min(400px,94vw);padding:22px;border-radius:20px;border:1px solid var(--border);background:rgba(10,14,22,.98);box-shadow:var(--shadow)}
+.enc-title{color:var(--blue);font-size:11px;font-weight:900;letter-spacing:.2em;text-transform:uppercase;margin-bottom:4px}
+.enc-sub{color:var(--muted);font-size:11px;line-height:1.6;margin-bottom:14px}
+.enc-status{display:flex;align-items:center;gap:9px;padding:10px 13px;border-radius:11px;margin-bottom:14px;font-size:11px;font-weight:700}
+.enc-status.locked{background:rgba(255,106,116,.08);border:1px solid rgba(255,106,116,.2);color:var(--red)}
+.enc-status.unlocked{background:rgba(78,207,122,.08);border:1px solid rgba(78,207,122,.2);color:var(--green)}
+
+/* SAVE MODAL */
+#save-modal{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.78);backdrop-filter:blur(10px)}
+#save-modal.open{display:flex}
+.save-box{width:min(440px,94vw);max-height:calc(100dvh - 48px);overflow:auto;padding:20px;border-radius:20px;border:1px solid var(--border);background:rgba(10,14,22,.98);box-shadow:var(--shadow)}
+.save-hd{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+.save-title{color:var(--blue);font-size:11px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;margin-bottom:3px}
+.save-sub{color:var(--muted);font-size:11px}
+.field{display:grid;gap:6px;margin-bottom:13px}
+.field label{font-size:9px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.field input,.field textarea{width:100%;padding:10px 13px;border-radius:11px;border:1px solid var(--border2);background:rgba(255,255,255,.03);color:var(--text);outline:none;transition:border-color .15s;font-family:inherit;font-size:12px}
+.field textarea{min-height:70px;resize:none;line-height:1.6}
+.field input:focus,.field textarea:focus{border-color:rgba(100,168,255,.35)}
+.field input::placeholder,.field textarea::placeholder{color:var(--muted)}
+.palette{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.swatch{width:24px;height:24px;border-radius:50%;border:2.5px solid rgba(255,255,255,.1);cursor:pointer;transition:transform .12s}
+.swatch.active{outline:2.5px solid rgba(100,168,255,.55);outline-offset:2px;transform:scale(1.15)}
+.pchip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid var(--border2);background:rgba(255,255,255,.03);font-size:10px;color:var(--muted);margin-top:4px}
+.arow{display:flex;gap:8px;margin-top:4px}
+.btn-p{flex:1;min-height:44px;border-radius:11px;background:linear-gradient(180deg,#9ed1ff,#5a95ff);color:#07111f;font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 6px 16px rgba(80,140,255,.22);transition:filter .13s,transform .1s}
+.btn-p:hover{filter:brightness(1.07)}
+.btn-p:active{transform:scale(.97)}
+.btn-g{flex:1;min-height:44px;border-radius:11px;border:1px solid var(--border2);color:var(--muted);background:rgba(255,255,255,.03);font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;display:inline-flex;align-items:center;justify-content:center}
+.btn-g:hover{background:rgba(255,255,255,.07);color:var(--text)}
+.btn-full{width:100%;min-height:44px;border-radius:11px;border:1px solid var(--border);color:var(--blue);background:rgba(100,168,255,.06);font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition:background .14s}
+.btn-full:hover{background:rgba(100,168,255,.12)}
+.btn-dim{width:100%;min-height:40px;border-radius:11px;border:1px solid var(--border2);color:var(--muted);background:rgba(255,255,255,.02);font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:6px;margin-top:6px;cursor:pointer;transition:background .14s;position:relative;overflow:hidden}
+.btn-dim:hover{background:rgba(255,255,255,.06)}
+.btn-dim input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
+.mprev{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:7px}
+.mitem{position:relative;aspect-ratio:1;border-radius:9px;overflow:hidden;border:1px solid var(--border2)}
+.mitem img{width:100%;height:100%;object-fit:cover;cursor:pointer}
+.mdel{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.7);color:#fff;font-size:11px;display:grid;place-items:center;cursor:pointer}
+.iinline{display:flex;gap:7px;align-items:flex-start}
+.iinline textarea{flex:1;min-height:68px}
+.itools{display:flex;flex-direction:column;gap:6px}
+.tbtn{width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,.02);color:var(--muted);font-size:15px;display:grid;place-items:center;cursor:pointer;transition:all .14s}
+.tbtn:hover{background:rgba(100,168,255,.1);color:var(--blue)}
+.class-btns{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.csbtn{width:36px;height:36px;border-radius:10px;border:1px solid var(--border2);background:rgba(255,255,255,.04);font-size:16px;display:grid;place-items:center;cursor:pointer;transition:all .13s}
+.csbtn.sel{outline:2.5px solid var(--blue);outline-offset:2px}
+
+/* SOS MODAL */
+#sos-modal{position:fixed;inset:0;z-index:200;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.78);backdrop-filter:blur(10px)}
+#sos-modal.open{display:flex}
+.sos-box{width:100%;max-width:500px;padding:20px;padding-bottom:calc(20px + var(--safe-bottom));border-radius:22px 22px 0 0;border-top:1px solid rgba(255,106,116,.3);background:rgba(8,12,20,.98)}
+.sos-title{color:var(--red);font-size:13px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;margin-bottom:4px}
+.sos-sub{color:var(--muted);font-size:11px;line-height:1.6;margin-bottom:14px}
+.sos-loc{padding:10px 13px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid var(--border2);color:var(--text);font-size:11px;margin-bottom:14px;font-family:monospace;letter-spacing:.04em}
+.sos-btns{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.sos-pbtn{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:13px;border:1px solid var(--border2);background:rgba(255,255,255,.03);font-size:13px;font-weight:700;color:var(--text);cursor:pointer;transition:all .15s}
+.sos-pbtn:hover{background:rgba(255,106,116,.08);border-color:rgba(255,106,116,.25)}
+.sos-picon{font-size:22px;flex:0 0 auto}
+.sos-psub{font-size:10px;color:var(--muted);margin-top:1px;font-weight:400}
+
+/* MEDIA PANEL */
+#media-panel{position:fixed;top:0;right:0;width:min(380px,94vw);height:100%;background:rgba(8,12,20,.98);border-left:1px solid var(--border);backdrop-filter:blur(28px);transform:translateX(100%);transition:transform .28s cubic-bezier(.22,1,.36,1);display:flex;flex-direction:column;z-index:120}
+#media-panel.open{transform:translateX(0)}
+.media-ph{display:flex;align-items:center;justify-content:space-between;padding:calc(18px + var(--safe-top)) 16px 12px;border-bottom:1px solid var(--border2);flex:0 0 auto}
+.media-ph-title{color:var(--blue);font-size:10px;font-weight:900;letter-spacing:.2em;text-transform:uppercase}
+.media-cats{display:flex;gap:6px;padding:10px 14px;border-bottom:1px solid var(--border2);overflow-x:auto;flex:0 0 auto}
+.media-cats::-webkit-scrollbar{display:none}
+.mcat{padding:6px 11px;border-radius:8px;border:1px solid var(--border2);background:rgba(255,255,255,.02);color:var(--muted);font-size:9px;font-weight:900;letter-spacing:.11em;text-transform:uppercase;white-space:nowrap;cursor:pointer;transition:all .14s}
+.mcat.active{background:rgba(100,168,255,.12);border-color:rgba(100,168,255,.3);color:var(--blue)}
+.media-grid{flex:1;overflow:auto;padding:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:7px;align-content:start;padding-bottom:calc(20px + var(--safe-bottom))}
+.mthumb{aspect-ratio:1;border-radius:10px;overflow:hidden;border:1px solid var(--border2);cursor:pointer;position:relative;transition:transform .13s}
+.mthumb:hover{transform:scale(1.04)}
+.mthumb img{width:100%;height:100%;object-fit:cover}
+.mthumb-icon{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:26px;background:rgba(255,255,255,.02)}
+.mthumb-lbl{position:absolute;bottom:0;left:0;right:0;padding:4px 6px;background:rgba(0,0,0,.65);font-size:8px;color:#fff;font-weight:700;text-overflow:ellipsis;overflow:hidden;white-space:nowrap}
+.mthumb-lock{position:absolute;top:4px;right:4px;font-size:10px}
+.media-empty{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;gap:10px;padding:40px 0;color:var(--muted)}
+.media-empty-icon{font-size:34px}
+.media-upload{margin:0 12px 12px;height:44px;border-radius:12px;background:rgba(100,168,255,.1);border:1px solid rgba(100,168,255,.22);color:var(--blue);font-size:10px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;transition:background .14s;position:relative;overflow:hidden}
+.media-upload:hover{background:rgba(100,168,255,.18)}
+.media-upload input{position:absolute;inset:0;opacity:0;cursor:pointer}
+
+/* CONFIRM */
+#confirm-modal{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.78);backdrop-filter:blur(10px)}
+#confirm-modal.open{display:flex}
+.cfm-box{width:min(320px,94vw);padding:22px;border-radius:18px;border:1px solid var(--border);background:rgba(10,14,22,.98);box-shadow:var(--shadow)}
+.cfm-box h3{font-size:14px;font-weight:900;color:var(--text);margin-bottom:8px}
+.cfm-box p{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:16px}
+
+/* LIGHTBOX */
+#lightbox{position:fixed;inset:0;z-index:250;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.88);backdrop-filter:blur(12px)}
+#lightbox.open{display:flex}
+#lightbox img{max-width:90vw;max-height:90vh;border-radius:14px;box-shadow:var(--shadow)}
+
+/* TOAST */
+#toast{position:fixed;left:50%;bottom:calc(78px + var(--safe-bottom));transform:translateX(-50%) translateY(10px);z-index:500;min-height:40px;padding:0 18px;border-radius:12px;border:1px solid var(--border);background:rgba(10,14,22,.96);color:var(--text);box-shadow:var(--shadow);display:inline-flex;align-items:center;font-size:11px;font-weight:700;opacity:0;transition:all .22s ease;white-space:nowrap;pointer-events:none}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* OVERLAY */
+#overlay{position:fixed;inset:0;z-index:105;background:rgba(0,0,0,0);pointer-events:none;transition:background .2s}
+#overlay.show{background:rgba(0,0,0,.45);pointer-events:auto}
+
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+@media(max-width:500px){
+  .board-grid{grid-template-columns:repeat(2,1fr)}
+  #menu-panel{width:100%;border-radius:22px 22px 0 0;height:90vh;top:auto;bottom:0;right:0;border-left:none;border-top:1px solid var(--border);transform:translateY(100%)}
+  #menu-panel.open{transform:translateY(0)}
+}
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div id="press-ring"></div>
+<div id="overlay" id="overlay"></div>
+
+<!-- HUD -->
+<div id="hud">
+  <button class="brand-pill" id="btn-brand"><div class="brand-dot"></div><span>FX MAP AI</span></button>
+  <div class="mode-pill" id="mode-badge">● MODO VISTA</div>
+  <div class="counter-pill"><b id="loc-count">0</b>&nbsp;ubicaciones &middot; <b id="route-count">0</b>&nbsp;rutas</div>
+</div>
+
+<!-- SEARCH EXPLORE -->
+<button id="search-explore-btn"><span style="font-size:16px">🔍</span><span id="srch-lbl">Buscar dirección</span></button>
+
+<!-- SEARCH WRAP -->
+<div id="search-wrap">
+  <div class="sbox" id="sb1">
+    <span class="sbox-icon">📍</span>
+    <input type="text" id="si1" placeholder="Buscar dirección, ciudad, lugar..." autocomplete="off"/>
+    <span class="sbox-clear" id="sc1">×</span>
+  </div>
+  <div class="sbox" id="sb2">
+    <span class="sbox-icon">🔑</span>
+    <input type="text" id="si2" placeholder="Buscar en mis datos guardados..." autocomplete="off"/>
+    <span class="sbox-clear" id="sc2">×</span>
+  </div>
+  <div id="search-results"></div>
+</div>
+
+<!-- RIGHT COL -->
+<div id="right-col">
+  <button class="rc-btn danger" id="btn-enc" title="Cifrado">🔐<div class="rc-badge" id="enc-badge" style="display:none">E</div></button>
+  <button class="rc-btn" id="btn-refresh" title="Actualizar">🔄</button>
+  <button class="rc-btn" id="btn-notif" title="Notificaciones">✉️<div class="rc-badge" id="notif-badge" style="display:none">0</div></button>
+  <div class="rc-sep"></div>
+  <button class="rc-btn" id="btn-menu" title="Menú"><div class="menu-icon"><span></span><span></span><span></span></div></button>
+  <button class="rc-btn" id="btn-toggle" title="Controles">💠</button>
+</div>
+
+<!-- ORBITAL D-PAD -->
+<div id="orbital">
+  <button id="orb-mode">ZOOM</button>
+  <div class="dpad">
+    <button class="dp-ud" id="dp-up" style="grid-area:up">▲</button>
+    <button class="dp-lr" id="dp-lt" style="grid-area:lt;justify-self:end">◀</button>
+    <div id="dp-home" style="grid-area:mid;width:40px;height:40px;border-radius:50%;background:rgba(100,168,255,.12);border:1px solid rgba(100,168,255,.4);box-shadow:0 0 14px rgba(100,168,255,.2);color:var(--blue);font-size:20px;display:grid;place-items:center;cursor:pointer">📍</div>
+    <button class="dp-lr" id="dp-rt" style="grid-area:rt;justify-self:start">▶</button>
+    <button class="dp-ud" id="dp-dn" style="grid-area:dn">▼</button>
+  </div>
+</div>
+
+<!-- SOS + SETTINGS -->
+<button id="sos-btn">🆘</button>
+<button id="settings-btn">⚙️</button>
+
+<!-- LOC POPUP -->
+<div id="loc-popup">
+  <div class="loc-emoji" id="loc-emoji">⁉️</div>
+  <div class="loc-card" id="loc-card" style="display:none">
+    <span class="loc-x" id="loc-x">✕</span>
+    <div class="loc-address" id="loc-addr">Cargando...</div>
+    <div class="loc-coords" id="loc-coords2"></div>
+    <div class="loc-actions">
+      <button class="loc-act" data-ac="save">💾</button>
+      <button class="loc-act" data-ac="flag">🚩</button>
+      <button class="loc-act" data-ac="dealer">🔌</button>
+      <button class="loc-act" data-ac="watch">🔦</button>
+      <button class="loc-act" data-ac="like">👍🏽</button>
+      <button class="loc-act" data-ac="caution">⚠️</button>
+      <button class="loc-act" data-ac="danger">❌</button>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS DRAWER -->
+<div id="settings-drawer">
+  <div class="drawer-handle" id="drawer-handle"><div class="drawer-bar"></div><button class="drawer-close" id="drawer-close">✕</button></div>
+  <div class="dtabs">
+    <button class="dtab active" data-dt="board">🗂 Tablero FBI</button>
+    <button class="dtab" data-dt="private">🔒 Privado</button>
+  </div>
+  <div class="drawer-body">
+    <div class="dpane active" id="dp-board">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:9px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)">Ubicaciones registradas</span>
+        <span style="font-size:9px;color:var(--muted2)" id="board-count"></span>
+      </div>
+      <div class="board-grid" id="board-grid"></div>
+      <div class="conn-section">
+        <div class="conn-lbl">🔗 Conexiones y proximidad</div>
+        <div id="conn-list"><div style="color:var(--muted2);font-size:10px;padding:8px 0">Presiona 🔄 para actualizar.</div></div>
+      </div>
+    </div>
+    <div class="dpane" id="dp-private">
+      <div class="priv-lock" id="priv-lock-screen">
+        <div class="priv-lock-icon">🔒</div>
+        <h3>Acceso Privado</h3>
+        <p>Este cajón está protegido con contraseña. Contiene tus ubicaciones y etiquetas privadas.</p>
+        <input type="password" class="priv-input" id="priv-pass" placeholder="● ● ● ● ● ●"/>
+        <button class="btn-p" id="priv-unlock" style="max-width:200px;margin:0 auto">Desbloquear</button>
+        <div style="font-size:9px;color:var(--muted2)">Contraseña por defecto: 0000</div>
+      </div>
+      <div class="priv-content" id="priv-content">
+        <div class="priv-hdr">
+          <h3>🔓 ACCESO CONCEDIDO</h3>
+          <button class="btn-dim" style="width:auto;padding:0 10px;height:30px;margin:0;font-size:9px;cursor:pointer" id="priv-lock-btn">Bloquear</button>
+        </div>
+        <div class="plbl" style="margin-bottom:8px">Accesos rápidos</div>
+        <div class="quick-list" id="priv-quick"></div>
+        <div class="plbl" style="margin-top:14px;margin-bottom:8px">Etiquetas privadas</div>
+        <div id="priv-labels" style="display:flex;flex-wrap:wrap;gap:5px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MENU PANEL -->
+<div id="menu-panel">
+  <div class="ph"><div class="ph-title">Mensajes guardados</div><button class="pclose" id="menu-close">✕</button></div>
+  <div class="ptabs">
+    <button class="ptab active" data-pt="routes">Rutas</button>
+    <button class="ptab" data-pt="labels">Etiquetas</button>
+    <button class="ptab" data-pt="addrs">Direcciones</button>
+    <button class="ptab" data-pt="ai">◈ IA</button>
+    <button class="ptab" data-pt="cfg">Config</button>
+  </div>
+  <div class="pbody">
+    <div class="ppane active" id="pp-routes">
+      <div class="plbl">Rutas guardadas</div>
+      <div id="routes-list"></div>
+      <button class="btn-full" id="btn-new-route" style="margin-top:6px">＋ Nueva ruta</button>
+    </div>
+    <div class="ppane" id="pp-labels">
+      <div class="plbl">Etiquetas guardadas</div>
+      <div id="labels-list"></div>
+    </div>
+    <div class="ppane" id="pp-addrs">
+      <div class="plbl">Direcciones guardadas</div>
+      <div id="addrs-list"></div>
+      <button class="btn-dim" id="btn-export" style="margin-top:8px">↓ Exportar JSON</button>
+      <label class="btn-dim" style="cursor:pointer">↑ Importar JSON<input type="file" id="btn-import" accept=".json" style="position:absolute;inset:0;opacity:0"/></label>
+    </div>
+    <div class="ppane" id="pp-ai">
+      <div class="plbl">Análisis con IA</div>
+      <div class="ai-wrap" style="margin-bottom:10px">
+        <textarea id="ai-prompt" placeholder="Pregunta sobre tus puntos, o deja vacío para análisis automático..."></textarea>
+      </div>
+      <button class="btn-full" id="btn-ai">◈ Analizar con IA</button>
+      <div class="ai-spin" id="ai-spin"><div class="dots"><span></span><span></span><span></span></div>&nbsp;analizando...</div>
+      <div class="ai-out" id="ai-out"></div>
+      <div class="plbl" style="margin-top:14px;margin-bottom:7px">Sugerencias rápidas</div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px">
+        <div class="ai-chip" data-q="¿Qué patrones detectas en mis ubicaciones?">Detectar patrones</div>
+        <div class="ai-chip" data-q="¿Qué zonas frecuento más?">Zonas frecuentes</div>
+        <div class="ai-chip" data-q="¿Hay lugares de riesgo entre mis puntos guardados?">Análisis de riesgo</div>
+        <div class="ai-chip" data-q="¿Qué conexiones hay entre mis ubicaciones?">Conexiones</div>
+        <div class="ai-chip" data-q="Dame un resumen de mis lugares guardados por categoría.">Resumen por categoría</div>
+      </div>
+    </div>
+    <div class="ppane" id="pp-cfg">
+      <div class="plbl">Configuración</div>
+      <div class="cfield"><div class="clbl">Nombre de emergencia</div><input type="text" class="cinput" id="cfg-name" placeholder="Nombre del contacto"/></div>
+      <div class="cfield"><div class="clbl">Teléfono de emergencia</div><input type="text" class="cinput" id="cfg-phone" placeholder="+1 416 555 0000"/></div>
+      <div class="cfield"><div class="clbl">Usuario Telegram</div><input type="text" class="cinput" id="cfg-tg" placeholder="@usuario_telegram"/></div>
+      <div class="cfield"><div class="clbl">Clave API Claude (opcional)</div><input type="password" class="cinput" id="cfg-api" placeholder="sk-ant-..."/></div>
+      <div class="cfield"><div class="clbl">Contraseña cajón privado</div><input type="password" class="cinput" id="cfg-privpass" placeholder="Nueva contraseña (def: 0000)"/></div>
+      <div class="cfield"><div class="clbl">Radio de alerta de proximidad (m)</div><input type="number" class="cinput" id="cfg-radius" placeholder="500" value="500"/></div>
+      <button class="btn-p" id="cfg-save" style="width:100%;margin-top:4px">💾 Guardar configuración</button>
+    </div>
+  </div>
+</div>
+
+<!-- NOTIFICATIONS -->
+<div id="notif-panel">
+  <div class="nh">
+    <div class="nh-title">✉️ Notificaciones IA</div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="nclear" id="notif-clear">Limpiar</button>
+      <button class="pclose" id="notif-close">✕</button>
+    </div>
+  </div>
+  <div class="nlist" id="nlist"><div class="notif-empty">Sin notificaciones. Usa 🔄 para actualizar.</div></div>
+</div>
+
+<!-- ENCRYPT MODAL -->
+<div id="enc-modal">
+  <div class="enc-box">
+    <div class="enc-title">🔐 Cifrado de datos</div>
+    <div class="enc-sub">Protege tus lugares con cifrado AES-256 local. La clave nunca sale de tu dispositivo.</div>
+    <div class="enc-status locked" id="enc-status">🔒 Datos sin cifrar</div>
+    <div class="cfield"><div class="clbl">Clave de cifrado</div><input type="password" class="cinput" id="enc-key" placeholder="Tu clave secreta..."/></div>
+    <div class="arow">
+      <button class="btn-p" id="enc-toggle">Activar cifrado</button>
+      <button class="btn-g" id="enc-cancel">Cancelar</button>
+    </div>
+    <div style="margin-top:12px;padding:10px;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid var(--border2);font-size:9px;color:var(--muted);line-height:1.7">
+      <b style="color:var(--text)">Cifrado local AES-256</b> — Tus datos se cifran en tu dispositivo. Sin la clave correcta son ilegibles. Ningún dato sale a servidores externos.
+    </div>
+  </div>
+</div>
+
+<!-- SAVE MODAL -->
+<div id="save-modal">
+  <div class="save-box">
+    <div class="save-hd">
+      <div><div class="save-title">Add location</div><div class="save-sub">Confirma el lugar y guarda rápido</div></div>
+      <button class="pclose" id="save-close">✕</button>
+    </div>
+    <div class="save-hero">
+      <div class="save-hero-main">
+        <div class="save-hash">#</div>
+        <div>
+          <div class="save-hero-title" id="save-hero-title"># Usuario</div>
+          <div class="save-hero-note" id="save-hero-note">“Algún comentario”</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase" id="save-addr-preview">Dirección seleccionada</div>
+    </div>
+    <div class="field" style="margin-bottom:10px"><label>Nombre / dirección</label><input type="text" id="q-title" placeholder="Ej. Casa, trabajo, punto importante..."/></div>
+    <div class="field" style="margin-bottom:10px"><label>Comentario</label><div class="input-actions note-actions"><div class="qrow">
+  <div class="qinput-wrap">
+    <input
+      id="q-hashtag"
+      class="qinput"
+      type="text"
+      placeholder="#Hashtag"
+      autocomplete="off"
+      spellcheck="false"
+      maxlength="40">
+    <button type="button" id="q-hashtag-ok">🆗</button>
+    <button type="button" id="q-hashtag-del">🗑️</button>
+  </div>
+</div>
+<textarea id="q-notes" placeholder="Algún comentario..."></textarea><div class="v-actions"><button type="button" class="mini-btn ok" id="q-notes-ok">🆗</button><button type="button" class="mini-btn del" id="q-notes-del">🗑️</button></div></div></div>
+    <div class="save-actrow">
+      <button type="button" class="save-act primary" id="q-save-act"><span class="ico">💾</span></button>
+      <button type="button" class="save-act" id="act-label"><span class="ico">🚩</span></button>
+      <button type="button" class="save-act" id="act-copy-addr"><span class="ico">📝</span></button>
+      <button type="button" class="save-act" id="act-share-note"><span class="ico">🔁</span></button>
+    </div>
+    <div class="field"><label>Etiqueta personalizada</label><input type="text" id="q-label" placeholder="Nombre de etiqueta..." style="display:none"/></div>
+    <div class="publish-status" id="publish-status">Selecciona 💾/🚩 + 🔳 para habilitar 🆗</div>
+    <div class="field"><label>Color</label><button type="button" class="save-act color-host" id="act-color"><span class="ico">🔳</span><div class="palette-pop" id="palette"></div></button></div>
+    <div class="field" id="q-ccoords" style="display:none"><label>Coordenadas</label><div class="pchip" id="q-coords-chip"></div></div>
+    <div class="save-mini-actions">
+      <button class="save-mini" id="tool-media">Medios</button>
+      <button class="save-mini" id="q-cancel">Cerrar</button>
+    </div>
+    <div class="mprev" id="save-mprev"></div>
+    <div class="class-btns" id="class-btns" style="display:none"></div>
+    <button id="q-save" style="display:none"></button>
+    <button id="tool-flag" style="display:none"></button>
+  </div>
+</div>
+
+<!-- SOS MODAL -->
+<div id="sos-modal">
+  <div class="sos-box">
+    <div class="sos-title">🆘 Emergencia — Pedir Ayuda</div>
+    <div class="sos-sub">Se enviará tu ubicación y mensaje de auxilio a tu contacto de confianza.</div>
+    <div class="sos-loc" id="sos-loc">Obteniendo ubicación...</div>
+    <div class="sos-btns">
+      <button class="sos-pbtn" id="sos-wa"><span class="sos-picon">💬</span><div><div>WhatsApp</div><div class="sos-psub">Mensaje automático con ubicación</div></div></button>
+      <button class="sos-pbtn" id="sos-tg"><span class="sos-picon">✈️</span><div><div>Telegram</div><div class="sos-psub">Mensaje automático con ubicación</div></div></button>
+      <button class="sos-pbtn" id="sos-sms"><span class="sos-picon">💌</span><div><div>iMessage / SMS</div><div class="sos-psub">Mensaje con coordenadas</div></div></button>
+    </div>
+    <button class="btn-g" id="sos-cancel" style="width:100%">Cancelar</button>
+  </div>
+</div>
+
+<!-- MEDIA PANEL -->
+<div id="media-panel">
+  <div class="media-ph"><div class="media-ph-title">🜲 FX-01MAP · Almacén Cifrado</div><button class="pclose" id="media-close">✕</button></div>
+  <div class="media-cats">
+    <div class="mcat active" data-mc="all">Todo</div>
+    <div class="mcat" data-mc="img">Fotos</div>
+    <div class="mcat" data-mc="vid">Videos</div>
+    <div class="mcat" data-mc="doc">Docs</div>
+  </div>
+  <div class="media-grid" id="media-grid"></div>
+  <label class="media-upload">📎 Agregar archivo cifrado<input type="file" id="media-upload-input" accept="image/*,video/*" multiple/></label>
+</div>
+
+<!-- CONFIRM -->
+<div id="confirm-modal">
+  <div class="cfm-box">
+    <h3>⚠ Borrar lugar</h3>
+    <p>¿Confirmas que quieres eliminar este punto? Esta acción no se puede deshacer.</p>
+    <div class="arow">
+      <button class="btn-p" id="confirm-del">Borrar</button>
+      <button class="btn-g" id="confirm-cancel">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox"><img id="lightbox-img" src="" alt=""/></div>
+<div id="toast"></div>
+
+<script>
+// ═══════════════════════════════════
+// FX MAP X8 — FULL LOGIC
+// ═══════════════════════════════════
+mapboxgl.accessToken = 'pk.eyJ1IjoiLXVzZXIxOGZ4IiwiYSI6ImNtajFiNmhtajA1bzYzZ29xdmxwbW9rbnQifQ.utdX0mFVr3IOOYHnmY5lvw';
+
+const BASE = { center:[-79.86125,43.25295], zoom:16.22, pitch:61.5, bearing:15, style:'mapbox://styles/mapbox/standard' };
+const SK = { places:'fxmap.v8.places', routes:'fxmap.v8.routes', labels:'fxmap.v8.labels', media:'fxmap.v8.media', settings:'fxmap.v8.settings', notifs:'fxmap.v8.notifs', imported:'fxmap.v8.imported' };
+
+// SEED DATA from Google Takeout
+const SEED_PLACES = [
+  {id:'s1',title:"Casa",notes:"Privada del Fortín 107, Privadas de la Hacienda, 42082 Pachuca de Soto, Hgo., México",lat:20.0661931,lng:-98.79703579999999,color:'#4ecf7a',classification:'save',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s2',title:"Trabajo",notes:"STARBUCKS GALERIAS PACHUCA, Camino Lot. 15, C.C. Galerías Pachuca, Manzana 3, Real de la Plata, 42083 Pachuca de Soto, Hgo., México",lat:20.098257999999998,lng:-98.76746759999999,color:'#4ecf7a',classification:'save',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s3',title:"Alex? bwc",notes:"",lat:43.2471125,lng:-79.83115959999999,color:'#b58cff',classification:'watch',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s4',title:"?",notes:"",lat:43.2587894,lng:-79.8508574,color:'#ff8c42',classification:'caution',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s5',title:"@cloudyjayyjayy",notes:"1365 Bathurst St, Toronto, ON M5R 3H8, Canadá",lat:43.6802555,lng:-79.4169857,color:'#4ecf7a',classification:'save',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s6',title:"Blackguy",notes:"190 Mary St, Hamilton, ON L8L 4V8, Canadá",lat:43.260463699999995,lng:-79.8615031,color:'#4ecf7a',classification:'save',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s7',title:"Bbc",notes:"",lat:43.249803299999996,lng:-79.8563515,color:'#b58cff',classification:'watch',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s8',title:"Krystian””",notes:"85 Terrence Park Dr, Ancaster, ON L9G 3X2, Canadá",lat:43.224112,lng:-79.992982,color:'#4ecf7a',classification:'save',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s9',title:"?bwc",notes:"",lat:43.2565642,lng:-79.8198433,color:'#b58cff',classification:'watch',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s10',title:"?",notes:"",lat:43.2500521,lng:-79.852758,color:'#ff8c42',classification:'caution',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s11',title:"?",notes:"38 Connaught Ave N, Hamilton, ON L8L 6Y7, Canadá",lat:43.2499167,lng:-79.8285295,color:'#ff8c42',classification:'caution',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s12',title:"Kriz",notes:"88 Ellis Ave, Hamilton, ON L8H 4L9, Canadá",lat:43.2493074,lng:-79.80934069999999,color:'#4ecf7a',classification:'save',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s13',title:"Andrew",notes:"91 Southpark Ave, Hamilton, ON L8W 2P6, Canadá",lat:43.209302699999995,lng:-79.866039,color:'#4ecf7a',classification:'save',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s14',title:"Krystian “”",notes:"",lat:43.203882,lng:-79.98340879999999,color:'#4ecf7a',classification:'save',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s15',title:"bwc?",notes:"",lat:43.2590721,lng:-79.8483073,color:'#b58cff',classification:'watch',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s16',title:"Daniel con sexy straight?",notes:"",lat:43.256627699999996,lng:-79.8838231,color:'#4ecf7a',classification:'save',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s17',title:"Josh TO",notes:"",lat:43.248041799999996,lng:-79.8809263,color:'#4ecf7a',classification:'save',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s18',title:"?",notes:"",lat:43.256853299999996,lng:-79.8608017,color:'#ff8c42',classification:'caution',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s19',title:"?",notes:"",lat:43.255195099999995,lng:-79.8525291,color:'#ff8c42',classification:'caution',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s20',title:"?",notes:"129 Tisdale St N, Hamilton, ON L8L 5M5, Canadá",lat:43.2565095,lng:-79.85159089999999,color:'#ff8c42',classification:'caution',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s21',title:"?",notes:"",lat:43.2311787,lng:-79.8393835,color:'#ff8c42',classification:'caution',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s22',title:"?",notes:"",lat:43.254266199999996,lng:-79.88174099999999,color:'#ff8c42',classification:'caution',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s23',title:"Go train",notes:"Bronte Go Station, 2135 Speers Rd, Oakville, ON L6L 2X9, Canadá",lat:43.4157958,lng:-79.7228895,color:'#4ecf7a',classification:'save',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s24',title:"?",notes:"163 Wood St E, Hamilton, ON L8L 3Y8, Canadá",lat:43.2703967,lng:-79.8555818,color:'#ff8c42',classification:'caution',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s25',title:"?",notes:"152 E 42nd St, Hamilton, ON L8T 3A5, Canadá",lat:43.231532099999995,lng:-79.83564059999999,color:'#ff8c42',classification:'caution',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s26',title:"Vato sexy",notes:"Nook, 469 King St W, Toronto, ON M5V 1K4, Canadá",lat:43.644981099999995,lng:-79.39673739999999,color:'#4ecf7a',classification:'save',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s27',title:"?",notes:"",lat:43.2522145,lng:-79.8390087,color:'#ff8c42',classification:'caution',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s28',title:"Sexy vergon sniffies",notes:"",lat:43.2573126,lng:-79.8218758,color:'#b58cff',classification:'watch',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s29',title:"?",notes:"",lat:43.2577983,lng:-79.8432553,color:'#ff8c42',classification:'caution',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s30',title:"Vato look latin",notes:"",lat:43.249128299999995,lng:-79.83903289999999,color:'#4ecf7a',classification:'save',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s31',title:"?",notes:"",lat:43.2509745,lng:-79.8351205,color:'#ff8c42',classification:'caution',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s32',title:"?*****",notes:"97 Tisdale St N, Hamilton, ON L8L 5M5, Canadá",lat:43.2556187,lng:-79.8520283,color:'#4ecf7a',classification:'save',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s33',title:"Bbc",notes:"27 Rosemont Ave, Hamilton, ON L8L 2M4, Canadá",lat:43.254181599999995,lng:-79.8357132,color:'#b58cff',classification:'watch',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s34',title:"?",notes:"",lat:43.2648899,lng:-79.8731335,color:'#ff8c42',classification:'caution',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s35',title:"? H",notes:"",lat:43.251278,lng:-79.8485778,color:'#4ecf7a',classification:'save',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s36',title:"Go train",notes:"Bronte Go Station, 2135 Speers Rd, Oakville, ON L6L 2X9, Canadá",lat:43.4157958,lng:-79.7228895,color:'#4ecf7a',classification:'save',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s37',title:"?",notes:"",lat:43.253721399999996,lng:-79.8509181,color:'#ff8c42',classification:'caution',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s38',title:"?",notes:"",lat:43.255252999999996,lng:-79.8529961,color:'#ff8c42',classification:'caution',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s39',title:"?",notes:"",lat:43.2552957,lng:-79.84225649999999,color:'#ff8c42',classification:'caution',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s40',title:"Bwc",notes:"27 Glengrove Ave, Hamilton, ON L8H 1M9, Canadá",lat:43.238062299999996,lng:-79.78437149999999,color:'#b58cff',classification:'watch',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s41',title:"?",notes:"",lat:43.5520682,lng:-80.25647909999999,color:'#ff8c42',classification:'caution',source:'google',createdAt:'2024-01-01T00:00:00Z'},
+  {id:'s42',title:"Steeles Ave West at Klondike Dr",notes:"North York, Ontario M9L 2W2, Canadá",lat:43.7689681,lng:-79.5523892,color:'#64a8ff',classification:'save',source:'google',createdAt:'2022-08-01T18:43:25Z'},
+  {id:'s43',title:"Argonaut Rowing Club",notes:"1225 Lake Shore Blvd W, Toronto, ON M6K 3C1, Canadá",lat:43.632082,lng:-79.436066,color:'#64a8ff',classification:'save',source:'google',createdAt:'2022-02-09T13:08:08Z'},
+];
+const SEED_ROUTES = [
+  {id:'r1',name:'Ruta Principal',stops:['Steeles Ave West','Argonaut Rowing Club','Excess'],createdAt:'2024-01-01T00:00:00Z'}
+];
+
+const CLASS_META = {
+  save:     { e:'💾', l:'Guardado',   t:'safe',    c:'#00A8FF' },
+  party:    { e:'🟢', l:'Party',      t:'party',   c:'#00FF66' },
+  favorite: { e:'🟡', l:'Favorito',   t:'favorite',c:'#FFD700' },
+  risk:     { e:'🟠', l:'Riesgo',     t:'risk',    c:'#FF8800' },
+  caution:  { e:'🔴', l:'Precaución', t:'caution', c:'#FF3B30' },
+  flag:     { e:'🚩', l:'Etiqueta',   t:'flag',    c:'#B58CFF' },
+  dealer:   { e:'🔌', l:'Dealers',    t:'dealer',  c:'#FF8C42' },
+  watch:    { e:'🔦', l:'Vigilado',   t:'watch',   c:'#B58CFF' },
+  like:     { e:'👍🏽',l:'Me gusta',   t:'like',    c:'#00A8FF' },
+  danger:   { e:'❌', l:'Alejate',    t:'danger',  c:'#FF6A74' },
+};
+const COLORS = [
+  { n:'Azul', v:'#00A8FF' },
+  { n:'Verde', v:'#00FF66' },
+  { n:'Dorado', v:'#FFD700' },
+  { n:'Naranja', v:'#FF8800' },
+  { n:'Rojo', v:'#FF3B30' },
+  { n:'Morado', v:'#B58CFF' },
+  { n:'Cyan', v:'#45D4E8' }
+];
+
+// Map init — ALL zoom disabled
+const map = new mapboxgl.Map({
+  container:'map', style:BASE.style, center:BASE.center, zoom:BASE.zoom, pitch:BASE.pitch, bearing:BASE.bearing,
+  antialias:true, scrollZoom:false, doubleClickZoom:false, touchZoomRotate:false, boxZoom:false, keyboard:false,
+  config:{basemap:{theme:'monochrome',lightPreset:'night',show3dObjects:true,showPlaceLabels:false,showPointOfInterestLabels:false,showRoadLabels:false,showTransitLabels:false}}
+});
+map.scrollZoom.disable(); map.doubleClickZoom.disable(); map.touchZoomRotate.disable(); map.boxZoom.disable(); map.keyboard.disable();
+
+// State
+let places=[], routes=[], labels=[], mediaStore=[], notifications=[];
+let settings={name:'',phone:'',telegram:'',apikey:'',privPass:'0000',radius:500};
+let userLocation=[...BASE.center];
+let ctrlMode='zoom', ctrlVisible=true, exploreMode=false;
+let pendingPoint=null, pendingMedia=[], pendingColor='#4f8fff', pendingClass='save';
+let selectedId=null, pendingDelId=null, encKey=null, privUnlocked=false;
+let pressTimer=null, locPopupCoords=null, placeMarkers=[];
+let buildingHighlightReady=false;
+let searchConfirmMarker=null, searchConfirmPoint=null, searchConfirmAddress='';
+let publishType='';
+let publishColor='';
+
+
+// Utils
+const vibra=()=>{try{navigator.vibrate([12]);}catch(e){}};
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $=id=>document.getElementById(id);
+const fmtDate=iso=>new Date(iso).toLocaleString('es-CA',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+const fmtDist=m=>m<1000?`${Math.round(m)} m`:`${(m/1000).toFixed(1)} km`;
+const svl=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}};
+const ldl=(k,fb)=>{try{return JSON.parse(localStorage.getItem(k)||'null')??fb;}catch{return fb;}};
+function distM(a,b){const R=6371000,dLat=(b[1]-a[1])*Math.PI/180,dLng=(b[0]-a[0])*Math.PI/180,la1=a[1]*Math.PI/180,la2=b[1]*Math.PI/180,h=Math.sin(dLat/2)**2+Math.cos(la1)*Math.cos(la2)*Math.sin(dLng/2)**2;return 2*R*Math.atan2(Math.sqrt(h),Math.sqrt(1-h));}
+function toast(msg,dur=2000){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('show'),dur);}
+document.addEventListener('click',e=>{if(e.target.closest('button'))vibra();},{capture:true,passive:true});
+function encD(d,k){try{return CryptoJS.AES.encrypt(JSON.stringify(d),k).toString();}catch{return null;}}
+function decD(s,k){try{const b=CryptoJS.AES.decrypt(s,k);return JSON.parse(b.toString(CryptoJS.enc.Utf8));}catch{return null;}}
+
+// Load / Save
+function loadAll(){
+  settings=ldl(SK.settings,settings); syncCfgUI();
+  if(!ldl(SK.imported,false)){
+    places=SEED_PLACES.map(p=>({...p,createdAtLabel:fmtDate(p.createdAt),label:p.classification==='flag'?'🚩':''}));
+    routes=[...SEED_ROUTES];
+    svl(SK.imported,true); svl(SK.places,places); svl(SK.routes,routes);
+    toast('✓ Datos Google Takeout importados');
+  } else {
+    places=ldl(SK.places,[]); routes=ldl(SK.routes,[]); labels=ldl(SK.labels,[]); mediaStore=ldl(SK.media,[]); notifications=ldl(SK.notifs,[]);
+  }
+}
+function saveAll(){svl(SK.places,places);svl(SK.routes,routes);svl(SK.labels,labels);svl(SK.media,mediaStore);svl(SK.notifs,notifications);}
+
+// D-PAD
+function dpadAction(dir){
+  vibra();
+  const ease=opts=>map.easeTo({...opts,duration:220,essential:true});
+  if(dir==='up'){ ctrlMode==='zoom'?ease({zoom:Math.min(18,map.getZoom()+.35)}):ease({pitch:Math.min(80,map.getPitch()+5)}); }
+  else if(dir==='dn'){ ctrlMode==='zoom'?ease({zoom:Math.max(10,map.getZoom()-.35)}):ease({pitch:Math.max(0,map.getPitch()-5)}); }
+  else if(dir==='lt'){ ease({bearing:map.getBearing()-12}); }
+  else if(dir==='rt'){ ease({bearing:map.getBearing()+12}); }
+}
+function startHold(dir){
+  dpadAction(dir);
+  const iv=setInterval(()=>dpadAction(dir),180);
+  const stop=()=>{clearInterval(iv);document.removeEventListener('mouseup',stop);document.removeEventListener('touchend',stop);};
+  document.addEventListener('mouseup',stop); document.addEventListener('touchend',stop);
+}
+function toggleCtrlMode(){
+  ctrlMode=ctrlMode==='zoom'?'tilt':'zoom';
+  const btn=$('orb-mode');
+  if(ctrlMode==='tilt'){btn.textContent='TILT';btn.classList.add('tilt');}
+  else{btn.textContent='ZOOM';btn.classList.remove('tilt');}
+  toast(ctrlMode==='tilt'?'Modo inclinación':'Modo zoom');
+}
+function toggleCtrlVisible(){
+  ctrlVisible=!ctrlVisible;
+  $('orbital').classList.toggle('hidden',!ctrlVisible);
+  $('btn-toggle').classList.toggle('active',ctrlVisible);
+  toast(ctrlVisible?'Controles visibles':'Controles ocultos');
+}
+function centerUser(){vibra();map.easeTo({center:userLocation,zoom:BASE.zoom,pitch:BASE.pitch,bearing:BASE.bearing,duration:400,essential:true});toast('📍 Centrando ubicación');}
+
+// Explore mode
+function setExplore(on){
+  exploreMode=on;
+  if(on){map.touchZoomRotate.enable();map.scrollZoom.enable();}
+  else{map.touchZoomRotate.disable();map.scrollZoom.disable();}
+  $('search-explore-btn').classList.toggle('active',on);
+  $('srch-lbl').textContent=on?'Modo exploración activo':'Buscar dirección';
+  $('mode-badge').textContent=on?'◎ MODO EXPLORACIÓN':'● MODO VISTA';
+  $('mode-badge').classList.toggle('explore',on);
+  if(on){$('orbital').classList.add('hidden');$('search-wrap').classList.add('open');}
+  else{if(ctrlVisible)$('orbital').classList.remove('hidden');$('search-wrap').classList.remove('open');$('search-results').classList.remove('open');clearLocPopup();}
+}
+
+// Long press
+function onPressStart(e){
+  if(!exploreMode)return;
+  const pt=e.touches?.[0]||e;
+  const ll=map.unproject([pt.clientX,pt.clientY]);
+  pressTimer=setTimeout(()=>{
+    vibra();vibra();
+    locPopupCoords=[ll.lng,ll.lat];
+    const ring=$('press-ring');
+    ring.style.left=pt.clientX+'px'; ring.style.top=pt.clientY+'px'; ring.style.display='block';
+    ring.style.animation='none'; void ring.offsetWidth; ring.style.animation='ring-grow .3s ease forwards';
+    const popup=$('loc-popup');
+    popup.style.left=pt.clientX+'px'; popup.style.top=(pt.clientY-20)+'px'; popup.style.display='flex';
+    $('loc-card').style.display='none';
+    $('loc-emoji').onclick=()=>{
+      $('loc-card').style.display='block';
+      $('loc-coords2').textContent=`${ll.lat.toFixed(6)}, ${ll.lng.toFixed(6)}`;
+      $('loc-addr').textContent='Cargando dirección...';
+      reverseGeocode(ll.lng,ll.lat).then(a=>$('loc-addr').textContent=a||`${ll.lat.toFixed(5)}, ${ll.lng.toFixed(5)}`);
+    };
+  },3000);
+}
+function onPressEnd(){clearTimeout(pressTimer);pressTimer=null;$('press-ring').style.display='none';}
+function clearLocPopup(){$('loc-popup').style.display='none';$('loc-card').style.display='none';locPopupCoords=null;}
+
+// Markers
+function clearMarkers(){placeMarkers.forEach(m=>m.remove());placeMarkers=[];}
+function ensureBuildingHighlightLayers(){
+  if(buildingHighlightReady) return;
+  if(!map.getSource('fx-building-highlights')){
+    map.addSource('fx-building-highlights',{
+      type:'geojson',
+      data:{type:'FeatureCollection',features:[]}
+    });
+  }
+  if(!map.getLayer('fx-building-highlight-fill')){
+    map.addLayer({
+      id:'fx-building-highlight-fill',
+      type:'fill-extrusion',
+      source:'fx-building-highlights',
+      paint:{
+        'fill-extrusion-color':['get','color'],
+        'fill-extrusion-base':['coalesce',['get','base'],0],
+        'fill-extrusion-height':['coalesce',['get','height'],28],
+        'fill-extrusion-opacity':0.96,
+        'fill-extrusion-vertical-gradient':true
+      }
+    });
+  }
+  if(!map.getLayer('fx-building-highlight-outline')){
+    map.addLayer({
+      id:'fx-building-highlight-outline',
+      type:'line',
+      source:'fx-building-highlights',
+      paint:{
+        'line-color':['get','lineColor'],
+        'line-width':2.2,
+        'line-opacity':0.95
+      }
+    });
+  }
+  buildingHighlightReady=true;
+}
+function squarePolygonAround(lng,lat,size=0.000055){
+  return [[
+    [lng-size,lat-size],
+    [lng+size,lat-size],
+    [lng+size,lat+size],
+    [lng-size,lat+size],
+    [lng-size,lat-size]
+  ]];
+}
+function getBuildingFeatureForPoint(item){
+  const point=map.project([item.lng,item.lat]);
+  const feats=map.queryRenderedFeatures([[point.x-8,point.y-8],[point.x+8,point.y+8]],{layers:['building']})||[];
+  const picked=feats.find(f=>f.geometry && (f.geometry.type==='Polygon' || f.geometry.type==='MultiPolygon'));
+  if(picked){
+    const height=Number(picked.properties?.height||picked.properties?.render_height||32);
+    const base=Number(picked.properties?.min_height||picked.properties?.render_min_height||0);
+    return {geometry:picked.geometry,height:Math.max(height,18),base:Math.max(base,0)};
+  }
+  return {geometry:{type:'Polygon',coordinates:squarePolygonAround(item.lng,item.lat)},height:26,base:0};
+}
+function addMarker(item){
+  return item;
+}
+function renderMarkers(){
+  ensureBuildingHighlightLayers();
+  const fc={type:'FeatureCollection',features:places.map(item=>{
+    const cl=CLASS_META[item.classification||'save']||CLASS_META.save;
+    const picked=getBuildingFeatureForPoint(item);
+    return {
+      type:'Feature',
+      geometry:picked.geometry,
+      properties:{
+        id:item.id,
+        title:item.title,
+        classification:item.classification||'save',
+        color:item.color||cl.c,
+        lineColor:'#EAF1FB',
+        height:picked.height,
+        base:picked.base
+      }
+    };
+  })};
+  const src=map.getSource('fx-building-highlights');
+  if(src) src.setData(fc);
+}
+
+// Renders
+function renderAll(){renderCounter();renderAddrs();renderLabels();renderRoutes();renderBoard();renderPrivate();renderMediaGrid();renderNotifBadge();renderMarkers();}
+function renderCounter(){$('loc-count').textContent=places.length;$('route-count').textContent=routes.length;}
+function renderAddrs(){
+  const el=$('addrs-list');
+  if(!places.length){el.innerHTML=`<div style="color:var(--muted);font-size:11px;padding:10px 0">Sin lugares. Toca el mapa o usa 🔍.</div>`;return;}
+  el.innerHTML=places.map(p=>{
+    const cl=CLASS_META[p.classification||'save'];
+    const imgs=(p.media||[]).slice(0,4);
+    const ir=imgs.length?`<div class="pli-imgs">${imgs.map(m=>`<div class="pli-img"><img src="${esc(m.url)}" alt=""/></div>`).join('')}</div>`:'';
+    return `<div class="pli" data-id="${p.id}" style="border-left:3px solid ${p.color||'#4f8fff'}">
+      <div class="pli-top"><div class="pli-name">${esc(cl?.e||'')} ${esc(p.title)}</div><button class="pli-del" data-del="${p.id}">🗑</button></div>
+      <div class="pli-sub">${esc(p.notes||'Sin comentario')}</div>
+      <div class="pli-meta">${esc(p.createdAtLabel||'')}${p.source==='google'?' · Google Takeout':''}</div>
+      ${ir}
+    </div>`;
+  }).join('');
+  el.querySelectorAll('.pli[data-id]').forEach(r=>r.addEventListener('click',e=>{if(!e.target.closest('[data-del]'))flyTo(r.dataset.id);}));
+  el.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();confirmDel(b.dataset.del);}));
+}
+function renderLabels(){
+  const el=$('labels-list'); const byC={};
+  places.forEach(p=>{const k=p.classification||'save';(byC[k]=byC[k]||[]).push(p);});
+  let h='';
+  for(const[k,items] of Object.entries(byC)){
+    const m=CLASS_META[k]||CLASS_META.save;
+    h+=`<div class="lbl-group"><div class="lbl-group-hd">${m.e} ${m.l} (${items.length})</div><div style="display:flex;flex-wrap:wrap;gap:4px">`;
+    items.forEach(p=>h+=`<div class="lchip" data-id="${p.id}" style="border-left:3px solid ${p.color||m.c}">${esc(p.title)}</div>`);
+    h+=`</div></div>`;
+  }
+  const order=['save','party','favorite','risk','caution'];
+  order.filter(k=>!byC[k]).forEach(k=>{const m=CLASS_META[k]; h+=`<div class="lbl-group"><div class="lbl-group-hd">${m.e} ${m.l} (0)</div><div style="color:var(--muted);font-size:11px;padding:6px 0">Sin lugares.</div></div>`;});
+  el.innerHTML=h||`<div style="color:var(--muted);font-size:11px;padding:10px 0">Sin etiquetas.</div>`;
+  el.querySelectorAll('.lchip[data-id]').forEach(c=>c.addEventListener('click',()=>flyTo(c.dataset.id)));
+}
+function renderRoutes(){
+  const el=$('routes-list');
+  if(!routes.length){el.innerHTML=`<div style="color:var(--muted);font-size:11px;padding:10px 0">Sin rutas guardadas.</div>`;return;}
+  el.innerHTML=routes.map(r=>`
+    <div class="rcard"><div class="rcard-head"><div><div class="rcard-name">${esc(r.name)}</div><div class="rcard-meta">${fmtDate(r.createdAt)}</div></div><div class="rcard-badge">${r.stops.length} PARADAS</div></div>
+    <div class="rcard-stops">${r.stops.map(s=>`<div class="rstop"><div class="rstop-dot"></div><div class="rstop-name">${esc(s)}</div></div>`).join('')}</div></div>`).join('');
+}
+function renderBoard(){
+  const el=$('board-grid');
+  $('board-count').textContent=`${places.length} registros`;
+  const counts={save:0,party:0,favorite:0,risk:0,caution:0};
+  places.forEach(p=>{const k=p.classification||'save'; if(counts[k]!=null) counts[k]++;});
+  el.innerHTML=`
+    <div class="bcard bcard-kpi" style="grid-column:1/-1">
+      <div class="bcard-body">
+        <div class="bcard-title">Dashboard FBI</div>
+        <div class="bcard-sub">${places.length} ubicaciones · ${routes.length} rutas · ${labels.length} etiquetas</div>
+        <div class="bcard-tags">
+          <span class="ctag safe">💾 ${counts.save}</span>
+          <span class="ctag party">🟢 ${counts.party}</span>
+          <span class="ctag favorite">🟡 ${counts.favorite}</span>
+          <span class="ctag risk">🟠 ${counts.risk}</span>
+          <span class="ctag caution">🔴 ${counts.caution}</span>
+        </div>
+      </div>
+    </div>` + places.map(p=>{
+    const cl=CLASS_META[p.classification||'save']||CLASS_META.save;
+    const img=(p.media||[])[0];
+    const ih=img?`<img class="bcard-img" src="${esc(img.url)}" alt=""/>`:`<div class="bcard-img noimg">${cl.e}</div>`;
+    return `<div class="bcard" data-id="${p.id}">${ih}<div class="bcard-body"><div class="bcard-title">${esc(p.title)}</div><div class="bcard-sub">${esc(p.notes||'Sin detalles')}</div><div class="bcard-tags"><span class="ctag ${cl.t}">${cl.l}</span>${p.source==='google'?'<span class="ctag watch">Google</span>':''}</div></div></div>`;
+  }).join('')||'';
+  if(!places.length) el.innerHTML += `<div style="color:var(--muted);font-size:11px;grid-column:1/-1">Sin ubicaciones guardadas.</div>`;
+  el.querySelectorAll('.bcard[data-id]').forEach(c=>c.addEventListener('click',()=>{flyTo(c.dataset.id);$('settings-drawer').classList.remove('open');}));
+}
+function renderConnList(){
+  const el=$('conn-list');
+  if(!places.length){el.innerHTML='<div style="color:var(--muted2);font-size:10px;padding:8px 0">Sin ubicaciones.</div>';return;}
+  el.innerHTML=places.slice(0,6).map(p=>{
+    const cl=CLASS_META[p.classification||'save']||CLASS_META.save; const d=distM(userLocation,[p.lng,p.lat]);
+    return `<div class="conn-item" data-id="${p.id}"><div class="conn-dot" style="background:${p.color||cl.c}"></div><div style="flex:1;min-width:0"><div class="conn-name">${esc(p.title)}</div><div class="conn-dist">${fmtDist(d)} de tu posición</div></div><span class="ctag ${cl.t}">${cl.l}</span></div>`;
+  }).join('');
+  el.querySelectorAll('[data-id]').forEach(c=>c.addEventListener('click',()=>flyTo(c.dataset.id)));
+}
+function renderPrivate(){
+  const el=$('priv-quick');
+  el.innerHTML=places.slice(0,10).map(p=>`<div class="qi" data-id="${p.id}"><div class="qi-dot" style="background:${p.color||'#4f8fff'}"></div><div style="flex:1;min-width:0"><div class="qi-name">${esc(p.title)}</div><div class="qi-sub">${esc(p.notes||'Sin detalles')}</div></div><span>${(CLASS_META[p.classification||'save']||CLASS_META.save).e}</span></div>`).join('')||`<div style="color:var(--muted);font-size:11px">Sin lugares.</div>`;
+  el.querySelectorAll('[data-id]').forEach(c=>c.addEventListener('click',()=>flyTo(c.dataset.id)));
+  const lEl=$('priv-labels');
+  lEl.innerHTML=places.filter(p=>p.label).map(p=>`<span class="lchip" data-id="${p.id}" style="font-size:10px;border-left:3px solid ${p.color||'#4f8fff'}">${esc(p.label)}</span>`).join('')||`<div style="color:var(--muted);font-size:10px">Sin etiquetas.</div>`;
+  lEl.querySelectorAll('[data-id]').forEach(c=>c.addEventListener('click',()=>flyTo(c.dataset.id)));
+}
+function renderMediaGrid(){
+  const el=$('media-grid');
+  if(!mediaStore.length){el.innerHTML=`<div class="media-empty"><div class="media-empty-icon">🗂</div><div style="font-size:11px">Sin archivos cifrados.<br>Toca + para subir.</div></div>`;return;}
+  el.innerHTML=mediaStore.map((m,i)=>`<div class="mthumb" data-idx="${i}">${m.url?`<img src="${esc(m.url)}" alt=""/>`:`<div class="mthumb-icon">📄</div>`}<div class="mthumb-lbl">${esc(m.name||'archivo')}</div><div class="mthumb-lock">🔒</div></div>`).join('');
+  el.querySelectorAll('.mthumb').forEach(t=>t.addEventListener('click',()=>{const m=mediaStore[parseInt(t.dataset.idx)];if(m?.url){$('lightbox-img').src=m.url;$('lightbox').classList.add('open');}}));
+}
+function renderNotifBadge(){const u=notifications.filter(n=>!n.read).length;const b=$('notif-badge');if(u>0){b.textContent=u;b.style.display='flex';}else b.style.display='none';}
+
+function renderAI(){
+  const out=$('ai-out'); const prompt=$('ai-prompt').value.trim();
+  const total=places.length; const risky=places.filter(p=>['risk','caution','danger'].includes(p.classification||'')).length;
+  const clusters=Math.max(1, Math.min(14, Math.ceil(total/4)));
+  const avgDist=places.length ? Math.round(places.reduce((a,p)=>a+distM(userLocation,[p.lng,p.lat]),0)/places.length) : 0;
+  out.innerHTML=`<div class="ai-chip">${Math.max(0,100-Math.min(78,risky*9))}% similitud</div> <div class="ai-chip">${Math.min(99, 48+risky*8)}% riesgo</div> <div class="ai-chip">A-${String(clusters).padStart(2,'0')} cluster</div> <div class="ai-chip">${fmtDist(avgDist)} distancia media</div> <div class="ai-chip">${total} ubicaciones</div><div style="margin-top:10px;line-height:1.7;color:var(--text)">${esc(prompt||'Análisis rápido: tu tablero combina marcadores guardados, categorías y proximidad.')} </div>`;
+  out.classList.add('show'); $('ai-spin').classList.remove('show');
+}
+function renderNotifList(){
+  const el=$('nlist');
+  if(!notifications.length){el.innerHTML='<div class="notif-empty">Sin notificaciones. Usa 🔄 para actualizar.</div>';return;}
+  el.innerHTML=notifications.map((n,i)=>`<div class="ni ${n.read?'':'unread'}" data-i="${i}"><div class="ni-icon">${n.icon||'🤖'}</div><div><div class="ni-text">${esc(n.text)}</div><div class="ni-time">${fmtDate(n.time)}</div></div></div>`).join('');
+  el.querySelectorAll('.ni').forEach(item=>item.addEventListener('click',()=>{const i=parseInt(item.dataset.i);notifications[i].read=true;svl(SK.notifs,notifications);item.classList.remove('unread');renderNotifBadge();}));
+}
+function addNotif(text,icon='🤖'){
+  notifications.unshift({id:crypto.randomUUID(),text,icon,time:new Date().toISOString(),read:false});
+  if(notifications.length>50)notifications=notifications.slice(0,50);
+  svl(SK.notifs,notifications); renderNotifBadge();
+}
+
+// Place CRUD
+function flyTo(id){const p=places.find(x=>x.id===id);if(!p)return;selectedId=id;map.easeTo({center:[p.lng,p.lat],zoom:17.3,pitch:BASE.pitch,bearing:BASE.bearing,duration:320,essential:true});vibra();}
+function confirmDel(id){pendingDelId=id;$('confirm-modal').classList.add('open');}
+function doDel(){if(!pendingDelId)return;places=places.filter(p=>p.id!==pendingDelId);saveAll();renderAll();toast('✓ Lugar eliminado');pendingDelId=null;$('confirm-modal').classList.remove('open');}
+function savePlace(){
+  if(!pendingPoint)return;
+
+  const title=$('q-title').value.trim()||'Lugar sin título';
+  const notes=$('q-notes').value.trim();
+  const label=$('q-label').value.trim();
+  const hashtag=$('q-hashtag')?.value.trim()||'';
+
+  const now=new Date().toISOString();
+
+  const item={
+    id:crypto.randomUUID(),
+    title,
+    notes,
+    label,
+    hashtag,
+    lat:pendingPoint.lat,
+    lng:pendingPoint.lng,
+    color:pendingColor,
+    media:[...pendingMedia],
+    classification:pendingClass,
+    createdAt:now,
+    createdAtLabel:fmtDate(now)
+  };
+
+  places.unshift(item);
+
+  saveAll();
+  renderAll();
+
+  clearSearchConfirmMarker();
+  closeSaveModal();
+  resetSaveForm();
+
+  toast('✓ Lugar guardado');
+  vibra();
+
+  addNotif(
+    `Nueva ubicación: "${title}"`,
+    CLASS_META[pendingClass]?.e||'📍'
+  );
+}
+
+function resetSaveForm(){
+  $('q-title').value='';
+  $('q-notes').value='';
+  $('q-label').value='';
+  $('q-hashtag').value='';
+
+  $('q-label').style.display='none';
+  if($('q-ccoords')) $('q-ccoords').style.display='none';
+
+  $('save-mprev').innerHTML='';
+
+  $('save-hero-title').textContent=
+    (settings.name?`# ${settings.name}`:'# Usuario').slice(0,42);
+
+  $('save-hero-note').textContent='"Algún comentario"';
+  if($('save-addr-preview')) $('save-addr-preview').textContent='Dirección seleccionada';
+
+  pendingMedia=[];
+  pendingColor='';
+  publishColor='';
+  pendingClass='save';
+  publishType='';
+
+  renderPalette();
+  renderClassBtns();
+  updatePublishState();
+  $('q-hashtag-ok')?.addEventListener('click',()=>{ $('q-hashtag')?.blur(); });
+  $('q-hashtag-del')?.addEventListener('click',()=>{ if($('q-hashtag')) $('q-hashtag').value=''; });
+  $('q-title-ok')?.addEventListener('click',()=>{ $('q-title')?.blur(); });
+  $('q-title-del')?.addEventListener('click',()=>{ if($('q-title')) $('q-title').value=''; });
+  $('q-notes-ok')?.addEventListener('click',()=>{ $('q-notes')?.blur(); });
+  $('q-notes-del')?.addEventListener('click',()=>{ if($('q-notes')) $('q-notes').value=''; });
+
+  document.addEventListener('click', (e)=>{
+    if(e.target && e.target.id==='q-hashtag-ok'){ const el=$('q-hashtag'); if(el){el.blur(); if(!el.value.trim()) el.focus(); } }
+    if(e.target && e.target.id==='q-hashtag-del'){$('q-hashtag') && ($('q-hashtag').value='');}
+  });
+
+}
+
+function updatePublishState(){
+  const okType = ['save','party','label'].includes(pendingClass||publishType);
+  const okColor = !!(pendingColor||publishColor);
+  const ok = okType && okColor;
+  const btn=$('q-save-act');
+  if(btn) btn.classList.toggle('disabled', !ok);
+  const st=$('publish-status');
+  if(st) st.textContent = ok ? 'Listo para confirmar publicación' : 'Selecciona 💾/🚩 + 🔳 para habilitar 🆗';
+}
+function renderPalette(){
+  $('palette').innerHTML=COLORS.map(c=>`<button type="button" class="color-tile${pendingColor===c.v?' active':''}" data-c="${c.v}" title="${c.n}" style="--tile:${c.v};background:${c.v}"></button>`).join('');
+  $('palette').querySelectorAll('.color-tile').forEach(b=>b.addEventListener('click',()=>{pendingColor=b.dataset.c;publishColor=b.dataset.c;renderPalette();updatePublishState(); $('palette').classList.remove('open');}));
+}
+function renderClassBtns(){
+  const order=['save','party','favorite','risk','caution'];
+  $('class-btns').innerHTML=order.map(k=>{const m=CLASS_META[k];return `<button type="button" class="csbtn${pendingClass===k?' sel':''}" data-cls="${k}" title="${m.l}"><span>${m.e}</span><small>${m.l}</small></button>`}).join('');
+  $('class-btns').querySelectorAll('.csbtn').forEach(b=>b.addEventListener('click',()=>{pendingClass=b.dataset.cls;publishType=(b.dataset.cls==='save' || b.dataset.cls==='party')?b.dataset.cls:'';renderClassBtns();renderPalette();updatePublishState();}));
+}
+function renderSaveMedia(){
+  $('save-mprev').innerHTML=pendingMedia.map(m=>`<div class="mitem" data-id="${m.id}"><img src="${m.url}" alt=""/><button class="mdel" type="button">✕</button></div>`).join('');
+  $('save-mprev').querySelectorAll('.mitem').forEach(card=>{
+    card.querySelector('img')?.addEventListener('click',()=>{$('lightbox-img').src=pendingMedia.find(x=>x.id===card.dataset.id)?.url||'';$('lightbox').classList.add('open');});
+    card.querySelector('.mdel')?.addEventListener('click',()=>{pendingMedia=pendingMedia.filter(x=>x.id!==card.dataset.id);renderSaveMedia();});
+  });
+}
+function handleFiles(files,store=false){
+  Array.from(files||[]).forEach(file=>{
+    const ok=file.type.startsWith('image/')||file.type.startsWith('video/');
+    if(!ok)return;
+    const r=new FileReader(); r.onload=()=>{
+      const item={id:crypto.randomUUID(),name:file.name,type:file.type,url:r.result,createdAt:new Date().toISOString()};
+      if(store){mediaStore.unshift(item);svl(SK.media,mediaStore);renderMediaGrid();toast('✓ Archivo almacenado (cifrado)');}
+      else{pendingMedia.push(item);renderSaveMedia();}
+    }; r.readAsDataURL(file);
+  });
+}
+
+// Search
+let st1=null,st2=null;
+function clearSearchConfirmMarker(){ if(searchConfirmMarker){ searchConfirmMarker.remove(); searchConfirmMarker=null; } searchConfirmPoint=null; searchConfirmAddress=''; const row=$('sr-confirm'); if(row) row.remove(); }
+function showSearchConfirmMarker(lng,lat,address=''){
+  clearSearchConfirmMarker();
+  searchConfirmPoint={lng,lat}; searchConfirmAddress=address||'';
+  const el=document.createElement('div'); el.className='search-confirm-marker';
+  searchConfirmMarker=new mapboxgl.Marker({element:el,anchor:'bottom'}).setLngLat([lng,lat]).addTo(map); map.once('moveend',()=>{try{if(searchConfirmMarker)searchConfirmMarker.setLngLat([lng,lat]);}catch(e){}});
+  const res=$('search-results');
+  if(res){
+    const wrap=document.createElement('div'); wrap.className='sr-confirm'; wrap.id='sr-confirm';
+    wrap.innerHTML=`<div style="font-size:10px;color:var(--muted);line-height:1.5">Ubicación marcada para confirmar</div><button class="sr-confirm-btn" id="sr-confirm-btn">Agregar aquí</button>`;
+    res.appendChild(wrap); res.classList.add('open');
+    setTimeout(()=>{ try{$('sr-confirm-btn').click()}catch(e){} }, 0);
+    $('sr-confirm-btn').addEventListener('click',()=>{ openSaveModal(lng,lat,address); $('search-wrap').classList.remove('open'); });
+  }
+}
+
+function initSearch(){
+  const si1=$('si1'),si2=$('si2'),sc1=$('sc1'),sc2=$('sc2'),res=$('search-results');
+  si1.addEventListener('input',()=>{$('sb1').classList.toggle('has-text',si1.value.length>0);clearTimeout(st1);if(si1.value.length<3){res.classList.remove('open');res.innerHTML='';return;}st1=setTimeout(()=>geocodeSearch(si1.value),500);});
+  si2.addEventListener('input',()=>{$('sb2').classList.toggle('has-text',si2.value.length>0);clearTimeout(st2);if(si2.value.length<2){res.classList.remove('open');res.innerHTML='';return;}st2=setTimeout(()=>localSearch(si2.value),300);});
+  sc1.addEventListener('click',()=>{si1.value='';$('sb1').classList.remove('has-text');res.classList.remove('open');res.innerHTML='';si1.focus();});
+  sc2.addEventListener('click',()=>{si2.value='';$('sb2').classList.remove('has-text');res.classList.remove('open');res.innerHTML='';si2.focus();});
+  document.addEventListener('click',e=>{if(!$('search-wrap').contains(e.target)&&e.target!==$('search-explore-btn')){res.classList.remove('open');res.innerHTML='';}});
+}
+
+function searchPlacesByTerm(term){
+  const q = (term || '').toLowerCase().trim();
+  return places.filter(place => {
+    const title = (place.title || '').toLowerCase();
+    const notes = (place.notes || '').toLowerCase();
+    const label = (place.label || '').toLowerCase();
+    const hashtag = (place.hashtag || '').toLowerCase();
+    const address = (place.address || place.addr || place.location || place.fullAddress || place.formattedAddress || place.placeAddress || place.addressText || '').toLowerCase();
+    return title.includes(q) || notes.includes(q) || label.includes(q) || hashtag.includes(q) || address.includes(q);
+  });
+}
+
+function localSearch(term){
+  const results = searchPlacesByTerm(term);
+  const res=$('search-results');
+  if(!results.length){res.classList.remove('open');res.innerHTML='';return;}
+  res.innerHTML=results.map(p=>`<div class="sr sr-local" data-id="${p.id}"><span>📍</span><div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:700;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${esc(p.title)}</div><div style="font-size:10px;color:var(--muted)">${esc(p.notes||'')}</div></div><span class="sr-tag local">LOCAL</span></div>`).join('');
+  res.classList.add('open');
+  res.querySelectorAll('[data-id]').forEach(item=>item.addEventListener('click',()=>{
+    const p=results.find(x=>x.id===item.dataset.id);
+    if(!p)return;
+    map.flyTo({center:[p.lng,p.lat],zoom:17,pitch:BASE.pitch,bearing:BASE.bearing,duration:900,essential:true});
+    showSearchConfirmMarker(p.lng,p.lat,p.title||'Ubicación');
+    setExplore(false);
+    toast('📍 '+esc(p.title||''));
+  }));
+}
+
+function updateEncStatus(){
+  const st=$('enc-status');
+  if(encKey){st.className='enc-status unlocked';st.textContent='🔓 Datos cifrados activos';$('enc-toggle').textContent='Descifrar / Cambiar clave';$('enc-badge').style.display='flex';}
+  else{st.className='enc-status locked';st.textContent='🔒 Datos sin cifrar';$('enc-toggle').textContent='Activar cifrado';$('enc-badge').style.display='none';}
+}
+function toggleEncrypt(){
+  const key=$('enc-key').value.trim(); if(!key){toast('Ingresa una clave');return;}
+  if(encKey){encKey=null;toast('Cifrado desactivado');}
+  else{encKey=key;const t=encD(places,key);if(t){svl('fxmap.enc',t);toast('✓ Datos cifrados AES-256');}else toast('Error al cifrar');}
+  updateEncStatus();$('enc-modal').classList.remove('open');
+}
+
+// Settings
+function syncCfgUI(){$('cfg-name').value=settings.name||'';$('cfg-phone').value=settings.phone||'';$('cfg-tg').value=settings.telegram||'';$('cfg-api').value=settings.apikey||'';$('cfg-radius').value=settings.radius||500;}
+function saveSettings(){
+  const p=$('cfg-privpass').value.trim();
+  settings={...settings,name:$('cfg-name').value.trim(),phone:$('cfg-phone').value.trim(),telegram:$('cfg-tg').value.trim(),apikey:$('cfg-api').value.trim(),radius:parseInt($('cfg-radius').value)||500};
+  if(p)settings.privPass=p; svl(SK.settings,settings); toast('✓ Configuración guardada');
+}
+
+// SOS
+function openSOS(){
+  const c=map.getCenter();
+  const msg=`🆘 Estoy en peligro, por favor búscame.\nUbicación: https://maps.google.com/?q=${c.lat.toFixed(6)},${c.lng.toFixed(6)}\nCoordenadas: ${c.lat.toFixed(6)}, ${c.lng.toFixed(6)}\n— FX MAP`;
+  $('sos-loc').textContent=`📍 ${c.lat.toFixed(6)}, ${c.lng.toFixed(6)}`;
+  $('sos-modal').classList.add('open');
+  const enc=encodeURIComponent(msg);
+  const ph=(settings.phone||'').replace(/\D/g,''); const tg=settings.telegram||'';
+  $('sos-wa').onclick=()=>{window.open(ph?`https://wa.me/${ph}?text=${enc}`:`https://wa.me/?text=${enc}`,'_blank','noopener');addNotif('🆘 SOS enviado vía WhatsApp','🆘');};
+  $('sos-tg').onclick=()=>{window.open(tg?`https://t.me/${tg.replace('@','')}?text=${enc}`:`https://t.me/share/url?url=${encodeURIComponent(c.lat.toFixed(6)+','+c.lng.toFixed(6))}&text=${enc}`,'_blank','noopener');addNotif('🆘 SOS enviado vía Telegram','🆘');};
+  $('sos-sms').onclick=()=>{window.open(`sms:${ph}?body=${enc}`,'_blank','noopener');addNotif('🆘 SOS enviado vía SMS','🆘');};
+}
+
+// Panels
+function closeAll(){$('menu-panel').classList.remove('open');$('settings-drawer').classList.remove('open');$('notif-panel').classList.remove('open');$('media-panel').classList.remove('open');$('overlay').classList.remove('show');}
+function openPanel(id){closeAll();$(id).classList.add('open');$('overlay').classList.add('show');}
+$('overlay').addEventListener('click',closeAll);
+
+// Export / Import
+function exportJson(){const b=new Blob([JSON.stringify({places,routes,labels,meta:{exportedAt:new Date().toISOString(),v:'X8'}},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=`fxmap-x8-${Date.now()}.json`;a.click();URL.revokeObjectURL(a.href);}
+function importJson(file){if(!file)return;const r=new FileReader();r.onload=()=>{try{const p=JSON.parse(r.result);if(p.places&&Array.isArray(p.places))places=p.places;else if(Array.isArray(p))places=p;if(p.routes)routes=p.routes;saveAll();renderAll();toast(`✓ ${places.length} lugares importados`);}catch{toast('Archivo inválido');}};r.readAsText(file);}
+
+// Tabs
+function bindTabs(tabSel,panePrefix){
+  document.querySelectorAll(tabSel).forEach(btn=>btn.addEventListener('click',()=>{
+    document.querySelectorAll(tabSel).forEach(x=>x.classList.remove('active'));
+    const key=btn.dataset.pt||btn.dataset.dt;
+    document.querySelectorAll(`[id^="${panePrefix}"]`).forEach(x=>x.classList.remove('active'));
+    btn.classList.add('active');
+    $(`${panePrefix}${key}`)?.classList.add('active');
+  }));
+}
+
+// Bind all
+function bindAll(){
+  // D-PAD
+  $('dp-up').addEventListener('mousedown',()=>startHold('up')); $('dp-up').addEventListener('touchstart',e=>{e.preventDefault();startHold('up');},{passive:false});
+  $('dp-dn').addEventListener('mousedown',()=>startHold('dn')); $('dp-dn').addEventListener('touchstart',e=>{e.preventDefault();startHold('dn');},{passive:false});
+  $('dp-lt').addEventListener('mousedown',()=>startHold('lt')); $('dp-lt').addEventListener('touchstart',e=>{e.preventDefault();startHold('lt');},{passive:false});
+  $('dp-rt').addEventListener('mousedown',()=>startHold('rt')); $('dp-rt').addEventListener('touchstart',e=>{e.preventDefault();startHold('rt');},{passive:false});
+  $('orb-mode').addEventListener('click',toggleCtrlMode);
+  $('dp-home').addEventListener('click',centerUser);
+  $('btn-toggle').addEventListener('click',toggleCtrlVisible);
+  // SEARCH
+  $('search-explore-btn').addEventListener('click',()=>setExplore(!exploreMode));
+  // RIGHT COL
+  $('btn-enc').addEventListener('click',()=>{updateEncStatus();$('enc-modal').classList.add('open');});
+  $('btn-refresh').addEventListener('click',doRefresh);
+  $('btn-notif').addEventListener('click',()=>{renderNotifList();openPanel('notif-panel');});
+  $('btn-menu').addEventListener('click',()=>openPanel('menu-panel'));
+  $('btn-brand').addEventListener('click',()=>{renderMediaGrid();openPanel('media-panel');});
+  $('sos-btn').addEventListener('click',openSOS);
+  $('settings-btn').addEventListener('click',()=>{openPanel('settings-drawer');renderBoard();});
+  // PANEL CLOSES
+  $('menu-close').addEventListener('click',closeAll);
+  $('notif-close').addEventListener('click',closeAll);
+  $('media-close').addEventListener('click',closeAll);
+  $('drawer-close').addEventListener('click',closeAll);
+  $('drawer-handle').addEventListener('click',closeAll);
+  // NOTIFY CLEAR
+  $('notif-clear').addEventListener('click',()=>{notifications.forEach(n=>n.read=true);svl(SK.notifs,notifications);renderNotifBadge();renderNotifList();toast('Notificaciones limpiadas');});
+  // ENCRYPT
+  $('enc-toggle').addEventListener('click',toggleEncrypt);
+  $('enc-cancel').addEventListener('click',()=>$('enc-modal').classList.remove('open'));
+  // SAVE MODAL
+  $('q-save-act').addEventListener('click',()=>{ if($('q-save-act').classList.contains('disabled')) return; savePlace(); });
+  $('q-cancel').addEventListener('click',()=>{closeSaveModal();resetSaveForm();clearSearchConfirmMarker();});
+  $('save-close').addEventListener('click',()=>{closeSaveModal();resetSaveForm();clearSearchConfirmMarker();});
+  $('tool-flag').addEventListener('click',()=>{const l=$('q-label');l.style.display=l.style.display==='none'?'':'none';if(l.style.display!=='none')l.focus();});
+  $('act-label').addEventListener('click',()=>{$('tool-flag').click();});
+  $('act-color').addEventListener('click',()=>{$('palette').classList.toggle('open');});
+  $('act-copy-addr').addEventListener('click',async()=>{const txt=$('q-title').value.trim()||searchConfirmAddress||''; if(!txt)return toast('Sin dirección'); try{await navigator.clipboard.writeText(txt);toast('Dirección copiada');}catch(e){toast('No se pudo copiar');}});
+  $('act-share-note').addEventListener('click',async()=>{const payload=`${$('q-title').value.trim()||searchConfirmAddress||'Ubicación'}\n${$('q-notes').value.trim()||''}\n${$('q-coords-chip').textContent||''}`.trim(); try{if(navigator.share){await navigator.share({title:'FX MAP location',text:payload});}else{await navigator.clipboard.writeText(payload);} toast('Nota compartida');}catch(e){toast('Acción cancelada');}});
+  $('q-notes').addEventListener('input',()=>{$('save-hero-note').textContent='“'+(($('q-notes').value||'Algún comentario').slice(0,48))+'”';});
+  $('q-title').addEventListener('input',()=>{$('save-addr-preview').textContent=($('q-title').value||'Dirección seleccionada').slice(0,80);});
+  $('q-title-ok').addEventListener('click',()=>savePlace());
+  $('q-title-del').addEventListener('click',()=>{$('q-title').value='';$('save-addr-preview').textContent='Dirección seleccionada';});
+  $('q-notes-del').addEventListener('click',()=>{$('q-notes').value='';$('save-hero-note').textContent='“Algún comentario”';});
+  $('q-hashtag-ok').addEventListener('click',()=>{
+    $('q-hashtag').blur();
+  });
+  $('q-hashtag-del').addEventListener('click',()=>{
+    $('q-hashtag').value='';
+  });
+
+  $('q-notes-ok').addEventListener('click',()=>savePlace());
+  $('q-notes-del').addEventListener('click',()=>{$('q-notes').value='';$('save-hero-note').textContent='“Algún comentario”';});
+  updatePublishState();
+  const gi=document.createElement('input');gi.type='file';gi.accept='image/*,video/*';gi.multiple=true;gi.style.display='none';document.body.appendChild(gi);
+  $('tool-media').addEventListener('click',()=>gi.click());
+  gi.addEventListener('change',e=>handleFiles(e.target.files));
+  // LOC POPUP ACTIONS
+  $('loc-popup').querySelectorAll('.loc-act[data-ac]').forEach(btn=>btn.addEventListener('click',()=>{
+    if(!locPopupCoords)return;
+    const ac=btn.dataset.ac; pendingClass=ac; pendingColor=CLASS_META[ac]?.c||'#4f8fff'; clearLocPopup();
+    reverseGeocode(locPopupCoords[0],locPopupCoords[1]).then(addr=>openSaveModal(locPopupCoords[0],locPopupCoords[1],addr||''));
+    // Reset coords after use
+    locPopupCoords=null;
+  }));
+  $('loc-x').addEventListener('click',clearLocPopup);
+  // SOS
+  $('sos-cancel').addEventListener('click',()=>$('sos-modal').classList.remove('open'));
+  // CONFIRM
+  $('confirm-del').addEventListener('click',doDel);
+  $('confirm-cancel').addEventListener('click',()=>{pendingDelId=null;$('confirm-modal').classList.remove('open');});
+  // LIGHTBOX
+  $('lightbox').addEventListener('click',()=>$('lightbox').classList.remove('open'));
+  // AI
+  $('btn-ai').addEventListener('click',runAI);
+  document.querySelectorAll('.ai-chip[data-q]').forEach(c=>c.addEventListener('click',()=>{$('ai-prompt').value=c.dataset.q;runAI();}));
+  // CONFIG
+  $('cfg-save').addEventListener('click',saveSettings);
+  $('btn-export').addEventListener('click',exportJson);
+  $('btn-import').addEventListener('change',e=>importJson(e.target.files[0]));
+  // NEW ROUTE
+  $('btn-new-route').addEventListener('click',()=>{
+    const name=prompt('Nombre de la nueva ruta:');if(!name)return;
+    const si=prompt('Paradas (separadas por coma):');
+    const stops=si?si.split(',').map(s=>s.trim()).filter(Boolean):[];
+    routes.unshift({id:crypto.randomUUID(),name,stops,createdAt:new Date().toISOString()});
+    saveAll();renderAll();toast('✓ Ruta creada');
+  });
+  // PRIVATE
+  $('priv-unlock').addEventListener('click',()=>{
+    const p=$('priv-pass').value;
+    if(p===settings.privPass){privUnlocked=true;$('priv-lock-screen').style.display='none';$('priv-content').classList.add('unlocked');renderPrivate();toast('✓ Acceso concedido');}
+    else toast('❌ Contraseña incorrecta');
+  });
+  $('priv-pass').addEventListener('keydown',e=>{if(e.key==='Enter')$('priv-unlock').click();});
+  $('priv-lock-btn').addEventListener('click',()=>{privUnlocked=false;$('priv-lock-screen').style.display='';$('priv-content').classList.remove('unlocked');$('priv-pass').value='';toast('🔒 Cajón bloqueado');});
+  // MEDIA UPLOAD
+  $('media-upload-input').addEventListener('change',e=>handleFiles(e.target.files,true));
+  // MEDIA CATS
+  document.querySelectorAll('.mcat').forEach(c=>c.addEventListener('click',()=>{document.querySelectorAll('.mcat').forEach(x=>x.classList.remove('active'));c.classList.add('active');}));
+  // LONG PRESS
+  $('map').addEventListener('touchstart',onPressStart,{passive:true});
+  $('map').addEventListener('touchend',onPressEnd);
+  $('map').addEventListener('touchcancel',onPressEnd);
+  $('map').addEventListener('mousedown',onPressStart);
+  $('map').addEventListener('mouseup',onPressEnd);
+  // MAP CLICK (normal mode)
+  map.on('click',async e=>{
+    if(exploreMode)return;
+    const addr=await reverseGeocode(e.lngLat.lng,e.lngLat.lat);
+    pendingClass='save';pendingColor=COLORS[0].v;
+    openSaveModal(e.lngLat.lng,e.lngLat.lat,addr||'');
+  });
+  // TABS
+  bindTabs('[data-pt]','pp-');
+  bindTabs('[data-dt]','dp-');
+  // ESC
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){['save-modal','enc-modal','lightbox','confirm-modal','sos-modal'].forEach(id=>$(id)?.classList.remove('open'));closeAll();}});
+}
+
+// MAP EVENTS
+map.on('style.load',()=>{try{map.setFog({color:'rgb(10,12,20)','high-color':'rgb(26,31,48)','horizon-blend':0.07,'space-color':'rgb(4,6,10)','star-intensity':0});}catch(e){}});
+map.on('load',()=>{
+  map.easeTo({center:BASE.center,zoom:BASE.zoom,pitch:BASE.pitch,bearing:BASE.bearing,duration:0,essential:true});
+  try{map.setConfigProperty('basemap','lightPreset','night');map.setConfigProperty('basemap','show3dObjects',true);map.setConfigProperty('basemap','showPlaceLabels',false);map.setConfigProperty('basemap','showPointOfInterestLabels',false);map.setConfigProperty('basemap','showRoadLabels',false);map.setConfigProperty('basemap','showTransitLabels',false);}catch(e){}
+  const geo=new mapboxgl.GeolocateControl({positionOptions:{enableHighAccuracy:true},trackUserLocation:true,showUserHeading:true,showAccuracyCircle:false});
+  map.addControl(geo,'bottom-right');
+  geo.on('geolocate',e=>{userLocation=[e.coords.longitude,e.coords.latitude];});
+  setTimeout(()=>{const gc=document.querySelector('.mapboxgl-ctrl-geolocate');if(gc)gc.style.display='none';},600);
+  ensureBuildingHighlightLayers();
+  loadAll();renderAll();renderPalette();renderClassBtns();initSearch();bindAll();updateEncStatus();
+  map.on('moveend',()=>{ if(buildingHighlightReady) renderMarkers(); });
+  map.on('zoomend',()=>{ if(buildingHighlightReady) renderMarkers(); });
+  const s=document.createElement('style');s.textContent='@keyframes spin{to{transform:rotate(360deg)}}';document.head.appendChild(s);
+});
+</script>
+<script>
+
+(function bootstrapFixes(){
+  const $=id=>document.getElementById(id);
+  function safe(el, ev, fn){ if(el) el.addEventListener(ev, fn); }
+  function closeAllSafe(){ ['menu-panel','settings-drawer','notif-panel','media-panel','enc-modal','messages-panel'].forEach(id=>$(id)?.classList.remove('open')); $('overlay')?.classList.remove('show'); }
+  function openPanelSafe(id){ closeAllSafe(); $(id)?.classList.add('open'); if(id!=='enc-modal') $('overlay')?.classList.add('show'); }
+  window.closeAll = closeAllSafe;
+  window.openPanel = openPanelSafe;
+
+  function searchPlacesByTermSafe(term){
+    const q=(term||'').toLowerCase().trim();
+    const arr=Array.isArray(window.places)?window.places:[];
+    return arr.filter(place=>{
+      const bag=[
+        place.title, place.notes, place.label, place.hashtag,
+        place.address, place.addr, place.location, place.fullAddress,
+        place.formattedAddress, place.placeAddress, place.addressText,
+        place.createdAtLabel
+      ].filter(Boolean).join(' ').toLowerCase();
+      return q && bag.includes(q);
+    });
+  }
+  window.searchPlacesByTerm = searchPlacesByTermSafe;
+  window.localSearch = function(term){
+    const results = searchPlacesByTermSafe(term);
+    const res=$('search-results');
+    if(!res) return;
+    if(!results.length){res.classList.remove('open');res.innerHTML='';return;}
+    res.innerHTML=results.map(p=>`<div class="sr sr-local" data-id="${p.id}"><span>📍</span><div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:700;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${(window.esc?esc(p.title||'Lugar guardado'):(p.title||'Lugar guardado'))}</div><div style="font-size:10px;color:var(--muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${(window.esc?esc((p.address||p.addr||p.location||p.formattedAddress||p.notes||'')):((p.address||p.addr||p.location||p.formattedAddress||p.notes||'')))}</div></div><span class="sr-tag local">LOCAL</span></div>`).join('');
+    res.classList.add('open');
+    res.querySelectorAll('[data-id]').forEach(item=>safe(item,'click',()=>{
+      const p=results.find(x=>x.id===item.dataset.id); if(!p) return;
+      if(window.map?.flyTo){
+        map.flyTo({center:[p.lng,p.lat],zoom:17,pitch:(window.BASE?.pitch||0),bearing:(window.BASE?.bearing||0),duration:900,essential:true});
+      }
+      if(window.showSearchConfirmMarker) showSearchConfirmMarker(p.lng,p.lat,p.title||'Ubicación');
+      if(window.setExplore) setExplore(false);
+      if(window.toast) toast('📍 '+(p.title||'Ubicación'));
+    }));
+  };
+
+  function bindCore(){
+    safe($('btn-menu'),'click',()=>openPanelSafe('menu-panel'));
+    safe($('menu-close'),'click',closeAllSafe);
+    safe($('btn-notif'),'click',()=>{ if(window.renderNotifList) renderNotifList(); openPanelSafe('notif-panel'); });
+    safe($('notif-close'),'click',closeAllSafe);
+    safe($('btn-enc'),'click',()=>{ if(window.updateEncStatus) updateEncStatus(); $('enc-modal')?.classList.add('open'); });
+    safe($('enc-close'),'click',()=>$('enc-modal')?.classList.remove('open'));
+    safe($('overlay'),'click',closeAllSafe);
+
+    const si1=$('si1'), si2=$('si2'), sc1=$('sc1'), sc2=$('sc2'), res=$('search-results');
+    if(si1){ safe(si1,'input',()=>{ $('sb1')?.classList.toggle('has-text',si1.value.length>0); if(si1.value.trim().length<3){res?.classList.remove('open'); if(res) res.innerHTML=''; return;} if(window.geocodeSearch) geocodeSearch(si1.value.trim()); }); }
+    if(si2){ safe(si2,'input',()=>{ $('sb2')?.classList.toggle('has-text',si2.value.length>0); if(si2.value.trim().length<2){res?.classList.remove('open'); if(res) res.innerHTML=''; return;} window.localSearch(si2.value.trim()); }); }
+    safe(sc1,'click',()=>{ if(si1){ si1.value=''; $('sb1')?.classList.remove('has-text'); } res?.classList.remove('open'); if(res) res.innerHTML=''; });
+    safe(sc2,'click',()=>{ if(si2){ si2.value=''; $('sb2')?.classList.remove('has-text'); } res?.classList.remove('open'); if(res) res.innerHTML=''; });
+
+    safe($('q-hashtag-ok'),'click',()=> $('q-hashtag')?.blur());
+    safe($('q-hashtag-del'),'click',()=> { const el=$('q-hashtag'); if(el) el.value=''; });
+    safe($('q-title-ok'),'click',()=> $('q-title')?.blur());
+    safe($('q-title-del'),'click',()=> { const el=$('q-title'); if(el) el.value=''; });
+    safe($('q-notes-ok'),'click',()=> $('q-notes')?.blur());
+    safe($('q-notes-del'),'click',()=> { const el=$('q-notes'); if(el) el.value=''; });
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', bindCore);
+  else bindCore();
+})();
+
+</script>
+</body>
+</html>
