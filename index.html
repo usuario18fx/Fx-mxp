@@ -1445,181 +1445,305 @@ button{cursor:pointer;outline:none}
   .rc-btn{width:38px;height:38px;font-size:14px}
   #sos-btn,#settings-btn{width:38px;height:38px;font-size:13px}
 }
-
-.search-confirm-marker{font-size:34px;line-height:1;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.5));transform-origin:50% 100%;animation:bounce-in 0.3s cubic-bezier(.34,1.56,.64,1)}
 </style>
 </head>
 <body>
-
 <div id="map"></div>
 <div id="press-ring"></div>
 <div id="overlay"></div>
-
 <!-- HUD -->
 <div id="hud">
-  <button class="brand-pill" id="btn-brand"><div class="brand-dot"></div><span>Ŧҳ🜲 𝐌𝐗𝐏</span></button>
-  <div class="mode-pill" id="mode-badge">● MODO VISTA</div>
+<button class="brand-pill" id="btn-brand"><div class="brand-dot"></div><span>
+  Ŧҳ🜲 𝐌𝐗𝐏
+</span></button>
+<div class="mode-pill" id="mode-badge">
+  ● MODO VISTA
 </div>
-
+</div>
 <!-- SEARCH -->
-<button id="search-explore-btn"><span style="font-size:16px">⌨</span><span id="srch-lbl">𝐒𝐄𝐀𝐑𝐂𝐇</span></button>
+<button id="search-explore-btn"><span style="font-size:16px">
+  ⌨
+</span><span id="srch-lbl">
+  𝐒𝐄𝐀𝐑𝐂𝐇
+</span></button>
 <div id="search-wrap">
-  <div class="sbox" id="sb1">
-    <span class="sbox-icon mode-toggle" id="mode-toggle-icon">⚐</span>
-    <input type="text" id="si1" placeholder="Buscar dirección..." autocomplete="off"/>
-    <span class="sbox-clear" id="sc1">⛝</span>
-  </div>
-  <div id="search-results"></div>
+<div class="sbox" id="sb1">
+<span class="sbox-icon mode-toggle" id="mode-toggle-icon">
+  ⚐
+</span>
+<input type="text" id="si1" placeholder="Buscar dirección..." autocomplete="off"/>
+<span class="sbox-clear" id="sc1">
+  ⛝
+</span>
 </div>
-
+<div id="search-results"></div>
+</div>
 <!-- RIGHT COL -->
 <div id="right-col">
-  <button class="rc-btn danger" id="btn-enc" title="Cifrado">⛓︎<div class="rc-badge" id="enc-badge" style="display:none">E</div></button>
-  <button class="rc-btn" id="btn-refresh" title="Actualizar">⇄</button>
-  <button class="rc-btn" id="btn-notif" title="Notificaciones">✉<div class="rc-badge" id="notif-badge" style="display:none">0</div></button>
-  <div class="rc-sep"></div>
-  <button class="rc-btn" id="btn-menu" title="Menú"><div class="menu-icon"><span></span><span></span><span></span></div></button>
-  <button class="rc-btn" id="btn-toggle" title="Controles">𖣯</button>
+<button class="rc-btn danger" id="btn-enc" title="Cifrado">
+  ⛓︎
+<div class="rc-badge" id="enc-badge" style="display:none">
+    E
+</div></button>
+<button class="rc-btn" id="btn-refresh" title="Actualizar">
+  ⇄
+</button>
+<button class="rc-btn" id="btn-notif" title="Notificaciones">
+  ✉
+<div class="rc-badge" id="notif-badge" style="display:none">
+    0
+</div></button>
+<div class="rc-sep"></div>
+<button class="rc-btn" id="btn-menu" title="Menú"><div class="menu-icon"><span></span><span></span><span></span></div></button>
+<button class="rc-btn" id="btn-toggle" title="Controles">
+  𖣯
+</button>
 </div>
-
 <!-- ORBITAL -->
 <div id="orbital">
-  <button id="orb-mode">ZOOM</button>
-  <div class="dpad">
-    <button class="dp-ud" id="dp-up" style="grid-area:up">△</button>
-    <button class="dp-lr" id="dp-lt" style="grid-area:lt;justify-self:end">◀</button>
-    <div id="dp-home" style="grid-area:mid;width:40px;height:40px;border-radius:10%;background:#6b72801f;border:1px solid rgba(107,114,128,.4);box-shadow:0 0 14px rgba(107,114,128,.2);color:var(--blue);font-size:20px;display:grid;place-items:center;cursor:pointer">📍</div>
-    <button class="dp-lr" id="dp-rt" style="grid-area:rt;justify-self:start">▶</button>
-    <button class="dp-ud" id="dp-dn" style="grid-area:dn">▽</button>
-  </div>
+<button id="orb-mode">
+  ZOOM
+</button>
+<div class="dpad">
+<button class="dp-ud" id="dp-up" style="grid-area:up">
+  △
+</button>
+<button class="dp-lr" id="dp-lt" style="grid-area:lt;justify-self:end">
+  ◀
+</button>
+<div id="dp-home" style="grid-area:mid;width:40px;height:40px;border-radius:10%;background:#6b72801f;border:1px solid rgba(107,114,128,.4);box-shadow:0 0 14px rgba(107,114,128,.2);color:var(--blue);font-size:20px;display:grid;place-items:center;cursor:pointer">
+  📍
 </div>
-
+<button class="dp-lr" id="dp-rt" style="grid-area:rt;justify-self:start">
+  ▶
+</button>
+<button class="dp-ud" id="dp-dn" style="grid-area:dn">
+  ▽
+</button>
+</div>
+</div>
 <!-- SOS + SETTINGS -->
-<button id="sos-btn">⛑︎</button>
-<button id="settings-btn">⊟</button>
-
+<button id="sos-btn">
+  ⛑︎
+</button>
+<button id="settings-btn">
+  ⊟
+</button>
 <!-- LOC POPUP -->
 <div id="loc-popup">
-  <div class="loc-emoji" id="loc-emoji">⁉️</div>
-  <div class="loc-card" id="loc-card" style="display:none">
-    <span class="loc-x" id="loc-x">⛝</span>
-    <div class="loc-address" id="loc-addr">Cargando...</div>
-    <div class="loc-coords" id="loc-coords2"></div>
-    <div class="loc-actions">
-      <button class="loc-act" data-ac="save">⚿</button>
-      <button class="loc-act" data-ac="flag">⚑</button>
-      <button class="loc-act" data-ac="dealer">🔌</button>
-    </div>
-  </div>
+<div class="loc-emoji" id="loc-emoji">
+  ⁉️
 </div>
-
+<div class="loc-card" id="loc-card" style="display:none">
+<span class="loc-x" id="loc-x">
+  ⛝
+</span>
+<div class="loc-address" id="loc-addr">
+  Cargando...
+</div>
+<div class="loc-coords" id="loc-coords2">
+</div>
+<div class="loc-actions">
+<button class="loc-act" data-ac="save">
+  ⚿
+</button>
+<button class="loc-act" data-ac="flag">
+  ⚑
+</button>
+<button class="loc-act" data-ac="dealer">
+  🔌
+</button>
+</div>
+</div>
+</div>
 <!-- SETTINGS DRAWER -->
 <div id="settings-drawer">
-  <div class="drawer-handle" id="drawer-handle"><div class="drawer-bar"></div><button class="drawer-close" id="drawer-close">✕</button></div>
-  <div class="dtabs">
-    <button class="dtab active" data-dt="board">𝐓𝐀𝐁𝐋𝐄𝐑𝐎</button>
-    <button class="dtab" data-dt="private">𝐏𝐑𝐈𝐕𝐀𝐃𝐎</button>
-  </div>
-  <div class="drawer-body">
-    <div class="dpane active" id="dp-board">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-        <span style="font-size:9px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)">Ubicaciones registradas</span>
-        <span style="font-size:9px;color:var(--muted2)" id="board-count"></span>
-      </div>
-      <div class="board-grid" id="board-grid"></div>
-      <div class="conn-section">
-        <div class="conn-lbl">🔗 Conexiones y proximidad</div>
-        <div id="conn-list"><div style="color:var(--muted2);font-size:10px;padding:8px 0">Presiona ↺ para actualizar.</div></div>
-      </div>
-    </div>
-    <div class="dpane" id="dp-private">
-      <div class="priv-lock" id="priv-lock-screen">
-        <div class="priv-lock-icon">⚿</div>
-        <h3>𝔸ℂℂ𝔼𝕊𝕊 𝐏𝐑𝐈𝐕</h3>
-        <p>Este cajón está protegido con contraseña. Contiene tus ubicaciones y etiquetas privadas.</p>
-        <input type="password" class="priv-input" id="priv-pass" placeholder="● ● ● ● ● ●"/>
-        <button class="btn-p" id="priv-unlock" style="max-width:200px;margin:0 auto">Desbloquear</button>
-        <div style="font-size:9px;color:var(--muted2)">Contraseña por defecto: 0000</div>
-      </div>
-      <div class="priv-content" id="priv-content">
-        <div class="priv-hdr"><h3>✔ ACCESO CONCEDIDO</h3><button class="btn-dim" style="width:auto;padding:0 10px;height:30px;margin:0;font-size:9px;cursor:pointer" id="priv-lock-btn">Bloquear</button></div>
-        <div class="plbl" style="margin-bottom:8px">Accesos rápidos</div>
-        <div class="quick-list" id="priv-quick"></div>
-        <div class="plbl" style="margin-top:14px;margin-bottom:8px">Etiquetas privadas</div>
-        <div id="priv-labels" style="display:flex;flex-wrap:wrap;gap:5px"></div>
-      </div>
-    </div>
-  </div>
+<div class="drawer-handle" id="drawer-handle"><div class="drawer-bar"></div><button class="drawer-close" id="drawer-close">✕</button></div>
+<div class="dtabs">
+<button class="dtab active" data-dt="board">
+  𝐓𝐀𝐁𝐋𝐄𝐑𝐎
+</button>
+<button class="dtab" data-dt="private">
+  𝐏𝐑𝐈𝐕𝐀𝐃𝐎
+</button>
 </div>
-
+<div class="drawer-body">
+<div class="dpane active" id="dp-board">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+<span style="font-size:9px;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)"> 
+  Ubicaciones registradas
+</span>
+<span style="font-size:9px;color:var(--muted2)" id="board-count"></span>
+</div>
+<div class="board-grid" id="board-grid"></div>
+<div class="conn-section">
+<div class="conn-lbl">
+  🔗 Conexiones y proximidad
+</div>
+<div id="conn-list">
+<div style="color:var(--muted2);font-size:10px;padding:8px 0">
+   Presiona ↺ para actualizar.
+</div></div>
+</div></div>
+<div class="dpane" id="dp-private">
+<div class="priv-lock" id="priv-lock-screen">
+<div class="priv-lock-icon">
+  ⚿
+</div>
+<h3>
+  𝔸ℂℂ𝔼𝕊𝕊 𝐏𝐑𝐈𝐕
+</h3>
+<p>
+   Este cajón está protegido con contraseña. Contiene tus ubicaciones y etiquetas privadas.
+</p>
+<input type="password" class="priv-input" id="priv-pass" placeholder="● ● ● ● ● ●"/>
+<button class="btn-p" id="priv-unlock" style="max-width:200px;margin:0 auto">
+   Desbloquear
+</button>
+<div style="font-size:9px;color:var(--muted2)">
+          Contraseña por defecto: 0000
+</div></div>
+<div class="priv-content" id="priv-content">
+<div class="priv-hdr"><h3>
+  ✔ ACCESO CONCEDIDO
+</h3><button class="btn-dim" style="width:auto;padding:0 10px;height:30px;margin:0;font-size:9px;cursor:pointer" id="priv-lock-btn">
+  Bloquear
+</button></div>
+<div class="plbl" style="margin-bottom:8px">
+  Accesos rápidos
+</div>
+<div class="quick-list" id="priv-quick"></div>
+<div class="plbl" style="margin-top:14px;margin-bottom:8px">
+  Etiquetas privadas
+</div>
+<div id="priv-labels" style="display:flex;flex-wrap:wrap;gap:5px"></div>
+</div>
+</div>
+</div>
+</div>
 <!-- MENU PANEL -->
 <div id="overlay-menu"></div>
 <div id="menu-panel" role="dialog" aria-modal="true">
-  <div class="ph"><div class="ph-title"><span class="lockico">🔒</span> |Mensajes guardados| </div><button class="pclose" id="menu-close">✕</button></div>
-  <div class="ptabs">
-    <button class="ptab active" data-pt="routes">𝐑𝐔𝐓𝐀𝐒</button>
-    <button class="ptab" data-pt="labels">𝐄𝐓𝐈𝐐</button>
-    <button class="ptab" data-pt="addrs">𝐀𝐃𝐃𝐑𝐄𝐒𝐒</button>
-    <button class="ptab" data-pt="vip">𝐅𝐀𝐕𝐒</button>
-    <button class="ptab" data-pt="ai">•ΙΑ</button>
-    <button class="ptab" data-pt="cfg">𝐂𝐎𝐍𝐅𝐈𝐆</button>
-  </div>
-  <div class="pbody">
-    <div class="ppane active" id="pp-routes"><div class="plbl">rutas guardadas</div><div id="routes-list"></div><button class="btn-full" id="btn-new-route" style="margin-top:6px">＋</button></div>
-    <div class="ppane" id="pp-labels"><div class="plbl">Etiquetas guardadas</div><div id="labels-list"></div></div>
-    <div class="ppane" id="pp-addrs"><div class="plbl">Direcciones guardadas</div><div id="addrs-list"></div><button class="btn-dim" id="btn-export" style="margin-top:8px">↓ Exportar JSON</button><label class="btn-dim" style="cursor:pointer">↑ Importar JSON<input type="file" id="btn-import" accept=".json" style="position:absolute;inset:0;opacity:0"/></label></div>
-    <div class="ppane" id="pp-vip"><div class="plbl">𖣿</div><div id="vip-list"></div></div>
-    <div class="ppane" id="pp-ai">
-      <div class="plbl">Análisis con IA</div>
-      <div class="ai-wrap" style="margin-bottom:10px"><textarea id="ai-prompt" placeholder="Pregunta sobre tus puntos, o deja vacío para análisis automático..."></textarea></div>
-      <button class="btn-full" id="btn-ai">◈|IA</button>
-      <div class="ai-spin" id="ai-spin"><div class="dots"><span></span><span></span><span></span></div>&nbsp;analizando...</div>
-      <div class="ai-out" id="ai-out"></div>
-      <div class="plbl" style="margin-top:14px;margin-bottom:7px">Sugerencias rápidas</div>
-      <div style="display:flex;flex-wrap:wrap;gap:5px">
-        <div class="ai-chip" data-q="¿Qué patrones detectas en mis ubicaciones?">Detectar patrones</div>
-        <div class="ai-chip" data-q="¿Qué zonas frecuento más?">Zonas frecuentes</div>
-        <div class="ai-chip" data-q="¿Hay lugares de riesgo entre mis puntos guardados?">Análisis de riesgo</div>
-        <div class="ai-chip" data-q="¿Qué conexiones hay entre mis ubicaciones?">Conexiones</div>
-        <div class="ai-chip" data-q="Dame un resumen de mis lugares guardados por categoría.">Resumen por categoría</div>
-      </div>
-    </div>
-    <div class="ppane" id="pp-cfg">
-      <div class="plbl">Configuración</div>
-      <div class="cfield"><div class="clbl">Nombre de emergencia</div><input type="text" class="cinput" id="cfg-name" placeholder="Nombre del contacto"/></div>
-      <div class="cfield"><div class="clbl">☎︎</div><input type="text" class="cinput" id="cfg-phone" placeholder="+1 416 555 0000"/></div>
-      <div class="cfield"><div class="clbl">➤</div><input type="text" class="cinput" id="cfg-tg" placeholder="@usuario_telegram"/></div>
-      <div class="cfield"><div class="clbl">Clave API Claude (opcional)</div><input type="password" class="cinput" id="cfg-api" placeholder="sk-ant-..."/></div>
-      <div class="cfield"><div class="clbl">Contraseña cajón privado</div><input type="password" class="cinput" id="cfg-privpass" placeholder="Nueva contraseña (def: 0000)"/></div>
-      <div class="cfield"><div class="clbl">Radio de alerta de proximidad (m)</div><input type="number" class="cinput" id="cfg-radius" placeholder="500" value="500"/></div>
-      <button class="btn-p" id="cfg-save" style="width:100%;margin-top:4px">⚿ Guardar configuración</button>
-    </div>
-  </div>
+<div class="ph"><div class="ph-title"><span class="lockico">
+  🔒
+</span> 
+  |Mensajes guardados| 
+</div><button class="pclose" id="menu-close">✕</button></div>
+<div class="ptabs">
+<button class="ptab active" data-pt="routes">
+  𝐑𝐔𝐓𝐀𝐒
+</button>
+<button class="ptab" data-pt="labels">
+  𝐄𝐓𝐈𝐐
+</button>
+<button class="ptab" data-pt="addrs">
+  𝐀𝐃𝐃𝐑𝐄𝐒𝐒
+</button>
+<button class="ptab" data-pt="vip">
+  𝐅𝐀𝐕𝐒
+</button>
+<button class="ptab" data-pt="ai">
+  •ΙΑ
+</button>
+<button class="ptab" data-pt="cfg">
+  𝐂𝐎𝐍𝐅𝐈𝐆
+</button>
 </div>
-
+<div class="pbody">
+<div class="ppane active" id="pp-routes"><div class="plbl">rutas guardadas</div><div id="routes-list"></div><button class="btn-full" id="btn-new-route" style="margin-top:6px">＋</button></div>
+<div class="ppane" id="pp-labels"><div class="plbl">
+  Etiquetas guardadas</div><div id="labels-list"></div></div>
+<div class="ppane" id="pp-addrs"><div class="plbl">
+  
+  Direcciones guardadas</div><div id="addrs-list"></div><button class="btn-dim" id="btn-export" style="margin-top:8px">↓ Exportar JSON</button><label class="btn-dim" style="cursor:pointer">↑ Importar JSON<input type="file" id="btn-import" accept=".json" style="position:absolute;inset:0;opacity:0"/></label></div>
+<div class="ppane" id="pp-vip"><div class="plbl">
+  𖣿</div><div id="vip-list"></div></div>
+<div class="ppane" id="pp-ai">
+<div class="plbl">
+  Análisis con IA
+</div>
+<div class="ai-wrap" style="margin-bottom:10px"><textarea id="ai-prompt" placeholder="Pregunta sobre tus puntos, o deja vacío para análisis automático..."></textarea></div>
+<button class="btn-full" id="btn-ai">◈|IA</button>
+<div class="ai-spin" id="ai-spin"><div class="dots"><span></span><span></span><span></span></div>&nbsp;analizando...</div>
+<div class="ai-out" id="ai-out"></div>
+<div class="plbl" style="margin-top:14px;margin-bottom:7px">
+   Sugerencias rápidas
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:5px">
+<div class="ai-chip" data-q="¿Qué patrones detectas en mis ubicaciones?">Detectar patrones</div>
+<div class="ai-chip" data-q="¿Qué zonas frecuento más?">Zonas frecuentes</div>
+<div class="ai-chip" data-q="¿Hay lugares de riesgo entre mis puntos guardados?">Análisis de riesgo</div>
+<div class="ai-chip" data-q="¿Qué conexiones hay entre mis ubicaciones?">Conexiones</div>
+<div class="ai-chip" data-q="Dame un resumen de mis lugares guardados por categoría.">Resumen por categoría</div>
+</div>
+</div>
+<div class="ppane" id="pp-cfg">
+<div class="plbl">
+  Configuración</div>
+<div class="cfield"><div class="clbl">
+  Nombre de emergencia
+</div><input type="text" class="cinput" id="cfg-name" placeholder="Nombre del contacto"/></div>
+<div class="cfield"><div class="clbl">
+  ☎︎
+</div><input type="text" class="cinput" id="cfg-phone" placeholder="+1 416 555 0000"/></div>
+<div class="cfield"><div class="clbl">
+  ➤
+</div><input type="text" class="cinput" id="cfg-tg" placeholder="@usuario_telegram"/></div>
+<div class="cfield"><div class="clbl">
+ Clave API Claude (opcional)
+</div><input type="password" class="cinput" id="cfg-api" placeholder="sk-ant-..."/></div>
+<div class="cfield"><div class="clbl">
+ Contraseña cajón privado
+</div><input type="password" class="cinput" id="cfg-privpass" placeholder="Nueva contraseña (def: 0000)"/></div>
+<div class="cfield"><div class="clbl">
+  Radio de alerta de proximidad (m)
+</div><input type="number" class="cinput" id="cfg-radius" placeholder="500" value="500"/></div>
+<button class="btn-p" id="cfg-save" style="width:100%;margin-top:4px">
+  ⚿ Guardar configuración
+</button>
+</div>
+</div>
+</div>
 <!-- NOTIFICATIONS -->
 <div id="notif-panel">
-  <div class="nh"><div class="nh-title">✉|IA</div><div style="display:flex;gap:8px;align-items:center"><button class="nclear" id="notif-clear">Limpiar</button><button class="pclose" id="notif-close">⛝</button></div></div>
-  <div class="nlist" id="nlist"><div class="notif-empty">Sin notificaciones. Usa ↺ para actualizar.</div></div>
+<div class="nh"><div class="nh-title">
+  ✉|IA
+</div><div style="display:flex;gap:8px;align-items:center"><button class="nclear" id="notif-clear">Limpiar</button><button class="pclose" id="notif-close">⛝</button></div></div>
+<div class="nlist" id="nlist"><div class="notif-empty">
+  Sin notificaciones. Usa ↺ para actualizar.
+</div></div>
 </div>
-
 <!-- ENCRYPT MODAL -->
 <div id="enc-modal">
-  <div class="enc-box">
-    <div class="enc-title">⚿ Cifrado extremo de datos</div>
-    <div class="enc-sub">Protege tus lugares con cifrado AES-256 local. La clave nunca sale de tu dispositivo.</div>
-    <div class="enc-status locked" id="enc-status">⚿ Datos sin cifrar</div>
-    <div class="cfield"><div class="clbl">Clave de cifrado</div><input type="password" class="cinput" id="enc-key" placeholder="Tu clave secreta..."/></div>
-    <div class="arow"><button class="btn-p" id="enc-toggle">Activar cifrado</button><button class="btn-g" id="enc-cancel">Cancelar</button></div>
-    <div style="margin-top:12px;padding:10px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid var(--border2);font-size:9px;color:var(--muted);line-height:1.7"><b style="color:var(--text)">Cifrado local AES-256</b> — Tus datos se cifran en tu dispositivo. Sin la clave correcta son ilegibles. Ningún dato sale a servidores externos.</div>
-  </div>
+<div class="enc-box">
+<div class="enc-title">
+  ⚿ Cifrado extremo de datos
 </div>
-
+<div class="enc-sub">
+  Protege tus lugares con cifrado AES-256 local. La clave nunca sale de tu dispositivo.
+</div>
+<div class="enc-status locked" id="enc-status">
+  ⚿ Datos sin cifrar</div>
+<div class="cfield"><div class="clbl">
+  Clave de cifrado
+</div><input type="password" class="cinput" id="enc-key" placeholder="Tu clave secreta..."/></div>
+<div class="arow"><button class="btn-p" id="enc-toggle">
+  Activar cifrado
+</button><button class="btn-g" id="enc-cancel">
+  Cancelar
+</button></div>
+<div style="margin-top:12px;padding:10px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid var(--border2);font-size:9px;color:var(--muted);line-height:1.7"><b style="color:var(--text)">
+  Cifrado local AES-256
+</b>
+ — Tus datos se cifran en tu dispositivo. Sin la clave correcta son ilegibles. Ningún dato sale a servidores externos.
+</div>
+</div>
+</div>
 <!-- SAVE MODAL -->
 <div id="save-modal">
-  <div class="save-box">
-    <div class="save-hd"><div><div class="save-title">Add location</div><div class="save-sub">Confirma el lugar y guarda rápido</div></div><button class="pclose" id="save-close">⛝</button></div>
-    <div class="save-hero">
+<div class="save-box">
+<div class="save-hd"><div><div class="save-title">Add location</div><div class="save-sub">Confirma el lugar y guarda rápido</div></div><button class="pclose" id="save-close">⛝</button></div>
+<div class="save-hero">
       <div class="save-hero-main"><div class="save-hash">#</div><div><div class="save-hero-title" id="save-hero-title"># Usuario</div><div class="save-hero-note" id="save-hero-note">"Algún comentario"</div></div></div>
       <div style="margin-top:10px;font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase" id="save-addr-preview">Dirección seleccionada</div>
     </div>
@@ -2648,30 +2772,17 @@ function showSearchConfirmMarker(lng, lat, address = '', placeId = null) {
   const existingPlace = placeId ? places.find(p => p.id === placeId) : findPlaceNear(lng, lat);
   const color = existingPlace?.color || '#d4ff00';
   
-  const el = document.createElement('div');
+const el = document.createElement('div');
   el.className = 'search-confirm-marker';
-  el.textContent = '📍';
-  el.style.fontSize = '32px';
-  el.style.cursor = 'pointer';
-  el.style.filter = `drop-shadow(0 4px 8px rgba(0,0,0,0.6)) drop-shadow(0 0 15px ${color}40)`;
-  el.style.color = color;
-  el.style.transition = 'transform 0.2s ease, filter 0.2s ease';
-  
- el.addEventListener('mouseenter', () => {
-    el.style.filter = `drop-shadow(0 4px 8px rgba(0,0,0,0.6)) drop-shadow(0 0 30px ${color}80)`;
-  });
-  el.addEventListener('mouseleave', () => {
-    el.style.filter = `drop-shadow(0 4px 8px rgba(0,0,0,0.6)) drop-shadow(0 0 15px ${color}40)`;
-  });
-  
-  el.addEventListener('click', () => { 
-    openPhotoModal(lng, lat, address, placeId); 
-  });
-  
-  searchConfirmMarker = new mapboxgl.Marker({ 
-    element: el, 
-    anchor: 'bottom' 
-  }).setLngLat([lng, lat]).addTo(map);
+  const pin = document.createElement('span');
+  pin.textContent = '📍';
+  pin.style.cssText = `filter:drop-shadow(0 4px 10px rgba(0,0,0,.65)) drop-shadow(0 0 12px ${color}60);pointer-events:none`;
+  el.appendChild(pin);
+  const _onClick = () => openPhotoModal(lng, lat, address, placeId);
+  searchConfirmMarker = new mapboxgl.Marker({ element: el, anchor: 'bottom' }).setLngLat([lng, lat]).addTo(map);
+  el.addEventListener('click', _onClick);
+  el.addEventListener('touchend', e => { e.preventDefault(); _onClick(); }, { passive: false });
+  searchConfirmMarker = new mapboxgl.Marker({ element: el, anchor: 'bottom' }).setLngLat([lng, lat]).addTo(map);
   
   const res = $('search-results');
   if (res) {
@@ -2683,7 +2794,9 @@ function showSearchConfirmMarker(lng, lat, address = '', placeId = null) {
     wrap.id = 'sr-confirm';
     wrap.innerHTML = `
       <div style="font-size:10px;color:var(--text-muted);line-height:1.5;display:flex;align-items:center;gap:6px">
-        <span style="color:${color}">📍</span> 
+        <span style="color:${color}">
+          📍
+        </span> 
         ${existingPlace ? '★ ' : ''}${esc(address||'Ubicación marcada')}
         ${existingPlace ? `<span style="color:${color};font-size:8px;background:${color}22;padding:2px 8px;border-radius:4px">GUARDADO</span>` : ''}
       </div>
