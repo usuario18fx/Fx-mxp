@@ -2779,26 +2779,32 @@ function showSearchConfirmMarker(lng, lat, address = '', placeId = null) {
   searchConfirmAddress = address || '';
   const existingPlace = placeId ? places.find(p => p.id === placeId) : findPlaceNear(lng, lat);
   const color = existingPlace?.color || '#d4ff00';
-  const uid = 'scm' + Date.now();
-  const label = existingPlace ? '★ Ver lugar' : '＋ Guardar lugar';
-  const txtColor = ['#1a1a1a','#000000','#060606'].includes(color) ? '#fff' : '#000';
-  const popup = new mapboxgl.Popup({
-    closeButton: true, closeOnClick: false,
-    anchor: 'bottom', className: 'fx-popup', maxWidth: '280px', offset: [0, -6]
-  })
-  .setLngLat([lng, lat])
-  .setHTML(`<div class="fx-popup-inner"><div class="fx-popup-addr">${esc(address || 'Ubicación marcada')}</div><button id="${uid}" class="fx-popup-btn" style="background:${color};color:${txtColor}">${label}</button></div>`)
-  .addTo(map);
-  popup.on('open', () => {
-    const btn = document.getElementById(uid);
-    if (!btn) return;
-    btn.onclick = () => {
-      popup.remove(); searchConfirmMarker = null;
-      if (existingPlace) openPhotoModal(lng, lat, address || '', placeId);
-      else openSaveModal(lng, lat, address || '');
-    };
-  });
-  searchConfirmMarker = popup;
+
+  const el = document.createElement('div');
+  el.className = 'search-confirm-marker';
+  const pin = document.createElement('span');
+  pin.textContent = '📍';
+  pin.style.cssText = `font-size:36px;line-height:1;pointer-events:none;filter:drop-shadow(0 4px 12px rgba(0,0,0,.8)) drop-shadow(0 0 14px ${color}55)`;
+  el.appendChild(pin);
+
+  const doOpen = () => openPhotoModal(lng, lat, address || '', placeId);
+  el.addEventListener('click', e => { e.stopPropagation(); doOpen(); });
+  el.addEventListener('touchend', e => { e.preventDefault(); e.stopPropagation(); doOpen(); }, { passive: false });
+
+  searchConfirmMarker = new mapboxgl.Marker({ element: el, anchor: 'bottom' }).setLngLat([lng, lat]).addTo(map);
+
+  const res = $('search-results');
+  if (res) {
+    const old = document.getElementById('sr-confirm');
+    if (old) old.remove();
+    const hint = document.createElement('div');
+    hint.className = 'sr-confirm';
+    hint.id = 'sr-confirm';
+    hint.style.cssText = 'padding:10px 14px;font-size:10px;color:var(--text-muted);display:flex;align-items:center;gap:6px';
+    hint.innerHTML = `<span style="color:${color}">📍</span>&nbsp;${esc(address||'Ubicación marcada')} — <em style="color:${color}">toca el pin para clasificar</em>`;
+    res.appendChild(hint);
+    res.classList.add('open');
+  }
 }
     
 function searchPlacesByTerm(term) {
