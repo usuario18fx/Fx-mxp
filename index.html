@@ -2100,7 +2100,7 @@ function onPressStart(e) {
       $('loc-addr').textContent = 'Cargando dirección...';
       reverseGeocode(ll.lng, ll.lat).then(a => $('loc-addr').textContent = a || `${ll.lat.toFixed(5)}, ${ll.lng.toFixed(5)}`);
     };
-  }, 3000);
+  }, 600);
 }
 
 function onPressEnd() {
@@ -2657,12 +2657,10 @@ function showSearchConfirmMarker(lng, lat, address = '', placeId = null) {
   el.style.color = color;
   el.style.transition = 'transform 0.2s ease, filter 0.2s ease';
   
-  el.addEventListener('mouseenter', () => {
-    el.style.transform = 'scale(1.2)';
+ el.addEventListener('mouseenter', () => {
     el.style.filter = `drop-shadow(0 4px 8px rgba(0,0,0,0.6)) drop-shadow(0 0 30px ${color}80)`;
   });
   el.addEventListener('mouseleave', () => {
-    el.style.transform = 'scale(1)';
     el.style.filter = `drop-shadow(0 4px 8px rgba(0,0,0,0.6)) drop-shadow(0 0 15px ${color}40)`;
   });
   
