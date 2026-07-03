@@ -1992,11 +1992,8 @@ function openPhotoModal(lng, lat, address = '', placeId = null) {
   const existing = placeId ? places.find(p => p.id === placeId) : findPlaceNear(lng, lat);
   photoExistingId = existing ? existing.id : null;
 
-  const name = existing?.title || (address ? address.split(',')[0].trim() : 'Lugar sin nombre');
-  $('photo-name').textContent = name;
-  $('photo-cat').textContent = address || 'Ubicación sin dirección registrada';
-  $('photo-meta').textContent = existing?.notes || address || 'Sin descripción adicional';
-
+const _sp=$('photo-sponsor');if(_sp){_sp.textContent=existing?`${cl.e} ${cl.l.toUpperCase()}`:'◈ NUEVO LUGAR';_sp.style.color=existing?color:'var(--text-muted)';}
+  $('photo-cat').textContent=address?address.split(',').slice(0,2).join(','):'Sin dirección';
   $('photo-vip-btn').classList.toggle('active', !!existing?.vip);
 
   renderPhotoFlags(existing); // también llama a syncPhotoModalState()
