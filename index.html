@@ -859,11 +859,11 @@ const SK = {
 };
 
 const CLASS_META = {
-  save:     { e: '⚿', l: 'Guardado',   t: 'safe',    c: '#6b7280' },
-  party:    { e: '🟢', l: 'Party',      t: 'party',   c: '#d6336c' },
-  favorite: { e: '🟡', l: 'Favorito',   t: 'favorite',c: '#22a559' },
-  risk:     { e: '🟠', l: 'Riesgo',     t: 'risk',    c: '#f97316' },
-  caution:  { e: '🔴', l: 'Precaución', t: 'caution', c: '#8b5cf6' },
+  save:     { e: '⚿', l: 'Guardado',   t: 'safe',    c: '#4a7fa5' },
+  party:    { e: '🟢', l: 'Party',      t: 'party',   c: '#e0304a' },
+  favorite: { e: '🟡', l: 'Favorito',   t: 'favorite',c: '#d4a017' },
+  risk:     { e: '🟠', l: 'Riesgo',     t: 'risk',    c: '#e06820' },
+  caution:  { e: '🔴', l: 'Precaución', t: 'caution', c: '#7040c8' },
   flag:     { e: '⚑', l: 'Etiqueta',   t: 'flag',    c: '#f5cf58' },
   dealer:   { e: '✪', l: 'Dealers',    t: 'dealer',  c: '#8b5cf6' },
 };
@@ -878,7 +878,7 @@ const COLORS = [
   { n: 'Cyan', v: '#b4dc00' }
 ];
 
-const FLAG_ORDER = ['save', 'flag', 'dealer'];
+const FLAG_ORDER = ['save','party','favorite','risk','caution'];
 
 // ─── MAP INIT ──────────────────────────────────────────────────
 const map = new mapboxgl.Map({
@@ -2550,7 +2550,7 @@ map.on('load', () => {
 // ─── INICIALIZACIÓN ──────────────────────────────────────────────
 
 /* FX_FLAGS_OVERRIDE */
-const FLAG_ORDER = ['save','party','favorite','risk','caution'];
+FLAG_ORDER = ['save','party','favorite','risk','caution'];
 
 Object.assign(CLASS_META, {
   save:     { e: '🔵', l: 'Guardado',  t: 'safe',    c: '#4a7fa5' },
