@@ -865,7 +865,7 @@ const CLASS_META = {
   risk:     { e: '🟠', l: 'Riesgo',     t: 'risk',    c: '#e06820' },
   caution:  { e: '🔴', l: 'Precaución', t: 'caution', c: '#7040c8' },
   flag:     { e: '⚑', l: 'Etiqueta',   t: 'flag',    c: '#f5cf58' },
-  dealer:   { e: '✪', l: 'Dealers',    t: 'dealer',  c: '#8b5cf6' },
+  dealer:   { e: '✪', l: 'Dealers',    t: 'dealer',  c: '#7040c8' },
 };
 
 const COLORS = [
@@ -878,7 +878,7 @@ const COLORS = [
   { n: 'Cyan', v: '#b4dc00' }
 ];
 
-const FLAG_ORDER = ['save','party','favorite','risk','caution'];
+
 
 // ─── MAP INIT ──────────────────────────────────────────────────
 const map = new mapboxgl.Map({
@@ -1458,6 +1458,9 @@ function renderBoard() {
   const el = $('board-grid');
   $('board-count').textContent = `${places.length} registros`;
   const counts = { save: 0, flag: 0, dealer: 0 };
+
+const FLAG_ORDER = ['save','party','favorite','risk','caution'];
+
   places.forEach(p => { const k = p.classification || 'save'; counts[k] = (counts[k] || 0) + 1; });
   el.innerHTML = `
     <div class="bcard bcard-kpi" style="grid-column:1/-1">
@@ -2550,7 +2553,7 @@ map.on('load', () => {
 // ─── INICIALIZACIÓN ──────────────────────────────────────────────
 
 /* FX_FLAGS_OVERRIDE */
-FLAG_ORDER = ['save','party','favorite','risk','caution'];
+
 
 Object.assign(CLASS_META, {
   save:     { e: '🔵', l: 'Guardado',  t: 'safe',    c: '#4a7fa5' },
