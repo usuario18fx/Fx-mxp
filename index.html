@@ -855,13 +855,13 @@ const SK = {
   imported: 'fxmap.v8.imported'
 };
 const CLASS_META = {
-  save:     { e: '⚿',  l: 'Guardado',   t: 'save',    c: '#3578ff' },
-  party:    { e: '🟢', l: 'Party',      t: 'party',   c: '#23ff65' },
-  favs:     { e: '🟡', l: 'Favorito',   t: 'favs',    c: '#efff3f' },
   risk:     { e: '🟠', l: 'Riesgo',     t: 'risk',    c: '#f97316' },
   caution:  { e: '🔴', l: 'Precaución', t: 'caution', c: '#ff2549' },
+  party:    { e: '🟢', l: 'Party',      t: 'party',   c: '#23ff65' },
+  favs:     { e: '🟡', l: 'Favs',       t: 'favs',    c: '#efff3f' },
+  save:     { e: '⚿',  l: 'Guardado',  t: 'save',    c: '#3578ff' },
   flag:     { e: '⚑',  l: 'Etiqueta',   t: 'flag',    c: '#52d3a6' },
-  dealer:   { e: '✪',  l: 'Dealers',    t: 'dealer',  c: '#8f5fff' }, 
+  dealer:   { e: '✪',  l: 'Dealers',    t: 'dealer',  c: '#8f5fff' },
 };
 const COLORS = [
   {  n: 'verde',    v: '#23ff65' },
@@ -872,8 +872,7 @@ const COLORS = [
   {  n: 'cyal',     v: '#0ad3f7' },
   {  n: 'azul',     v: '#1c5cff' },
 ];
-
-const FLAG_ORDER = ['save','favs','caution','dealer']
+const FLAG_ORDER = ['risk','caution','party','favs','save','flag','dealer'];
 // ─── MAP INIT ──────────────────────────────────────────────────
 const map = new mapboxgl.Map({
   container: 'map',
