@@ -435,7 +435,7 @@ button{cursor:pointer}
 .pm-icon-btn{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.02);border:1.5px solid rgba(255,255,255,.08);color:var(--text-muted);display:grid;place-items:center;cursor:pointer;font-size:14px;transition:box-shadow .2s ease,border-color .2s ease,color .2s ease,background .2s ease}
 .pm-icon-btn:hover{color:var(--text-secondary)}
 .pm-icon-btn.vip.active{color:#ffd700;border-color:rgba(255,200,0,.5);background:rgba(255,200,0,.06);box-shadow:0 0 10px rgba(255,200,0,.4)}
-#photo-save-btn{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;cursor:pointer;font-size:15px;background:rgba(255,255,255,.02);border:1.5px solid rgba(255,255,255,.08);color:var(--text-muted);transition:box-shadow .2s ease,border-color .2s ease,color .2s ease,background .2s ease}
+#photo-save-btn{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;cursor:pointer;font-size:15px;background:rgba(53,120,255,.12);border:1.5px solid rgba(53,120,255,.35);color:#3578ff;transition:box-shadow .2s ease,border-color .2s ease,color .2s ease,background .2s ease}
 .pm-title{position:relative;font-weight:800;font-size:17px;line-height:1.3;color:var(--text-primary);margin:16px 0 0;letter-spacing:.1px;word-break:break-word}
 .pm-addr{position:relative;font-size:11px;color:var(--text-secondary);line-height:1.4;margin:3px 0 12px}
 .pm-desc{position:relative;font-size:10px;color:var(--text-muted);line-height:1.6;margin:0 0 18px;border-top:1px solid rgba(255,255,255,.06);padding-top:11px}
@@ -855,20 +855,18 @@ const SK = {
   imported: 'fxmap.v8.imported'
 };
 const CLASS_META = {
-  risk:     { e: '🟠', l: 'Riesgo',     t: 'risk',    c: '#f97316' },
   caution:  { e: '🔴', l: 'Precaución', t: 'caution', c: '#ff2549' },
   party:    { e: '🟢', l: 'Party',      t: 'party',   c: '#23ff65' },
   favs:     { e: '🟡', l: 'Favs',       t: 'favs',    c: '#efff3f' },
   save:     { e: '⚿',  l: 'Guardado',  t: 'save',    c: '#3578ff' },
-  flag:     { e: '⚑',  l: 'Etiqueta',   t: 'flag',    c: '#52d3a6' },
-  dealer:   { e: '✪',  l: 'Dealers',    t: 'dealer',  c: '#8f5fff' },
+  flag:     { e: '⚑',  l: 'Etiqueta',   t: 'flag',    c: '#f97316' },
 };
 const COLORS = [
-  { n: 'verde',   v: '#23ff65' },
-  { n: 'naranja', v: '#f97316' },
-  { n: 'rojo',    v: '#ff2549' },
-  { n: 'morado',  v: '#da1eff' },
-  { n: 'cyan',    v: '#0ad3f7' },
+  { n: 'rojo',     v: '#ff2549' },
+  { n: 'verde',    v: '#23ff65' },
+  { n: 'amarillo', v: '#efff3f' },
+  { n: 'azul',     v: '#3578ff' },    
+  { n: 'naranja',  v: '#f97316' },
 ];
 const FLAG_ORDER = ['risk','caution','party','favs','save','flag','dealer'];
 // ─── MAP INIT ──────────────────────────────────────────────────
