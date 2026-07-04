@@ -856,11 +856,10 @@ const SK = {
 };
 const CLASS_META = {
   caution:  { e: '🔴', l: 'Precaución', t: 'caution', c: '#ff2549' },
-  party:    { e: '🟢', l: 'Party',      t: 'party',   c: '#23ff65' },
   favs:     { e: '🟡', l: 'Favs',       t: 'favs',    c: '#efff3f' },
+  party:    { e: '✪', l: 'Party',      t: 'party',   c: '#23ff65' },
   save:     { e: '⚿',  l: 'Guardado',  t: 'save',    c: '#3578ff' },
   flag:     { e: '⚑',  l: 'Etiqueta',  t: 'flag',    c: '#52d3a6' },
-  dealer:   { e: '✪',  l: 'Dealers',   t: 'dealer',  c: '#8f5fff' },
 };
 const COLORS = [
   { n: 'rojo',     v: '#ff2549' },
@@ -2456,10 +2455,10 @@ function bindAll() {
   setSearchMode('address');
 }
 
-// ─── MAP EVENTS ──────────────────────────────────────────────────
-map.on('style.load', () => {
-  try {
-    map.setFog({
+// ─── MAP EVENTS ────────────────────────────────────────────────── 
+  map.on('style.load', () => {
+    try {
+  map.setFog({
       color: 'rgb(10,12,20)',
       'high-color': 'rgb(26,31,48)',
       'horizon-blend': 0.07,
@@ -2469,16 +2468,16 @@ map.on('style.load', () => {
   } catch (e) {}
 });
 
-map.on('load', () => {
+  map.on('load', () => {
   map.easeTo({ center: BASE.center, zoom: BASE.zoom, pitch: BASE.pitch, bearing: BASE.bearing, duration: 0, essential: true });
 
   try {
-    map.setConfigProperty('basemap', 'lightPreset', 'night');
-    map.setConfigProperty('basemap', 'show3dObjects', true);
-    map.setConfigProperty('basemap', 'showPlaceLabels', false);
-    map.setConfigProperty('basemap', 'showPointOfInterestLabels', false);
-    map.setConfigProperty('basemap', 'showRoadLabels', false);
-    map.setConfigProperty('basemap', 'showTransitLabels', false);
+  map.setConfigProperty('basemap', 'lightPreset', 'night');
+  map.setConfigProperty('basemap', 'show3dObjects', true);
+  map.setConfigProperty('basemap', 'showPlaceLabels', false);
+  map.setConfigProperty('basemap', 'showPointOfInterestLabels', false);
+  map.setConfigProperty('basemap', 'showRoadLabels', false);
+  map.setConfigProperty('basemap', 'showTransitLabels', false);
   } catch (e) {}
 
   // Geolocate control (oculto)
@@ -2494,7 +2493,6 @@ map.on('load', () => {
     const gc = document.querySelector('.mapboxgl-ctrl-geolocate');
     if (gc) gc.style.display = 'none';
   }, 600);
-
   ensureBuildingHighlightLayers();
   loadAll();
   renderAll();
@@ -2503,11 +2501,9 @@ map.on('load', () => {
   initSearch();
   bindAll();
   updateEncStatus();
-
   map.on('moveend', () => { if (buildingHighlightReady) renderMarkers(); });
   map.on('zoomend', () => { if (buildingHighlightReady) renderMarkers(); });
 });
-
 // ─── INICIALIZACIÓN ──────────────────────────────────────────────
 console.log('FX MAP X11 — CYBERPUNK NEON — Cargado correctamente 🚀');
 </script>
