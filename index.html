@@ -836,9 +836,7 @@ button{cursor:pointer}
 // ════════════════════════════════════════════════════════════════
 // FX MAP X11 — FULL LOGIC (optimized) — CYBERPUNK NEON VERSION
 // ════════════════════════════════════════════════════════════════
-
 mapboxgl.accessToken = 'pk.eyJ1IjoiLXVzZXIxOGZ4IiwiYSI6ImNtajFiNmhtajA1bzYzZ29xdmxwbW9rbnQifQ.utdX0mFVr3IOOYHnmY5lvw';
-
 // ─── CONFIGURATION ──────────────────────────────────────────────
 const BASE = {
   center: [-79.86125, 43.25295],
@@ -847,7 +845,6 @@ const BASE = {
   bearing: 15,
   style: 'mapbox://styles/mapbox/standard'
 };
-
 const SK = {
   places: 'fxmap.v8.places',
   routes: 'fxmap.v8.routes',
@@ -857,29 +854,26 @@ const SK = {
   notifs: 'fxmap.v8.notifs',
   imported: 'fxmap.v8.imported'
 };
-
 const CLASS_META = {
-  save:     { e: '⚿', l: 'Guardado',   t: 'safe',    c: '#4a7fa5' },
-  party:    { e: '🟢', l: 'Party',      t: 'party',   c: '#e0304a' },
-  favorite: { e: '🟡', l: 'Favorito',   t: 'favorite',c: '#d4a017' },
-  risk:     { e: '🟠', l: 'Riesgo',     t: 'risk',    c: '#e06820' },
-  caution:  { e: '🔴', l: 'Precaución', t: 'caution', c: '#7040c8' },
-  flag:     { e: '⚑', l: 'Etiqueta',   t: 'flag',    c: '#f5cf58' },
-  dealer:   { e: '✪', l: 'Dealers',    t: 'dealer',  c: '#7040c8' },
+  save:     { e: '⚿',  l: 'Guardado',   t: 'save',    c: '#3578ff' },
+  party:    { e: '🟢', l: 'Party',      t: 'party',   c: '#23ff65' },
+  favs:     { e: '🟡', l: 'Favorito',   t: 'favs',    c: '#efff3f' },
+  risk:     { e: '🟠', l: 'Riesgo',     t: 'risk',    c: '#f97316' },
+  caution:  { e: '🔴', l: 'Precaución', t: 'caution', c: '#ff2549' },
+  flag:     { e: '⚑',  l: 'Etiqueta',   t: 'flag',    c: '#52d3a6' },
+  dealer:   { e: '✪',  l: 'Dealers',    t: 'dealer',  c: '#8f5fff' }, 
 };
-
 const COLORS = [
-  { n: 'Neón Verde', v: '#b4dc00' },
-  { n: 'Plateado', v: '#8a8a8a' },
-  { n: 'Gris', v: '#8a8a8a' },
-  { n: 'Oscuro', v: '#1a1a1a' },
-  { n: 'Rojo', v: '#ff3b3b' },
-  { n: 'Dorado', v: '#ffd700' },
-  { n: 'Cyan', v: '#b4dc00' }
+  {  n: 'verde',    v: '#23ff65' },
+  {  n: 'amarillo', v: '#efff3f' },
+  {  n: 'naranja',  v: '#f97316' },
+  {  n: 'rojo',     v: '#ff2549' },
+  {  n: 'morado',   v: '#da1eff' },
+  {  n: 'cyal',     v: '#0ad3f7' },
+  {  n: 'azul',     v: '#1c5cff' },
 ];
 
-
-
+const FLAG_ORDER = ['save','favs','caution','dealer']
 // ─── MAP INIT ──────────────────────────────────────────────────
 const map = new mapboxgl.Map({
   container: 'map',
@@ -1360,38 +1354,6 @@ function renderMarkers() {
   if (src) src.setData(fc);
 }
 
-// ─── GALLERY AUTH ──────────────────────────────────────────────
-function openGalleryAuth() {
-  const pass = settings.privPass || '0000';
-  const modal = document.createElement('div');
-  modal.id = 'gallery-auth-modal';
-  modal.style.cssText = 'position:fixed;inset:0;z-index:250;background:rgba(0,0,0,.75);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center';
-  modal.innerHTML = `
-    <div style="width:min(340px,90vw);padding:28px;border-radius:22px;background:var(--card);border:1px solid var(--oxford2);box-shadow:var(--shadow)">
-      <div style="font-size:9px;font-weight:900;letter-spacing:.22em;text-transform:uppercase;color:var(--neon-green);margin-bottom:16px">◈ GALERÍA PRIVADA</div>
-      <input id="gallery-pass-input" type="password" placeholder="● ● ● ● ● ●" autocomplete="off"
-        style="width:100%;height:48px;padding:0 16px;border-radius:13px;border:1px solid var(--oxford2);background:var(--oxford);color:var(--text-primary);font-size:18px;letter-spacing:.18em;text-align:center;outline:none;font-family:inherit;margin-bottom:12px">
-      <div id="gallery-pass-err" style="font-size:10px;color:var(--red);min-height:16px;text-align:center;margin-bottom:10px"></div>
-      <div style="display:flex;gap:8px">
-        <button id="gallery-pass-ok" style="flex:1;height:44px;border-radius:12px;background:var(--neon-green);color:#000;border:none;font-family:inherit;font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;cursor:pointer">ABRIR</button>
-        <button id="gallery-pass-cancel" style="width:44px;height:44px;border-radius:12px;background:var(--oxford2);border:none;color:var(--text-muted);font-size:18px;cursor:pointer">✕</button>
-      </div>
-    </div>`;
-  document.body.appendChild(modal);
-  const inp = document.getElementById('gallery-pass-input');
-  const err = document.getElementById('gallery-pass-err');
-  inp.focus();
-  const cleanup = () => modal.remove();
-  const tryOpen = () => {
-    if (inp.value === pass) { cleanup(); renderMediaGrid(); openPanel('media-panel'); }
-    else { err.textContent = '❌ Contraseña incorrecta'; inp.value = ''; inp.focus(); }
-  };
-  document.getElementById('gallery-pass-ok').onclick = tryOpen;
-  document.getElementById('gallery-pass-cancel').onclick = cleanup;
-  inp.addEventListener('keydown', e => { if (e.key === 'Enter') tryOpen(); if (e.key === 'Escape') cleanup(); });
-  modal.addEventListener('click', e => { if (e.target === modal) cleanup(); });
-}
-
 // ─── RENDER FUNCTIONS ──────────────────────────────────────────
 function renderAll() {
   renderAddrs();
@@ -1458,9 +1420,6 @@ function renderBoard() {
   const el = $('board-grid');
   $('board-count').textContent = `${places.length} registros`;
   const counts = { save: 0, flag: 0, dealer: 0 };
-
-const FLAG_ORDER = ['save','party','favorite','risk','caution'];
-
   places.forEach(p => { const k = p.classification || 'save'; counts[k] = (counts[k] || 0) + 1; });
   el.innerHTML = `
     <div class="bcard bcard-kpi" style="grid-column:1/-1">
@@ -1995,8 +1954,11 @@ function openPhotoModal(lng, lat, address = '', placeId = null) {
   const existing = placeId ? places.find(p => p.id === placeId) : findPlaceNear(lng, lat);
   photoExistingId = existing ? existing.id : null;
 
-const _sp=$('photo-sponsor');if(_sp){_sp.textContent=existing?`${cl.e} ${cl.l.toUpperCase()}`:'◈ NUEVO LUGAR';_sp.style.color=existing?color:'var(--text-muted)';}
-  $('photo-cat').textContent=address?address.split(',').slice(0,2).join(','):'Sin dirección';
+  const name = existing?.title || (address ? address.split(',')[0].trim() : 'Lugar sin nombre');
+  $('photo-name').textContent = name;
+  $('photo-cat').textContent = address || 'Ubicación sin dirección registrada';
+  $('photo-meta').textContent = existing?.notes || address || 'Sin descripción adicional';
+
   $('photo-vip-btn').classList.toggle('active', !!existing?.vip);
 
   renderPhotoFlags(existing); // también llama a syncPhotoModalState()
@@ -2263,7 +2225,7 @@ function bindAll() {
   $('btn-refresh').addEventListener('click', doRefresh);
   $('btn-notif').addEventListener('click', () => { renderNotifList(); openPanel('notif-panel'); });
   $('btn-menu').addEventListener('click', openMenuModal);
-  $('btn-brand').addEventListener('click', () => { openGalleryAuth(); });
+  $('btn-brand').addEventListener('click', () => { renderMediaGrid(); openPanel('media-panel'); });
   $('sos-btn').addEventListener('click', openSOS);
   $('settings-btn').addEventListener('click', () => { openPanel('settings-drawer'); renderBoard(); });
 
@@ -2551,66 +2513,7 @@ map.on('load', () => {
 });
 
 // ─── INICIALIZACIÓN ──────────────────────────────────────────────
-
-/* FX_FLAGS_OVERRIDE */
-
-
-Object.assign(CLASS_META, {
-  save:     { e: '🔵', l: 'Guardado',  t: 'safe',    c: '#4a7fa5' },
-  party:    { e: '🔴', l: 'Social',    t: 'party',   c: '#e0304a' },
-  favorite: { e: '⭐', l: 'Favorito',  t: 'favorite',c: '#d4a017' },
-  risk:     { e: '🟠', l: 'Riesgo',    t: 'risk',    c: '#e06820' },
-  caution:  { e: '🔒', l: 'Privado',   t: 'caution', c: '#7040c8' },
-});
-
-function renderPickFlags() {
-  const el = document.getElementById('pick-flags');
-  if (!el) return;
-  el.style.cssText = 'display:grid;grid-template-columns:repeat(6,1fr);gap:5px;padding:14px 0 8px';
-  el.innerHTML = FLAG_ORDER.map(k => {
-    const m = CLASS_META[k]; if (!m) return '';
-    return `<button type="button" class="pick-flag" data-cls="${k}">
-      <span class="flagico" style="background:${m.c};width:26px;height:32px;display:block;clip-path:polygon(0 0,100% 0,100% 100%,50% 76%,0 100%);filter:drop-shadow(0 4px 8px rgba(0,0,0,.6))"></span>
-      <span class="flaglbl" style="font-size:7px;font-weight:800;color:var(--text-muted);letter-spacing:.04em;text-transform:uppercase;text-align:center">${m.l}</span>
-    </button>`;
-  }).join('') +
-  `<button type="button" class="pick-flag" id="pick-flag-vip">
-    <span style="font-size:22px;height:32px;display:flex;align-items:center;justify-content:center;color:#ffc800">𖣿</span>
-    <span class="flaglbl" style="font-size:7px;font-weight:800;color:#ffc800;text-transform:uppercase">VIP</span>
-  </button>`;
-  el.querySelectorAll('.pick-flag[data-cls]').forEach(b =>
-    b.addEventListener('click', () => pickToSave(b.dataset.cls)));
-  const vb = document.getElementById('pick-flag-vip');
-  if (vb) vb.addEventListener('click', () => {
-    if (!pickPoint) return;
-    closePickModal();
-    openPhotoModal(pickPoint.lng, pickPoint.lat, pickAddress);
-  });
-}
-
-function renderPhotoFlags(existing) {
-  const el = document.getElementById('photo-flags');
-  if (!el) return;
-  el.style.cssText = 'display:grid;grid-template-columns:repeat(6,1fr);gap:5px;padding:14px 0 8px';
-  const cur = existing?.classification || null;
-  el.innerHTML = FLAG_ORDER.map(k => {
-    const m = CLASS_META[k]; if (!m) return '';
-    const sel = cur === k ? 'outline:2px solid var(--neon-green);outline-offset:2px;' : '';
-    return `<button type="button" class="pick-flag" data-cls="${k}">
-      <span class="flagico" style="background:${m.c};width:26px;height:32px;display:block;clip-path:polygon(0 0,100% 0,100% 100%,50% 76%,0 100%);filter:drop-shadow(0 4px 8px rgba(0,0,0,.6));${sel}"></span>
-      <span class="flaglbl" style="font-size:7px;font-weight:800;color:${cur===k?'var(--neon-green)':'var(--text-muted)'};letter-spacing:.04em;text-transform:uppercase;text-align:center">${m.l}</span>
-    </button>`;
-  }).join('') +
-  `<button type="button" class="pick-flag" id="photo-flag-vip">
-    <span style="font-size:22px;height:32px;display:flex;align-items:center;justify-content:center;color:#ffc800">𖣿</span>
-    <span class="flaglbl" style="font-size:7px;font-weight:800;color:#ffc800;text-transform:uppercase">VIP</span>
-  </button>`;
-  el.querySelectorAll('.pick-flag[data-cls]').forEach(b =>
-    b.addEventListener('click', () => photoSetFlag(b.dataset.cls)));
-  document.getElementById('photo-flag-vip')?.addEventListener('click', photoToggleVip);
-}
-
-console.log('FX MAP X11 — FLAGS OVERRIDE ACTIVE 🚀');
+console.log('FX MAP X11 — CYBERPUNK NEON — Cargado correctamente 🚀');
 </script>
 </body>
 </html>
