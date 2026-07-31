@@ -389,26 +389,28 @@ button{cursor:pointer}
 .pm-corner.tr{top:-1px;right:-1px;border-top:2px solid;border-right:2px solid;border-radius:0 10px 0 0}
 .pm-corner.bl{bottom:-1px;left:-1px;border-bottom:2px solid;border-left:2px solid;border-radius:0 0 0 10px}
 .pm-corner.br{bottom:-1px;right:-1px;border-bottom:2px solid;border-right:2px solid;border-radius:0 0 10px 0}
-.pm-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-.pm-sponsor{font-size:10px;letter-spacing:.16em;color:var(--text-muted);font-weight:700;text-transform:uppercase}
-.pm-icons{display:flex;gap:7px;align-items:center;margin-right:14px}
-.pm-icon-btn{width:32px;height:32px;border-radius:8px;background:transparent!important;border:1.5px solid rgba(255,255,255,.07)!important;color:#555!important;display:grid;place-items:center;cursor:pointer;font-size:14px;transition:all .2s;box-shadow:none!important}
+.pm-head{display:flex;justify-content:flex-end;align-items:center;margin-bottom:14px}
+.pm-icons{display:flex;gap:7px;align-items:center}
+.pm-icon-btn{width:34px;height:34px;border-radius:9px;background:transparent!important;border:1.5px solid rgba(255,255,255,.09)!important;color:#888!important;display:grid;place-items:center;cursor:pointer;font-size:15px;transition:all .2s;box-shadow:none!important}
 .pm-icon-btn.active{color:#ffe760!important;border-color:rgba(255,231,96,.5)!important;background:rgba(255,231,96,.08)!important}
-.pm-close-btn{width:32px;height:32px;border-radius:8px;background:transparent;border:none;color:var(--text-muted);display:grid;place-items:center;cursor:pointer;font-size:16px;transition:color .2s}
-#photo-save-btn{width:32px;height:32px;border-radius:8px;background:transparent!important;border:1.5px solid rgba(255,255,255,.07)!important;color:#555!important;display:grid;place-items:center;cursor:pointer;font-size:14px;transition:all .2s;clip-path:unset!important;-webkit-clip-path:unset!important;box-shadow:none!important}
-.pm-title{font-weight:900;font-size:20px;line-height:1.25;color:var(--text-primary);margin:0 0 4px;word-break:break-word;padding-right:34px}
-.pm-addr{font-size:11px;color:var(--text-secondary);line-height:1.4;margin:0 0 6px;padding-right:34px}
-.pm-desc{font-size:10px;color:var(--text-muted);line-height:1.5;margin:0 0 16px;padding-right:34px}
-.pm-footer{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:4px;padding-right:38px}
-.pm-active{display:flex;align-items:center;gap:6px}
-.pm-active-dot{width:7px;height:7px;border-radius:50%;flex:0 0 auto;background:#4a4d51}
-.pm-active-text{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#4a4d51}
-#pm-save-cta{padding:7px 16px;border-radius:6px;border:none;cursor:pointer;background:var(--neon-green);box-shadow:0 1px 0 rgba(255,255,255,.35) inset,0 3px 0 #86a300,0 4px 6px rgba(0,0,0,.5);font-weight:900;font-size:10px;color:#060606;letter-spacing:.12em;text-transform:uppercase;transform:translateY(0);transition:transform .08s,box-shadow .08s,opacity .2s;flex:0 0 auto}
-#pm-save-cta:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(255,255,255,.25) inset,0 0 0 #86a300,0 1px 2px rgba(0,0,0,.4)}
-#pm-save-cta.disabled{opacity:.35;pointer-events:none;background:#3a3a3a;color:#1a1a1a;box-shadow:none}
-.pm-tags{position:absolute;top:68px;right:14px;display:flex;flex-direction:column;gap:6px}
-.pm-tag{height:24px;width:12px;border-radius:3px 0 0 3px;cursor:pointer;transition:width .15s,opacity .15s;opacity:.85}
-.pm-tag.active{width:22px;opacity:1;box-shadow:0 0 8px var(--pm-glow,rgba(255,255,255,.4))}
+#photo-save-btn{width:34px;height:34px;border-radius:9px;background:transparent!important;border:1.5px solid rgba(255,255,255,.09)!important;color:#888!important;display:grid;place-items:center;cursor:pointer;font-size:15px;transition:all .2s;clip-path:unset!important;-webkit-clip-path:unset!important;box-shadow:none!important}
+.pm-title{font-weight:900;font-size:20px;line-height:1.25;color:var(--text-primary);margin:0 0 4px;word-break:break-word}
+.pm-addr{font-size:11px;color:var(--text-secondary);line-height:1.4;margin:0 0 16px}
+.pm-fields{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.pm-input{width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);border-radius:10px;padding:11px 13px;color:var(--text-primary);font-size:12px;font-family:inherit;outline:none;transition:border-color .2s,background .2s,opacity .2s}
+.pm-input:focus{border-color:rgba(212,255,0,.3);background:rgba(255,255,255,.05)}
+.pm-input[readonly]{opacity:.5;cursor:default}
+.pm-input::placeholder{color:var(--text-muted)}
+.pm-textarea{min-height:56px;resize:none;line-height:1.5}
+.pm-actionrow{display:flex;gap:8px;margin-bottom:18px}
+.pm-mini-btn{width:38px;height:38px;border-radius:9px;background:rgba(255,255,255,.94);border:1.5px solid transparent;color:#111;display:grid;place-items:center;font-size:15px;cursor:pointer;transition:all .15s}
+.pm-mini-btn.active{border-color:var(--neon-green);box-shadow:0 0 10px rgba(212,255,0,.4)}
+.pm-mini-btn.on{color:var(--neon-green);border-color:var(--neon-green)}
+.pm-mini-btn.danger{color:#c02020}
+.pm-mini-btn:active{transform:scale(.88)}
+.pm-footer{display:flex;gap:10px;margin-top:2px}
+.pm-btn-secondary,.pm-btn-primary{flex:1;height:44px;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:filter .15s,transform .1s;background:#8a8a8a;color:#1a1a1a}
+.pm-btn-secondary:active,.pm-btn-primary:active{filter:brightness(.9);transform:scale(.98)}
 ::-webkit-scrollbar{width:3px;height:3px}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 @media (hover: hover) and (pointer: fine) {
@@ -457,9 +459,9 @@ button{cursor:pointer}
 .pick-close:hover{background:rgba(255,255,255,.18)}
 .pm-drag-handle:hover .pm-drag-bar{background:rgba(255,255,255,.32)}
 .pm-icon-btn:hover{background:rgba(255,255,255,.06)!important;border-color:rgba(255,255,255,.2)!important;color:var(--text)!important}
-.pm-close-btn:hover{color:var(--text)}
 #photo-save-btn:hover{background:rgba(255,255,255,.06)!important;border-color:rgba(255,255,255,.2)!important;color:var(--text)!important}
-.pm-tag:hover{width:18px;opacity:1}
+.pm-mini-btn:hover{filter:brightness(.94)}
+.pm-btn-secondary:hover,.pm-btn-primary:hover{filter:brightness(.95)}
 }
 </style>
 </head>
@@ -835,26 +837,32 @@ button{cursor:pointer}
     <div class="pm-drag-handle" id="pm-drag-handle"><span class="pm-drag-bar"></span></div>
 
     <div class="pm-head">
-      <span class="pm-sponsor">PATROCINADO</span>
       <div class="pm-icons">
-        <button class="pm-icon-btn vip" id="photo-vip-btn" title="VIP">𖣿</button>
+        <button class="pm-icon-btn vip" id="photo-vip-btn" title="Favorito">👑</button>
         <button id="photo-save-btn" title="Ver / guardar"><svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5C1 1.22386 1.22386 1 1.5 1H12.5C12.7761 1 13 1.22386 13 1.5V14.5C13 14.9319 12.4816 15.1512 12.1739 14.8492L7.34833 10.1129C7.1521 9.92064 6.8479 9.92064 6.65167 10.1129L1.82611 14.8492C1.51839 15.1512 1 14.9319 1 14.5V1.5Z" fill="currentColor" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg></button>
       </div>
     </div>
 
     <h2 class="pm-title" id="photo-name">Lugar</h2>
     <div class="pm-addr" id="photo-cat"></div>
-    <div class="pm-desc" id="photo-meta"></div>
 
-    <div class="pm-footer">
-      <div class="pm-active" id="pm-active">
-        <span class="pm-active-dot" id="pm-active-dot"></span>
-        <span class="pm-active-text" id="pm-active-text">SIN ETIQUETA · OFF</span>
-      </div>
-      <button id="pm-save-cta" class="disabled">GUARDAR</button>
+    <div class="pm-fields">
+      <input type="text" id="pm-field-title" class="pm-input" placeholder="Nombre del lugar" readonly/>
+      <textarea id="pm-field-notes" class="pm-input pm-textarea" placeholder="Notas..." readonly></textarea>
     </div>
 
-    <div class="pm-tags" id="photo-flags"></div>
+    <div class="pm-actionrow">
+      <button type="button" class="pm-mini-btn" id="pm-edit-btn" title="Editar">✎</button>
+      <button type="button" class="pm-mini-btn" id="pm-img-btn" title="Añadir imagen">🖼</button>
+      <button type="button" class="pm-mini-btn" id="pm-lock-btn" title="Privado">🔒</button>
+      <button type="button" class="pm-mini-btn danger" id="pm-del-btn" title="Eliminar">🗑</button>
+    </div>
+    <input type="file" id="pm-img-input" accept="image/*" multiple style="display:none"/>
+
+    <div class="pm-footer">
+      <button type="button" id="pm-cancel-btn" class="pm-btn-secondary">Cancelar</button>
+      <button type="button" id="pm-save-cta" class="pm-btn-primary">Guardar</button>
+    </div>
   </div>
 </div>
 
@@ -1358,7 +1366,7 @@ function renderAddrs() {
     const imgs = (p.media || []).slice(0, 4);
     const ir = imgs.length ? `<div class="pli-imgs">${imgs.map(m => `<div class="pli-img"><img src="${esc(m.url)}" alt=""/></div>`).join('')}</div>` : '';
     return `<div class="pli" data-id="${p.id}" style="border-left:3px solid ${p.color||'#d4ff00'}">
-      <div class="pli-top"><div class="pli-name">${esc(cl?.e||'')} ${esc(p.title)}</div><button class="pli-del" data-del="${p.id}">🗑</button></div>
+      <div class="pli-top"><div class="pli-name">${esc(cl?.e||'')} ${esc(p.title)}${p.private ? ' 🔒' : ''}</div><button class="pli-del" data-del="${p.id}">🗑</button></div>
       <div class="pli-sub">${esc(p.notes||'Sin comentario')}</div>
       <div class="pli-meta">${esc(p.createdAtLabel||'')}${p.source==='google'?' · Google Takeout':''}</div>
       ${ir}
@@ -1905,16 +1913,24 @@ function renderSaveMedia() {
   });
 }
 
+// Validación de archivos: tipo MIME permitido + límite de tamaño (10MB) para
+// evitar que localStorage se sature con blobs base64 excesivos.
+const MAX_FILE_BYTES = 10 * 1024 * 1024;
+function isSafeMediaFile(file) {
+  const okType = /^image\/(jpeg|png|webp|gif)$/.test(file.type) || /^video\/(mp4|webm|quicktime)$/.test(file.type);
+  return okType && file.size > 0 && file.size <= MAX_FILE_BYTES;
+}
+
 function handleFiles(files, store = false) {
   Array.from(files || []).forEach(file => {
-    const ok = file.type.startsWith('image/') || file.type.startsWith('video/');
-    if (!ok) return;
+    if (!isSafeMediaFile(file)) { toast('⚠ Archivo no admitido o muy pesado (máx. 10MB)'); return; }
     const r = new FileReader();
     r.onload = () => {
       const item = { id: crypto.randomUUID(), name: file.name, type: file.type, url: r.result, createdAt: new Date().toISOString() };
       if (store) { mediaStore.unshift(item); svl(SK.media, mediaStore); renderMediaGrid(); toast('✓ Archivo almacenado (cifrado)'); } 
       else { pendingMedia.push(item); renderSaveMedia(); }
     };
+    r.onerror = () => toast('⚠ No se pudo leer el archivo');
     r.readAsDataURL(file);
   });
 }
@@ -2170,7 +2186,7 @@ function pickToSave(classification) {
   openSaveModal(lng, lat, addr);
 }
 
-// ─── PHOTO MODAL HUD ───────────────────────────────────────────
+// ─── PHOTO MODAL HUD (tarjeta compacta) ─────────────────────────
 function findPlaceNear(lng, lat, tol = 0.0003) {
   return places.find(p => Math.abs(p.lng - lng) < tol && Math.abs(p.lat - lat) < tol) || null;
 }
@@ -2183,58 +2199,28 @@ function hexToRgb(hex) {
 }
 
 let pmCurrentClass = null;
-let pmTagColor = null;
-
-function renderPhotoFlags() {
-  const el = $('photo-flags');
-  if (!el) return;
-  el.innerHTML = COLORS.map(c => {
-    const isActive = pmTagColor === c.v;
-    return `<div class="pm-tag${isActive ? ' active' : ''}" data-color="${c.v}" style="background:${c.v};--pm-glow:${c.v}"></div>`;
-  }).join('');
-  el.querySelectorAll('.pm-tag[data-color]').forEach(t => t.addEventListener('click', () => photoSetTagColor(t.dataset.color)));
-}
-
-function photoSetTagColor(color) {
-  if (!photoPoint) return;
-  pmTagColor = pmTagColor === color ? null : color;
-  if (photoExistingId) {
-    const p = places.find(x => x.id === photoExistingId);
-    if (p) { p.tagColor = pmTagColor; saveAll(); renderAll(); }
-  } else {
-    pendingTagColor = pmTagColor;
-  }
-  renderPhotoFlags();
-}
+let pmEditable = false;
+let pmPrivate = false;
+let pmPendingMedia = [];
 
 function syncPhotoModalState() {
-  const dot = $('pm-active-dot');
-  const text = $('pm-active-text');
-  const cta = $('pm-save-cta');
   const saveBtn = $('photo-save-btn');
   const vipBtn = $('photo-vip-btn');
-  if (!dot || !text || !cta || !saveBtn || !vipBtn) return;
+  if (!saveBtn || !vipBtn) return;
 
   if (pmCurrentClass === 'save') {
     const m = CLASS_META.save;
     const [r,g,b] = hexToRgb(m.c);
     saveBtn.style.cssText = `background:rgba(${r},${g},${b},.1)!important;border:1.5px solid ${m.c}!important;color:${m.c}!important;box-shadow:0 0 10px rgba(${r},${g},${b},.4)!important`;
   } else {
-    saveBtn.style.cssText = 'background:transparent!important;border:1.5px solid rgba(255,255,255,.07)!important;color:#555!important;box-shadow:none!important';
+    saveBtn.style.cssText = 'background:transparent!important;border:1.5px solid rgba(255,255,255,.09)!important;color:#888!important;box-shadow:none!important';
   }
   vipBtn.classList.toggle('active', pmCurrentClass === 'flag');
 
-  if (pmCurrentClass) {
-    const m = CLASS_META[pmCurrentClass];
-    dot.style.background = m.c;
-    text.style.color = m.c;
-    text.textContent = m.l.toUpperCase();
-  } else {
-    dot.style.background = '#4a4d51';
-    text.style.color = '#4a4d51';
-    text.textContent = 'SIN ETIQUETA · OFF';
-  }
-  cta.classList.toggle('disabled', !pmCurrentClass);
+  $('pm-edit-btn')?.classList.toggle('active', pmEditable);
+  $('pm-field-title').readOnly = !pmEditable;
+  $('pm-field-notes').readOnly = !pmEditable;
+  $('pm-lock-btn')?.classList.toggle('on', pmPrivate);
 }
 
 function openPhotoModal(lng, lat, address = '', placeId = null) {
@@ -2245,17 +2231,20 @@ function openPhotoModal(lng, lat, address = '', placeId = null) {
   const name = existing?.title || (address ? address.split(',')[0].trim() : 'Lugar sin nombre');
   $('photo-name').textContent = name;
   $('photo-cat').textContent = address || 'Ubicación sin dirección';
-  $('photo-meta').textContent = existing?.notes || '';
+  $('pm-field-title').value = existing?.title || name || '';
+  $('pm-field-notes').value = existing?.notes || '';
   pmCurrentClass = existing?.classification || null;
-  pmTagColor = existing?.tagColor || null;
-  renderPhotoFlags();
+  pmEditable = false;
+  pmPrivate = existing?.private || false;
+  pmPendingMedia = [];
   syncPhotoModalState();
   $('photo-modal').classList.add('open');
 }
 
 function closePhotoModal() {
   $('photo-modal').classList.remove('open');
-  photoPoint = null; photoExistingId = null; pmCurrentClass = null; pmTagColor = null;
+  photoPoint = null; photoExistingId = null; pmCurrentClass = null;
+  pmEditable = false; pmPrivate = false; pmPendingMedia = [];
 }
 
 function initPhotoDragHandle() {
@@ -2309,13 +2298,69 @@ function photoSelectType(type) {
   syncPhotoModalState();
 }
 
-function photoToSave() {
-  if (!photoPoint) return;
-  if (photoExistingId) { openDetailModal(photoExistingId); closePhotoModal(); return; }
-  const { lng, lat } = photoPoint;
-  const addr = photoAddress;
+// Guarda cambios de la tarjeta compacta (título/notas/privado/medios)
+function pmSaveCard() {
+  if (!photoPoint) { closePhotoModal(); return; }
+  const title = ($('pm-field-title').value || '').trim() || (photoAddress.split(',')[0] || '').trim() || 'Lugar sin título';
+  const notes = ($('pm-field-notes').value || '').trim();
+
+  if (photoExistingId) {
+    const p = places.find(x => x.id === photoExistingId);
+    if (p) {
+      p.title = title;
+      p.notes = notes;
+      p.private = pmPrivate;
+      if (pmPendingMedia.length) p.media = [...(p.media || []), ...pmPendingMedia];
+      saveAll();
+      renderAll();
+      toast('✓ Cambios guardados');
+    }
+  } else {
+    const now = new Date().toISOString();
+    const item = {
+      id: crypto.randomUUID(),
+      title, notes,
+      lat: photoPoint.lat, lng: photoPoint.lng,
+      color: CLASS_META.save.c,
+      media: [...pmPendingMedia],
+      classification: pmCurrentClass || 'save',
+      vip: pmCurrentClass === 'flag',
+      private: pmPrivate,
+      createdAt: now,
+      createdAtLabel: fmtDate(now)
+    };
+    places.unshift(item);
+    saveAll();
+    renderAll();
+    clearSearchConfirmMarker();
+    addNotif(`Nueva ubicación: "${title}"`, CLASS_META[item.classification]?.e || '📍');
+    toast('✓ Lugar guardado');
+  }
+  vibra();
   closePhotoModal();
-  openSaveModal(lng, lat, addr);
+}
+
+function pmToggleEdit() {
+  pmEditable = !pmEditable;
+  syncPhotoModalState();
+  if (pmEditable) $('pm-field-title').focus();
+}
+
+function pmToggleLock() {
+  pmPrivate = !pmPrivate;
+  syncPhotoModalState();
+}
+
+function pmDeleteCard() {
+  if (photoExistingId) {
+    const id = photoExistingId;
+    closePhotoModal();
+    confirmDel(id);
+  } else {
+    closePhotoModal();
+    clearSearchConfirmMarker();
+    toast('Sin lugar guardado que eliminar');
+  }
 }
 
 // ─── ENCRYPT ────────────────────────────────────────────────────
@@ -2730,11 +2775,26 @@ function bindAll() {
     }
   });
 
-  // ─── PHOTO MODAL ───
+  // ─── PHOTO MODAL (tarjeta compacta) ───
   initPhotoDragHandle();
   $('photo-save-btn').addEventListener('click', () => photoSelectType('save'));
   $('photo-vip-btn').addEventListener('click', () => photoSelectType('flag'));
-  $('pm-save-cta').addEventListener('click', photoToSave);
+  $('pm-edit-btn').addEventListener('click', pmToggleEdit);
+  $('pm-lock-btn').addEventListener('click', pmToggleLock);
+  $('pm-del-btn').addEventListener('click', pmDeleteCard);
+  $('pm-img-btn').addEventListener('click', () => $('pm-img-input').click());
+  $('pm-img-input').addEventListener('change', (e) => {
+    Array.from(e.target.files || []).forEach(file => {
+      if (!isSafeMediaFile(file)) { toast('⚠ Imagen no admitida o muy pesada (máx. 10MB)'); return; }
+      const r = new FileReader();
+      r.onload = () => { pmPendingMedia.push({ id: crypto.randomUUID(), name: file.name, type: file.type, url: r.result, createdAt: new Date().toISOString() }); toast('✓ Imagen añadida'); };
+      r.onerror = () => toast('⚠ No se pudo leer la imagen');
+      r.readAsDataURL(file);
+    });
+    e.target.value = '';
+  });
+  $('pm-cancel-btn').addEventListener('click', closePhotoModal);
+  $('pm-save-cta').addEventListener('click', pmSaveCard);
   $('photo-modal').addEventListener('click', function(e) {
     if (e.target === this || e.target.id === 'photo-modal') {
       closePhotoModal();
@@ -2785,7 +2845,7 @@ function bindAll() {
   setSearchMode('address');
 
   // ─── FIX: teclado iOS tapa inputs en modales position:fixed ───
-  const keyboardSafeInputs = ['q-title', 'q-notes', 'q-label', 'q-hashtag', 'note-edit-title', 'note-edit-body', 'dm-title', 'dm-notes', 'fx-auth-pass', 'enc-key'];
+  const keyboardSafeInputs = ['q-title', 'q-notes', 'q-label', 'q-hashtag', 'note-edit-title', 'note-edit-body', 'dm-title', 'dm-notes', 'fx-auth-pass', 'enc-key', 'pm-field-title', 'pm-field-notes'];
   keyboardSafeInputs.forEach(id => {
     const el = $(id);
     if (!el) return;
