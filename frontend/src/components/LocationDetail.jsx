@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { X, MessageSquare, Tag, Image as ImageIcon, Sparkles, Loader2, Trash2 } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { X, MessageSquare, Tag, Image as ImageIcon, Sparkles, Loader2, Trash2, ChevronLeft, ChevronRight, Copy, Check } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'sonner';
 import { useDropzone } from 'react-dropzone';
@@ -7,13 +7,68 @@ import { useDropzone } from 'react-dropzone';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-const LocationDetail = ({ location, onClose, onUpdate }) => {
+const LocationDetail = ({ location, onClose, onUpdate, allLocations = [] }) => {
   const [activeTab, setActiveTab] = useState('info');
   const [comment, setComment] = useState('');
   const [tag, setTag] = useState('');
   const [analyzing, setAnalyzing] = useState(false);
   const [analysis, setAnalysis] = useState('');
   const [uploading, setUploading] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const dragRef = useRef(null);
+  const dragStart = useRef({ x: 0, y: 0 });
+
+  // Find current index and get nearby locations
+  const currentIndex = allLocations.findIndex(loc => loc.id === location.id);
+  const hasNext = currentIndex < allLocations.length - 1;
+  const hasPrev = currentIndex > 0;
+
+  // Handle dragging
+  const handleMouseDown = (e) => {
+    if (e.target.closest('.no-drag')) return;
+    setIsDragging(true);
+    dragStart.current = {
+      x: e.clientX - position.x,
+      y: e.clientY - position.y
+    };
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    setPosition({
+      x: e.clientX - dragStart.current.x,
+      y: e.clientY - dragStart.current.y
+    });
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  // Copy coordinates
+  const handleCopyCoordinates = () => {
+    const coords = `${location.latitude}, ${location.longitude}`;
+    navigator.clipboard.writeText(coords);
+    setCopied(true);
+    toast.success('Coordenadas copiadas');
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  // Navigate to next/previous location
+  const navigateLocation = (direction) => {
+    const newIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
+    if (newIndex >= 0 && newIndex < allLocations.length) {
+      onClose();
+      // Small delay to allow close animation
+      setTimeout(() => {
+        const newLocation = allLocations[newIndex];
+        // Trigger selection of new location (you'll need to pass this as a prop)
+        window.dispatchEvent(new CustomEvent('selectLocation', { detail: newLocation }));
+      }, 100);
+    }
+  };
 
   const onDrop = async (acceptedFiles) => {
     if (acceptedFiles.length === 0) return;
@@ -123,29 +178,93 @@ const LocationDetail = ({ location, onClose, onUpdate }) => {
   };
 
   return (
-    <div className="fixed right-4 top-4 w-96 max-h-[calc(100vh-2rem)] z-50 glass rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] overflow-hidden flex flex-col"
-         data-testid="location-detail-panel">
-      {/* Header */}
-      <div className="p-6 border-b border-white/10">
-        <div className="flex items-start justify-between mb-2">
-          <h2 className="text-2xl font-bold tracking-tight" data-testid="location-detail-name">
-            {location.name}
-          </h2>
+    <div 
+      ref={dragRef}
+      className="fixed z-50 glass rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] overflow-hidden flex flex-col"
+      style={{
+        width: '384px',
+        maxHeight: 'calc(100vh - 2rem)',
+        top: position.y ? `${position.y}px` : '1rem',
+        right: position.x ? 'auto' : '1rem',
+        left: position.x ? `${position.x}px` : 'auto',
+        cursor: isDragging ? 'grabbing' : 'default'
+      }}
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+      data-testid="location-detail-panel"
+    >
+      {/* Header - Draggable */}
+      <div className="p-6 border-b border-white/10 cursor-grab active:cursor-grabbing">
+        <div className="flex items-start justify-between mb-3">
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-2">
+              <h2 className="text-xl font-bold tracking-tight text-[#4ADE80]" data-testid="location-detail-title">
+                Dirección
+              </h2>
+              {copied ? (
+                <Check className="w-4 h-4 text-[#4ADE80]" />
+              ) : (
+                <Copy className="w-4 h-4 text-[#94A3B8] opacity-0 group-hover:opacity-100 transition-smooth" />
+              )}
+            </div>
+            <h3 className="text-lg font-semibold text-white mb-1" data-testid="location-detail-name">
+              {location.name}
+            </h3>
+            <button
+              onClick={handleCopyCoordinates}
+              onContextMenu={(e) => {
+                e.preventDefault();
+                handleCopyCoordinates();
+              }}
+              className="group text-left no-drag"
+            >
+              <p className="text-xs text-[#94A3B8] hover:text-[#4ADE80] transition-smooth" data-testid="location-detail-coords">
+                📍 CD: {location.latitude.toFixed(6)}, {location.longitude.toFixed(6)}
+              </p>
+              <p className="text-xs text-[#94A3B8] mt-1">
+                🏙️ Ciudad: {location.city || 'No especificada'}
+              </p>
+            </button>
+          </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-white/10 rounded-lg transition-smooth"
+            className="p-2 hover:bg-white/10 rounded-lg transition-smooth no-drag"
             data-testid="location-detail-close-button"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
-        <p className="text-xs text-[#94A3B8]" data-testid="location-detail-coords">
-          {location.latitude.toFixed(6)}, {location.longitude.toFixed(6)}
-        </p>
+
+        {/* Navigation arrows */}
+        <div className="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
+          <button
+            onClick={() => navigateLocation('prev')}
+            disabled={!hasPrev}
+            className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-smooth no-drag"
+            data-testid="prev-location-button"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            <span className="text-xs">Anterior</span>
+          </button>
+          <span className="text-xs text-[#94A3B8]">
+            {currentIndex + 1} de {allLocations.length}
+          </span>
+          <button
+            onClick={() => navigateLocation('next')}
+            disabled={!hasNext}
+            className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-smooth no-drag"
+            data-testid="next-location-button"
+          >
+            <span className="text-xs">Siguiente</span>
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-white/10 bg-white/5">
+      <div className="flex border-b border-white/10 bg-white/5 no-drag">
         {['info', 'images', 'ai'].map((tab) => (
           <button
             key={tab}
@@ -165,7 +284,7 @@ const LocationDetail = ({ location, onClose, onUpdate }) => {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto p-6" data-testid="location-detail-content">
+      <div className="flex-1 overflow-y-auto p-6 no-drag" data-testid="location-detail-content">
         {activeTab === 'info' && (
           <div className="space-y-6">
             {/* Tags */}
@@ -372,7 +491,7 @@ const LocationDetail = ({ location, onClose, onUpdate }) => {
       </div>
 
       {/* Footer */}
-      <div className="p-4 border-t border-white/10">
+      <div className="p-4 border-t border-white/10 no-drag">
         <button
           onClick={handleDeleteLocation}
           className="w-full py-2 px-4 rounded-xl bg-[#EF4444]/10 hover:bg-[#EF4444]/20 text-[#EF4444] font-medium text-sm transition-smooth flex items-center justify-center gap-2"

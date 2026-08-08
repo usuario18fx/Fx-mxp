@@ -145,6 +145,22 @@ const MapView = () => {
   // Load locations
   useEffect(() => {
     loadLocations();
+
+    // Listen for location selection events
+    const handleSelectLocation = (e) => {
+      setSelectedLocation(e.detail);
+      if (map.current && e.detail) {
+        map.current.flyTo({
+          center: [e.detail.longitude, e.detail.latitude],
+          zoom: 15,
+          pitch: 60,
+          duration: 2000
+        });
+      }
+    };
+
+    window.addEventListener('selectLocation', handleSelectLocation);
+    return () => window.removeEventListener('selectLocation', handleSelectLocation);
   }, []);
 
   // Update markers when locations change
@@ -235,6 +251,7 @@ const MapView = () => {
       {selectedLocation && (
         <LocationDetail
           location={selectedLocation}
+          allLocations={locations}
           onClose={() => setSelectedLocation(null)}
           onUpdate={loadLocations}
         />

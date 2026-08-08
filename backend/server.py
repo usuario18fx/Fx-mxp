@@ -99,6 +99,7 @@ class Location(BaseModel):
     name: str
     latitude: float
     longitude: float
+    city: Optional[str] = None
     comments: List[Comment] = []
     tags: List[str] = []
     images: List[LocationImage] = []
@@ -109,6 +110,7 @@ class LocationCreate(BaseModel):
     name: str
     latitude: float
     longitude: float
+    city: Optional[str] = None
 
 class CommentCreate(BaseModel):
     text: str
