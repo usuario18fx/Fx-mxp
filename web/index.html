@@ -358,78 +358,59 @@ button{cursor:pointer}
 .color-tile{width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.06);cursor:pointer;transition:all .3s ease}
 .color-tile.active{border-color:var(--neon-green);transform:scale(1.15);box-shadow:0 0 20px rgba(212,255,0,.1)}
 /* PICK MODAL */
-.pm-neon.pm-overlay {
-  position: fixed; inset: 0; z-index: 9999;
-  display: grid; place-items: center;
-  background: radial-gradient(circle at center, #000000cc, #000000f2);
-  backdrop-filter: blur(6px);
-}
-.pm-box-neon {
-  position: relative;
-  width: min(520px, calc(100% - 1.5rem));
-  background: linear-gradient(180deg, #050505 0%, #0a0a0a 100%);
-  border: 1px solid #d4ff0040;
-  border-radius: 10px;
-  padding: clamp(1.25rem, 2vw, 1.5rem);
-  font-family: "JetBrains Mono","Courier New",ui-monospace,monospace;
-  color: #fff;
-  box-shadow: 0 0 0 1px #d4ff0014 inset,
-              0 20px 80px -20px #d4ff0040,
-              0 0 60px -20px #d4ff0026;
-}
-.pm-box-neon::before {
-  content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
-  background: radial-gradient(circle at top right, #d4ff0014, transparent 70%),
-              repeating-linear-gradient(0deg,#ffffff0d 0 1px,transparent 1px 3px);
-  opacity:.25; mix-blend-mode:screen;
-}
-.pm-box-neon .pm-tag {
-  font-size:.65rem; letter-spacing:.16em; text-transform:uppercase;
-  color:#d4ff00; text-shadow:0 0 20px #d4ff0059;
-}
-.pm-box-neon .pm-title { margin:.35rem 0 0; font-size:1.15rem; letter-spacing:.04em; }
-.pm-box-neon .pm-addr { font-size:.75rem; color:rgba(255,255,255,.55); margin-top:.15rem; }
-.pm-box-neon .pm-label {
-  font-size:.65rem; text-transform:uppercase; letter-spacing:.12em;
-  color:rgba(212,255,0,.85); margin:.85rem 0 .35rem; display:block;
-}
-.pm-box-neon .pm-input {
-  width:100%; padding:.7rem .85rem; border-radius:8px;
-  background:rgba(0,0,0,.55); border:1px solid rgba(255,255,255,.12);
-  color:#fff; font:inherit; font-size:.85rem; outline:none;
-  transition:border .15s ease, box-shadow .15s ease;
-}
-.pm-box-neon .pm-input::placeholder { color:rgba(255,255,255,.35); }
-.pm-box-neon .pm-input:focus:not([readonly]) {
-  border-color:rgba(212,255,0,.45);
-  box-shadow:0 0 0 3px rgba(212,255,0,.12);
-}
-.pm-box-neon .pm-input[readonly] { opacity:.85; cursor:default; }
-.pm-box-neon .pm-textarea { min-height:90px; resize:vertical; }
-.pm-box-neon .pm-mini-btn {
-  height:2rem; width:2rem; display:grid; place-items:center;
-  border-radius:8px; border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.05); color:#fff; cursor:pointer;
-  transition:.15s ease; font-size:.9rem;
-}
-.pm-box-neon .pm-mini-btn:hover { border-color:rgba(212,255,0,.45); background:rgba(212,255,0,.12); color:#d4ff00; }
-.pm-box-neon .pm-mini-btn.danger:hover { border-color:rgba(255,71,87,.55); background:rgba(255,71,87,.15); color:#ffb3b8; }
-.pm-box-neon .pm-btn-primary {
-  border:1px solid rgba(212,255,0,.45);
-  background:linear-gradient(180deg,rgba(212,255,0,.18),rgba(212,255,0,.12));
-  color:#d4ff00; box-shadow:0 0 20px -10px rgba(212,255,0,.25) inset;
-}
-.pm-box-neon .pm-btn-secondary {
-  border:1px solid rgba(255,255,255,.15);
-  background:rgba(255,255,255,.05); color:rgba(255,255,255,.85);
-}
-.pm-box-neon .pm-close {
-  position:absolute; top:.65rem; right:.65rem; height:1.9rem; width:1.9rem;
-  border:1px solid rgba(255,255,255,.12); border-radius:6px;
-  background:rgba(255,255,255,.05); color:rgba(255,255,255,.7); cursor:pointer;
-}
-.pm-box-neon .pm-close:hover { color:#d4ff00; border-color:rgba(212,255,0,.4); background:rgba(212,255,0,.12); }
-/*____________________________________________________________*/
+#pick-modal{position:fixed;inset:0;z-index:205;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.55);backdrop-filter:blur(8px)}
+#pick-modal.open{display:flex}
+.pick-box{width:100%;max-width:520px;padding:18px 18px calc(18px + var(--safe-bottom));border-radius:22px 22px 0 0;background:rgba(9,9,9,.96);border-top:1px solid var(--border);box-shadow:0 -18px 45px rgba(0,0,0,.5);position:relative}
+.pick-box::before{content:'';display:block;width:38px;height:4px;border-radius:999px;background:rgba(255,255,255,.18);margin:0 auto 14px}
+.pick-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.pick-marker{width:30px;height:30px;border-radius:50%;background:rgba(212,255,0,.14);border:1px solid rgba(212,255,0,.4);display:grid;place-items:center;font-size:15px;flex:0 0 auto;margin-top:2px}
+.pick-name{font-size:16px;font-weight:900;color:var(--text);line-height:1.3}
+.pick-addr{font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.5}
+.pick-coords{font-size:9px;color:var(--text-muted);margin-top:6px;font-family:monospace;letter-spacing:.03em}
+.pick-close{width:38px;height:38px;border-radius:50%;border:none;background:rgba(255,255,255,.1);color:var(--text);font-size:16px;display:grid;place-items:center;cursor:pointer;flex:0 0 auto;transition:background .2s}
+.pick-loading{display:flex;align-items:center;gap:8px;color:var(--neon-green);font-size:11px;font-weight:700;margin-top:4px}
+.pick-flags{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin-top:16px}
+.pick-flag{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:4px;padding:6px 2px;border-radius:12px;border:none;background:transparent;cursor:pointer;transition:transform .12s}
+.pick-flag:active{transform:scale(.88)}
+.pick-flag .flagico{width:26px;height:32px;line-height:1;filter:drop-shadow(0 3px 6px rgba(0,0,0,.45));clip-path:polygon(0 0,100% 0,100% 100%,50% 78%,0 100%);transition:transform .12s}
+.pick-flag.sel .flagico{outline:2.5px solid var(--neon-green);outline-offset:2px;filter:drop-shadow(0 0 10px rgba(212,255,0,.4))}
+.pick-flag.sel .flaglbl{color:var(--neon-green)}
+.pick-flag:active .flagico{transform:scale(.88)}
+.pick-flag .flaglbl{font-size:8px;font-weight:800;color:var(--text-muted);letter-spacing:.02em;text-align:center}
+/* PHOTO MODAL — HUD DESIGN */
+#photo-modal{position:fixed;inset:0;z-index:206;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.65);backdrop-filter:blur(10px)}
+#photo-modal.open{display:flex}
+.photo-box{position:relative;width:min(420px,92vw);padding:30px 20px 20px 20px;box-sizing:border-box;background:rgba(9,9,9,.98);border-radius:10px;border:1px solid rgba(212,255,0,.12)}
+.pm-drag-handle{position:absolute;top:0;left:0;right:0;height:22px;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;cursor:grab;touch-action:none;user-select:none}
+.pm-drag-handle:active{cursor:grabbing}
+.pm-drag-bar{width:36px;height:4px;border-radius:3px;background:rgba(255,255,255,.18);transition:background .15s}
+.pm-corner{position:absolute;width:18px;height:18px;border-color:var(--neon-green);pointer-events:none;z-index:2}
+.pm-corner.tl{top:-1px;left:-1px;border-top:2px solid;border-left:2px solid;border-radius:10px 0 0 0}
+.pm-corner.tr{top:-1px;right:-1px;border-top:2px solid;border-right:2px solid;border-radius:0 10px 0 0}
+.pm-corner.bl{bottom:-1px;left:-1px;border-bottom:2px solid;border-left:2px solid;border-radius:0 0 0 10px}
+.pm-corner.br{bottom:-1px;right:-1px;border-bottom:2px solid;border-right:2px solid;border-radius:0 0 10px 0}
+.pm-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.pm-sponsor{font-size:10px;letter-spacing:.16em;color:var(--text-muted);font-weight:700;text-transform:uppercase}
+.pm-icons{display:flex;gap:7px;align-items:center;margin-right:14px}
+.pm-icon-btn{width:32px;height:32px;border-radius:8px;background:transparent!important;border:1.5px solid rgba(255,255,255,.07)!important;color:#555!important;display:grid;place-items:center;cursor:pointer;font-size:14px;transition:all .2s;box-shadow:none!important}
+.pm-icon-btn.active{color:#ffe760!important;border-color:rgba(255,231,96,.5)!important;background:rgba(255,231,96,.08)!important}
+.pm-close-btn{width:32px;height:32px;border-radius:8px;background:transparent;border:none;color:var(--text-muted);display:grid;place-items:center;cursor:pointer;font-size:16px;transition:color .2s}
+#photo-save-btn{width:32px;height:32px;border-radius:8px;background:transparent!important;border:1.5px solid rgba(255,255,255,.07)!important;color:#555!important;display:grid;place-items:center;cursor:pointer;font-size:14px;transition:all .2s;clip-path:unset!important;-webkit-clip-path:unset!important;box-shadow:none!important}
+.pm-title{font-weight:900;font-size:20px;line-height:1.25;color:var(--text-primary);margin:0 0 4px;word-break:break-word;padding-right:34px}
+.pm-addr{font-size:11px;color:var(--text-secondary);line-height:1.4;margin:0 0 6px;padding-right:34px}
+.pm-desc{font-size:10px;color:var(--text-muted);line-height:1.5;margin:0 0 16px;padding-right:34px}
+.pm-footer{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:4px;padding-right:38px}
+.pm-active{display:flex;align-items:center;gap:6px}
+.pm-active-dot{width:7px;height:7px;border-radius:50%;flex:0 0 auto;background:#4a4d51}
+.pm-active-text{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#4a4d51}
+#pm-save-cta{padding:7px 16px;border-radius:6px;border:none;cursor:pointer;background:var(--neon-green);box-shadow:0 1px 0 rgba(255,255,255,.35) inset,0 3px 0 #86a300,0 4px 6px rgba(0,0,0,.5);font-weight:900;font-size:10px;color:#060606;letter-spacing:.12em;text-transform:uppercase;transform:translateY(0);transition:transform .08s,box-shadow .08s,opacity .2s;flex:0 0 auto}
+#pm-save-cta:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(255,255,255,.25) inset,0 0 0 #86a300,0 1px 2px rgba(0,0,0,.4)}
+#pm-save-cta.disabled{opacity:.35;pointer-events:none;background:#3a3a3a;color:#1a1a1a;box-shadow:none}
+.pm-tags{position:absolute;top:68px;right:14px;display:flex;flex-direction:column;gap:6px}
+.pm-tag{height:24px;width:12px;border-radius:3px 0 0 3px;cursor:pointer;transition:width .15s,opacity .15s;opacity:.85}
+.pm-tag.active{width:22px;opacity:1;box-shadow:0 0 8px var(--pm-glow,rgba(255,255,255,.4))}
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 @media (hover: hover) and (pointer: fine) {
 .brand-pill-bl:hover{background:linear-gradient(180deg,rgba(212,255,0,.16),rgba(9,9,9,.96));box-shadow:0 4px 22px rgba(0,0,0,.55),0 0 34px rgba(212,255,0,.14),inset 0 1px 0 rgba(255,255,255,.08)}
 .rc-btn:hover{color:var(--neon-green);background:rgba(212,255,0,.1)}
@@ -476,11 +457,143 @@ button{cursor:pointer}
 .pick-close:hover{background:rgba(255,255,255,.18)}
 .pm-drag-handle:hover .pm-drag-bar{background:rgba(255,255,255,.32)}
 .pm-icon-btn:hover{background:rgba(255,255,255,.06)!important;border-color:rgba(255,255,255,.2)!important;color:var(--text)!important}
+.pm-close-btn:hover{color:var(--text)}
 #photo-save-btn:hover{background:rgba(255,255,255,.06)!important;border-color:rgba(255,255,255,.2)!important;color:var(--text)!important}
-.pm-mini-btn:hover{filter:brightness(.94)}
-.pm-btn-secondary:hover,.pm-btn-primary:hover{filter:brightness(.95)}
+.pm-tag:hover{width:18px;opacity:1}
+}
+/* ═══════════════════════════════════════════════════════════
+   DETAIL PANEL — paleta "Jewel & Tactical" escopada (dm-*)
+   No toca las variables globales del resto de la app.
+   ═══════════════════════════════════════════════════════════ */
+.dm-root{
+  --dmbg:#07090F; --dmsurf:#131620; --dmglass:rgba(19,22,32,.72);
+  --dmborder:rgba(255,255,255,.09); --dmtxt:#ffffff; --dmtxt2:#94A3B8;
+  --dmgreen:#4ADE80; --dmamber:#F59E0B; --dmred:#EF4444;
+  position:fixed;inset:0;z-index:205;display:none;
+}
+.dm-root.open{display:block}
+.dm-panel{
+  position:fixed;top:1rem;right:1rem;width:min(384px,92vw);
+  max-height:calc(100vh - 2rem);display:flex;flex-direction:column;
+  background:var(--dmglass);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border:1px solid var(--dmborder);border-radius:18px;
+  box-shadow:0 8px 32px rgba(0,0,0,.5);overflow:hidden;
+  font-family:'IBM Plex Sans',var(--font-body,sans-serif);
+  touch-action:none;
+}
+.dm-header{padding:20px;border-bottom:1px solid var(--dmborder);cursor:grab}
+.dm-header.dragging{cursor:grabbing}
+.dm-header-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.dm-eyebrow-row{display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:6px;width:fit-content}
+.dm-eyebrow{font-family:'Chivo',var(--font-display,sans-serif);font-weight:800;font-size:17px;letter-spacing:-.01em;color:var(--dmgreen)}
+.dm-copy-icon{width:14px;height:14px;color:var(--dmtxt2);opacity:0;transition:opacity .2s}
+.dm-eyebrow-row:hover .dm-copy-icon{opacity:1}
+.dm-check-icon{width:14px;height:14px;color:var(--dmgreen);display:none}
+.dm-check-icon.show{display:block}
+.dm-check-icon.show ~ .dm-copy-icon{display:none}
+.dm-name-input{
+  width:100%;background:transparent;border:none;outline:none;
+  font-family:'Chivo',sans-serif;font-weight:600;font-size:16px;color:var(--dmtxt);
+  padding:2px 0 6px;margin-bottom:2px;
+}
+.dm-name-input::placeholder{color:var(--dmtxt2)}
+.dm-coords-line,.dm-city-line{font-size:11px;color:var(--dmtxt2);line-height:1.6}
+.dm-coords-line{cursor:pointer;transition:color .15s}
+.dm-coords-line:hover{color:var(--dmgreen)}
+.dm-close-btn{
+  width:32px;height:32px;border-radius:9px;background:transparent;border:none;
+  color:var(--dmtxt2);font-size:15px;cursor:pointer;flex:0 0 auto;transition:background .15s;
+}
+.dm-close-btn:hover{background:rgba(255,255,255,.1);color:var(--dmtxt)}
+.dm-nav-row{display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:14px;border-top:1px solid var(--dmborder)}
+.dm-nav-btn{
+  display:flex;align-items:center;gap:5px;padding:7px 11px;border-radius:9px;
+  background:rgba(255,255,255,.05);border:none;color:var(--dmtxt);font-size:11px;cursor:pointer;transition:background .15s;
+}
+.dm-nav-btn:hover{background:rgba(255,255,255,.1)}
+.dm-nav-btn:disabled{opacity:.3;cursor:not-allowed;pointer-events:none}
+.dm-nav-count{font-size:10px;color:var(--dmtxt2)}
+
+.dm-tabs{display:flex;border-bottom:1px solid var(--dmborder);background:rgba(255,255,255,.03)}
+.dm-tab{
+  flex:1;padding:11px 4px;font-size:12px;font-weight:600;cursor:pointer;
+  background:none;border:none;color:var(--dmtxt2);border-bottom:2px solid transparent;transition:all .15s;
+}
+.dm-tab.active{color:var(--dmgreen);border-bottom-color:var(--dmgreen)}
+.dm-tab:hover:not(.active){color:var(--dmtxt)}
+
+.dm-content{flex:1;overflow-y:auto;padding:18px}
+.dm-pane{display:none}
+.dm-pane.active{display:block}
+
+.dm-label{font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--dmtxt2);display:block;margin-bottom:10px}
+.dm-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px}
+.dm-tag-chip{
+  display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:7px;
+  background:rgba(255,255,255,.08);color:rgba(255,255,255,.85);font-family:'JetBrains Mono',monospace;font-size:11px;
+}
+.dm-tag-chip button{background:none;border:none;color:inherit;cursor:pointer;opacity:.5;font-size:11px;line-height:1;padding:0}
+.dm-tag-chip button:hover{opacity:1;color:var(--dmred)}
+.dm-empty-msg{font-size:12px;color:var(--dmtxt2);text-align:center;padding:14px 0}
+
+.dm-row{display:flex;gap:8px}
+.dm-input{
+  flex:1;min-width:0;padding:9px 11px;border-radius:10px;
+  background:rgba(255,255,255,.05);border:1px solid var(--dmborder);color:var(--dmtxt);
+  font-size:12px;outline:none;transition:border-color .15s;
+}
+.dm-input:focus{border-color:var(--dmgreen)}
+.dm-input::placeholder{color:var(--dmtxt2)}
+.dm-icon-action{
+  width:38px;height:38px;flex:0 0 auto;border-radius:10px;border:none;cursor:pointer;
+  background:var(--dmgreen);color:#07090F;font-size:15px;display:grid;place-items:center;transition:opacity .15s;
+}
+.dm-icon-action:hover{opacity:.85}
+
+.dm-comments{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;max-height:180px;overflow-y:auto}
+.dm-comment{padding:10px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid var(--dmborder)}
+.dm-comment p{font-size:12px;color:var(--dmtxt);line-height:1.5;margin-bottom:6px}
+.dm-comment-meta{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--dmtxt2)}
+
+.dm-dropzone{
+  border:2px dashed var(--dmborder);border-radius:14px;padding:30px 14px;text-align:center;
+  cursor:pointer;transition:all .15s;margin-bottom:14px;
+}
+.dm-dropzone.drag-active{border-color:var(--dmgreen);background:rgba(74,222,128,.08)}
+.dm-dropzone-icon{font-size:34px;margin-bottom:8px;opacity:.7}
+.dm-dropzone-text{font-size:11px;color:var(--dmtxt2)}
+.dm-images-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.dm-image-item{aspect-ratio:1;border-radius:11px;overflow:hidden;background:rgba(255,255,255,.05);border:1px solid var(--dmborder);position:relative;cursor:pointer}
+.dm-image-item img{width:100%;height:100%;object-fit:cover}
+
+.dm-ai-empty{text-align:center;padding:26px 10px}
+.dm-ai-icon{font-size:34px;margin-bottom:12px}
+.dm-ai-empty p{font-size:12px;color:var(--dmtxt2);margin-bottom:16px;line-height:1.5}
+.dm-ai-btn{
+  padding:10px 22px;border-radius:10px;border:none;cursor:pointer;
+  background:var(--dmamber);color:#fff;font-weight:700;font-size:12px;display:inline-flex;align-items:center;gap:8px;transition:opacity .15s;
+}
+.dm-ai-btn:hover{opacity:.9}
+.dm-ai-btn:disabled{opacity:.5;cursor:wait}
+.dm-ai-card{padding:14px;border-radius:12px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);margin-bottom:12px}
+.dm-ai-card-head{display:flex;align-items:center;gap:7px;font-weight:700;font-size:12px;margin-bottom:8px;color:var(--dmtxt)}
+.dm-ai-card p{font-size:12px;color:rgba(255,255,255,.9);line-height:1.6;white-space:pre-wrap}
+.dm-ai-clear-btn{width:100%;padding:9px;border-radius:10px;background:rgba(255,255,255,.05);border:none;color:var(--dmtxt2);font-size:11px;cursor:pointer}
+.dm-ai-clear-btn:hover{background:rgba(255,255,255,.1)}
+
+.dm-footer{padding:14px 18px;border-top:1px solid var(--dmborder)}
+.dm-delete-btn{
+  width:100%;padding:10px;border-radius:10px;cursor:pointer;
+  background:rgba(239,68,68,.1);border:none;color:var(--dmred);font-weight:600;font-size:12px;
+  display:flex;align-items:center;justify-content:center;gap:7px;transition:background .15s;
+}
+.dm-delete-btn:hover{background:rgba(239,68,68,.2)}
+
+@media (max-width:480px){
+  .dm-panel{top:0;right:0;left:0;width:100%;max-height:88dvh;max-height:88vh;border-radius:18px 18px 0 0;bottom:0;position:fixed;top:auto}
 }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 </head>
 <body>
 
@@ -506,6 +619,9 @@ button{cursor:pointer}
 
 <!-- ─── RIGHT COL ─── -->
 <div id="right-col">
+  <button class="rc-btn" id="fx-auth-chip" onclick="showAuthMenu()" title="Cuenta" style="flex-direction:column;gap:1px;font-size:10px;line-height:1;padding:4px 0">
+    <span style="font-size:12px">☁</span><span style="font-size:9px">LOGIN</span>
+  </button>
   <button class="rc-btn danger" id="btn-enc" title="Cifrado">⛓︎<div class="rc-badge" id="enc-badge" style="display:none">E</div></button>
   <button class="rc-btn" id="btn-refresh" title="Actualizar">⇄</button>
   <button class="rc-btn" id="btn-notif" title="Notificaciones">✉<div class="rc-badge" id="notif-badge" style="display:none">0</div></button>
@@ -792,31 +908,92 @@ button{cursor:pointer}
 </div>
 
 <!-- ─── DETAIL MODAL ─── -->
-<div id="detail-modal" style="position:fixed;inset:0;z-index:205;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.72);backdrop-filter:blur(12px)">
-  <div style="width:min(400px,92vw);max-height:85dvh;max-height:85vh;overflow-y:auto;background:rgba(9,9,9,.98);border-radius:14px;border:1.5px solid rgba(212,255,0,.18);padding:18px;box-sizing:border-box">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px">
-      <input type="text" id="dm-title" style="flex:1;min-width:0;background:transparent;border:none;border-bottom:1px solid rgba(212,255,0,.15);color:var(--text-primary);font-size:17px;font-weight:900;padding:4px 0"/>
-      <button id="dm-close" style="width:30px;height:30px;border-radius:8px;background:transparent;border:none;color:var(--text-muted);font-size:16px;cursor:pointer;flex:0 0 auto">✕</button>
-    </div>
-    <div id="dm-addr" style="font-size:11px;color:var(--text-secondary);margin-bottom:12px;line-height:1.4"></div>
+<div id="detail-modal" class="dm-root">
+  <div id="dm-panel" class="dm-panel">
 
-    <div id="dm-media" style="display:flex;gap:6px;overflow-x:auto;margin-bottom:12px"></div>
-
-    <textarea id="dm-notes" placeholder="Notas..." style="width:100%;min-height:70px;background:rgba(255,255,255,.03);border:1px solid rgba(212,255,0,.1);border-radius:8px;padding:9px 11px;color:var(--text-secondary);font-size:11px;line-height:1.5;resize:vertical;box-sizing:border-box;font-family:inherit;margin-bottom:12px"></textarea>
-
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-      <div style="display:flex;gap:8px;align-items:center">
-        <button id="dm-vip-btn" class="pm-icon-btn vip" title="VIP">𖣿</button>
-        <button id="dm-flag-btn" style="width:32px;height:32px;border-radius:8px;background:transparent;border:1.5px solid rgba(255,255,255,.07);color:#555;display:grid;place-items:center;cursor:pointer;position:relative" title="Bandera">◆</button>
+    <!-- Header (arrastrable) -->
+    <div class="dm-header" id="dm-header">
+      <div class="dm-header-top">
+        <div style="flex:1;min-width:0">
+          <div class="dm-eyebrow-row no-drag" id="dm-coords-btn" title="Copiar coordenadas">
+            <span class="dm-eyebrow">Dirección</span>
+            <svg class="dm-copy-icon" id="dm-copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+            <svg class="dm-check-icon" id="dm-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+          </div>
+          <input type="text" id="dm-title" class="dm-name-input no-drag" placeholder="Nombre del lugar"/>
+          <div class="dm-coords-line no-drag" id="dm-coords-line">📍 CD: —</div>
+          <div class="dm-city-line no-drag">🏙️ Ciudad: <span id="dm-city">No especificada</span></div>
+        </div>
+        <button id="dm-close" class="dm-close-btn no-drag">✕</button>
       </div>
-      <span id="dm-dist" style="font-size:10px;color:var(--text-muted)"></span>
+
+      <div class="dm-nav-row no-drag">
+        <button id="dm-prev" class="dm-nav-btn">‹ Anterior</button>
+        <span class="dm-nav-count" id="dm-nav-count">1 de 1</span>
+        <button id="dm-next" class="dm-nav-btn">Siguiente ›</button>
+      </div>
     </div>
 
-    <div style="display:flex;gap:8px">
-      <button id="dm-flyto" class="btn-dim" style="flex:1;margin-top:0">📍 Ver en mapa</button>
-      <button id="dm-save" class="btn-full" style="flex:1">Guardar cambios</button>
+    <!-- Tabs -->
+    <div class="dm-tabs no-drag">
+      <button class="dm-tab active" data-tab="info">Info</button>
+      <button class="dm-tab" data-tab="images">Imágenes</button>
+      <button class="dm-tab" data-tab="ai">IA</button>
     </div>
-    <button id="dm-delete" style="width:100%;margin-top:8px;background:rgba(255,59,59,.08);border:1px solid rgba(255,59,59,.25);color:var(--red);border-radius:10px;padding:9px;font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">🗑 Eliminar lugar</button>
+
+    <!-- Content -->
+    <div class="dm-content no-drag" id="dm-content">
+
+      <!-- ── TAB INFO ── -->
+      <div class="dm-pane active" id="dm-pane-info">
+        <label class="dm-label">Etiquetas</label>
+        <div class="dm-tags" id="dm-tags"></div>
+        <div class="dm-row">
+          <input type="text" id="dm-tag-input" class="dm-input" placeholder="Nueva etiqueta"/>
+          <button id="dm-tag-add" class="dm-icon-action">🏷</button>
+        </div>
+
+        <label class="dm-label" style="margin-top:20px">Comentarios</label>
+        <div class="dm-comments" id="dm-comments"></div>
+        <div class="dm-row">
+          <input type="text" id="dm-comment-input" class="dm-input" placeholder="Nuevo comentario"/>
+          <button id="dm-comment-add" class="dm-icon-action">💬</button>
+        </div>
+      </div>
+
+      <!-- ── TAB IMÁGENES ── -->
+      <div class="dm-pane" id="dm-pane-images">
+        <div class="dm-dropzone" id="dm-dropzone">
+          <input type="file" id="dm-file-input" accept="image/*" style="display:none"/>
+          <div class="dm-dropzone-icon" id="dm-dropzone-icon">🖼</div>
+          <p class="dm-dropzone-text" id="dm-dropzone-text">Arrastra una imagen o toca para seleccionar</p>
+        </div>
+        <div class="dm-images-grid" id="dm-images-grid"></div>
+      </div>
+
+      <!-- ── TAB IA ── -->
+      <div class="dm-pane" id="dm-pane-ai">
+        <div id="dm-ai-empty" class="dm-ai-empty">
+          <div class="dm-ai-icon">✨</div>
+          <p>Analiza esta ubicación con IA para encontrar relaciones y patrones</p>
+          <button id="dm-ai-analyze" class="dm-ai-btn">Analizar con IA</button>
+        </div>
+        <div id="dm-ai-result" class="dm-ai-result" style="display:none">
+          <div class="dm-ai-card">
+            <div class="dm-ai-card-head">✨ Análisis IA</div>
+            <p id="dm-ai-text"></p>
+          </div>
+          <button id="dm-ai-clear" class="dm-ai-clear-btn">Limpiar análisis</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="dm-footer no-drag">
+      <button id="dm-delete" class="dm-delete-btn">🗑 Eliminar ubicación</button>
+    </div>
+
   </div>
 </div>
 
@@ -844,52 +1021,41 @@ button{cursor:pointer}
 </div>
 
 <!-- ─── PHOTO MODAL HUD ─── -->
-<div id="photo-modal" class="pm-overlay pm-neon">
-  <div class="photo-box pm-box-neon" id="pm-box">
-    <button type="button" class="pm-close" aria-label="Cerrar">×</button>
+<div id="photo-modal">
+  <div class="photo-box" id="pm-box">
+    <span class="pm-corner tl"></span>
+    <span class="pm-corner tr"></span>
+    <span class="pm-corner bl"></span>
+    <span class="pm-corner br"></span>
 
-    <header class="pm-head">
-      <span class="pm-tag">SMKL // LOCATION</span>
-      <h2 class="pm-title" id="photo-name">Lugar</h2>
-      <div class="pm-addr" id="photo-cat">Categoría · Dirección</div>
-    </header>
+    <div class="pm-drag-handle" id="pm-drag-handle"><span class="pm-drag-bar"></span></div>
 
-    <div class="pm-fields">
-      <label class="pm-label">Nombre</label>
-      <input type="text" id="pm-field-title" class="pm-input" placeholder="Nombre del lugar" readonly>
-
-      <label class="pm-label">Dirección</label>
-      <input type="text" id="pm-field-address" class="pm-input" placeholder="Dirección" readonly>
-
-      <label class="pm-label">Categoría</label>
-      <input type="text" id="pm-field-cat" class="pm-input" placeholder="Categoría" readonly>
-
-      <label class="pm-label">Notas</label>
-      <textarea id="pm-field-notes" class="pm-input pm-textarea" placeholder="Notas..." readonly></textarea>
+    <div class="pm-head">
+      <span class="pm-sponsor">PATROCINADO</span>
+      <div class="pm-icons">
+        <button class="pm-icon-btn vip" id="photo-vip-btn" title="VIP">𖣿</button>
+        <button id="photo-save-btn" title="Ver / guardar"><svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5C1 1.22386 1.22386 1 1.5 1H12.5C12.7761 1 13 1.22386 13 1.5V14.5C13 14.9319 12.4816 15.1512 12.1739 14.8492L7.34833 10.1129C7.1521 9.92064 6.8479 9.92064 6.65167 10.1129L1.82611 14.8492C1.51839 15.1512 1 14.9319 1 14.5V1.5Z" fill="currentColor" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg></button>
+      </div>
     </div>
 
-    <div class="pm-actionrow">
-      <button type="button" class="pm-mini-btn" id="pm-edit-btn" title="Editar">✎</button>
-      <button type="button" class="pm-mini-btn" id="pm-img-btn" title="Añadir imagen">+</button>
-      <button type="button" class="pm-mini-btn" id="pm-lock-btn" title="Privado">🔒</button>
-      <button type="button" class="pm-mini-btn danger" id="pm-del-btn" title="Eliminar">✕</button>
-    </div>
+    <h2 class="pm-title" id="photo-name">Lugar</h2>
+    <div class="pm-addr" id="photo-cat"></div>
+    <div class="pm-desc" id="photo-meta"></div>
 
     <div class="pm-footer">
-      <button type="button" id="pm-cancel-btn" class="pm-btn pm-btn-secondary">Cancelar</button>
-      <button type="button" id="pm-save-cta" class="pm-btn pm-btn-primary">Guardar</button>
+      <div class="pm-active" id="pm-active">
+        <span class="pm-active-dot" id="pm-active-dot"></span>
+        <span class="pm-active-text" id="pm-active-text">SIN ETIQUETA · OFF</span>
+      </div>
+      <button id="pm-save-cta" class="disabled">GUARDAR</button>
     </div>
+
+    <div class="pm-tags" id="photo-flags"></div>
   </div>
 </div>
-    
-
-
-// ════════════════════════════════════════════════════════════════
-// FX MAP X11 — FULL LOGIC (optimized) — CYBERPUNK NEON VERSION
-// ════════════════════════════════════════════════════════════════
 <script>
-mapboxgl.accessToken = 'pk.eyJ1IjoiLXVzZXIxOGZ4IiwiYSI6ImNtczg1dmhnbjBiOG4yenE1aWJsdTVsdDMifQ.DCpulj_HXHw2KBfQWIeUYw';
-
+// FX MAP X11 — FULL LOGIC (optimized) — CYBERPUNK NEON VERSION
+const mapboxToken = "%VITE_MAPBOX_TOKEN%";
 // ─── CONFIGURATION ──────────────────────────────────────────────
 const BASE = {
   center: [-79.86125, 43.25295],
@@ -897,8 +1063,7 @@ const BASE = {
   pitch: 61.5,
   bearing: 15,
   style: 'mapbox://styles/mapbox/standard'
-};
-
+} ;
 const SK = {
   places: 'fxmap.v8.places',
   routes: 'fxmap.v8.routes',
@@ -908,22 +1073,18 @@ const SK = {
   settings: 'fxmap.v8.settings',
   notifs: 'fxmap.v8.notifs',
   imported: 'fxmap.v8.imported'
-};
-
+} ;
 const CLASS_META = {
   save: { e: '⚿', l: 'Guardado', t: 'safe', c: '#0088ff' },
   flag: { e: '⚑', l: 'Etiqueta', t: 'flag', c: '#ffe760' },
-};
-
+} ;
 const COLORS = [
   { n: 'Morado', v: '#ee0df9' },
   { n: 'Rojo',   v: '#ff3b3b' },
   { n: 'Cyan',   v: '#18e0ff' },
   { n: 'Verde',  v: '#00ff73' },
-];
-
+] ;
 const FLAG_ORDER = ['save', 'flag'];
-
 // ─── MAP INIT ──────────────────────────────────────────────────
 const map = new mapboxgl.Map({
   container: 'map',
@@ -947,17 +1108,13 @@ const map = new mapboxgl.Map({
       showPointOfInterestLabels: false,
       showRoadLabels: false,
       showTransitLabels: false
-    }
-  }
-});
-
+} } } ) ;
 // Disable all zoom controls
 map.scrollZoom.disable();
 map.doubleClickZoom.disable();
 map.touchZoomRotate.disable();
 map.boxZoom.disable();
 map.keyboard.disable();
-
 // ─── VIEWPORT / RESIZE FIX (corrige corte de pantalla en iOS Safari) ──
 function setAppHeight() {
   document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
@@ -970,7 +1127,6 @@ if (window.visualViewport) {
   window.visualViewport.addEventListener('resize', setAppHeight);
   window.visualViewport.addEventListener('scroll', setAppHeight);
 }
-
 // ─── STATE ──────────────────────────────────────────────────────
 let places = [],
     routes = [],
@@ -978,9 +1134,7 @@ let places = [],
     mediaStore = [],
     notesStore = [],
     notifications = [];
-
 let noteEditingId = null;
-
 let settings = {
   name: '',
   phone: '',
@@ -989,7 +1143,6 @@ let settings = {
   privPass: '0000',
   radius: 500
 };
-
 let userLocation = [...BASE.center];
 let ctrlMode = 'zoom',
     ctrlVisible = true,
@@ -1022,7 +1175,6 @@ let photoPoint = null,
     photoExistingId = null;
 let publishColor = '',
     publishType = '';
-
 // ─── UTILITIES ──────────────────────────────────────────────────
 const vibra = () => { try { navigator.vibrate([12]); } catch (e) {} };
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -1040,12 +1192,10 @@ const svl = (k, v) => {
       const isQuota = e.name === 'QuotaExceededError' || e.code === 22 || e.code === 1014;
       toast(isQuota ? '⚠ Almacenamiento lleno — este cambio NO se guardó' : '⚠ Error al guardar — revisa el modo privado del navegador');
       setTimeout(() => { svlErrorShown = false; }, 4000);
-    }
+}
     return false;
-  }
-};
+}};
 const ldl = (k, fb) => { try { return JSON.parse(localStorage.getItem(k) || 'null') ?? fb; } catch { return fb; } };
-
 function distM(a, b) {
   const R = 6371000,
         dLat = (b[1] - a[1]) * Math.PI / 180,
@@ -1063,10 +1213,8 @@ function toast(msg, dur = 2000) {
   clearTimeout(toast._t);
   toast._t = setTimeout(() => t.classList.remove('show'), dur);
 }
-
 // Click feedback
 document.addEventListener('click', e => { if (e.target.closest('button')) vibra(); }, { capture: true, passive: true });
-
 // ─── ENCRYPTION ─────────────────────────────────────────────────
 function encD(d, k) {
   try { return CryptoJS.AES.encrypt(JSON.stringify(d), k).toString(); } catch { return null; }
@@ -1074,7 +1222,6 @@ function encD(d, k) {
 function decD(s, k) {
   try { const b = CryptoJS.AES.decrypt(s, k); return JSON.parse(b.toString(CryptoJS.enc.Utf8)); } catch { return null; }
 }
-
 // ─── LOAD / SAVE ──────────────────────────────────────────────
 function loadAll() {
   settings = ldl(SK.settings, settings);
@@ -1106,9 +1253,7 @@ function loadAll() {
     svl(SK.places, places);
     svl(SK.routes, routes);
     svl(SK.imported, true);
-  }
-}
-
+}}
 function saveAll() {
   if (encKey) {
     const t = encD(places, encKey);
@@ -1123,7 +1268,6 @@ function saveAll() {
   svl(SK.notes, notesStore);
   svl(SK.notifs, notifications);
 }
-
 // ─── D-PAD CONTROLS ────────────────────────────────────────────
 function dpadAction(dir) {
   vibra();
@@ -1136,9 +1280,7 @@ function dpadAction(dir) {
     ease({ bearing: map.getBearing() - 12 });
   } else if (dir === 'rt') {
     ease({ bearing: map.getBearing() + 12 });
-  }
-}
-
+}}
 function startHold(dir) {
   dpadAction(dir);
   const iv = setInterval(() => dpadAction(dir), 180);
@@ -1146,27 +1288,23 @@ function startHold(dir) {
   document.addEventListener('mouseup', stop);
   document.addEventListener('touchend', stop);
 }
-
 function setCtrlMode(mode) {
   ctrlMode = mode;
   $('ctrl-a').classList.toggle('on', mode === 'zoom');
   $('ctrl-b').classList.toggle('on', mode === 'tilt');
   toast(mode === 'tilt' ? 'Modo inclinación' : 'Modo zoom');
 }
-
 function toggleCtrlVisible() {
   ctrlVisible = !ctrlVisible;
   $('orbital').classList.toggle('hidden', !ctrlVisible);
   $('btn-toggle').classList.toggle('active', ctrlVisible);
   toast(ctrlVisible ? 'Controles visibles' : 'Controles ocultos');
 }
-
 function centerUser() {
   vibra();
   map.easeTo({ center: userLocation, zoom: BASE.zoom, pitch: BASE.pitch, bearing: BASE.bearing, duration: 400, essential: true });
   toast('📍 Centrando ubicación');
 }
-
 // ─── EXPLORE MODE ──────────────────────────────────────────────
 let modePopupTimer = null;
 function flashModePopup(text, explore) {
@@ -1188,7 +1326,6 @@ function setExplore(on) {
   if (on) { $('orbital').classList.add('hidden'); $('search-wrap').classList.add('open'); armSearchIdle(); } 
   else { if (ctrlVisible) $('orbital').classList.remove('hidden'); $('search-wrap').classList.remove('open'); $('search-results').classList.remove('open'); clearLocPopup(); clearSearchIdle(); }
 }
-
 // ─── SEARCH IDLE ───────────────────────────────────────────────
 function clearSearchIdle() { clearTimeout(searchIdleTimer); $('search-wrap')?.classList.remove('idle'); }
 function armSearchIdle() {
@@ -1196,7 +1333,6 @@ function armSearchIdle() {
   $('search-wrap')?.classList.remove('idle');
   searchIdleTimer = setTimeout(() => { $('search-wrap')?.classList.add('idle'); }, 3000);
 }
-
 function setSearchMode(mode) {
   searchMode = mode;
   const icon = $('mode-toggle-icon');
@@ -1215,10 +1351,8 @@ function setSearchMode(mode) {
   $('search-results').classList.remove('open');
   $('search-results').innerHTML = '';
 }
-
 // ─── LONG PRESS ────────────────────────────────────────────────
 let pressStartXY = null;
-
 function onPressStart(e) {
   if (!exploreMode) return;
   const pt = e.touches?.[0] || e;
@@ -1255,20 +1389,17 @@ function onPressMove(e) {
   const dy = pt.clientY - pressStartXY.y;
   if (Math.hypot(dx, dy) > 10) onPressEnd();
 }
-
 function onPressEnd() {
   clearTimeout(pressTimer);
   pressTimer = null;
   pressStartXY = null;
   $('press-ring').style.display = 'none';
 }
-
 function clearLocPopup() {
   $('loc-popup').style.display = 'none';
   $('loc-card').style.display = 'none';
   locPopupCoords = null;
 }
-
 // ─── BUILDING HIGHLIGHTS ──────────────────────────────────────
 function ensureBuildingHighlightLayers() {
   if (buildingHighlightReady) return;
@@ -1276,8 +1407,8 @@ function ensureBuildingHighlightLayers() {
     map.addSource('fx-building-highlights', {
       type: 'geojson',
       data: { type: 'FeatureCollection', features: [] }
-    });
-  }
+});
+}
   if (!map.getLayer('fx-building-highlight-fill')) {
     map.addLayer({
       id: 'fx-building-highlight-fill',
@@ -1301,12 +1432,10 @@ function ensureBuildingHighlightLayers() {
         'line-color': ['get', 'lineColor'],
         'line-width': 2.2,
         'line-opacity': 0.95
-      }
-    });
-  }
+} } ) ;
+}
   buildingHighlightReady = true;
 }
-
 function squarePolygonAround(lng, lat, size = 0.000055) {
   return [[
     [lng - size, lat - size],
@@ -1314,28 +1443,26 @@ function squarePolygonAround(lng, lat, size = 0.000055) {
     [lng + size, lat + size],
     [lng - size, lat + size],
     [lng - size, lat - size]
-  ]];
+] ] ;
 }
-
 function getBuildingFeatureForPoint(item) {
   const point = map.project([item.lng, item.lat]);
   let feats = [];
   if (map.getLayer('building')) {
     try {
       feats = map.queryRenderedFeatures([[point.x - 8, point.y - 8], [point.x + 8, point.y + 8]], { layers: ['building'] }) || [];
-    } catch (e) {
+} catch (e) {
       feats = [];
-    }
-  }
+}
+}
   const picked = feats.find(f => f.geometry && (f.geometry.type === 'Polygon' || f.geometry.type === 'MultiPolygon'));
   if (picked) {
     const height = Number(picked.properties?.height || picked.properties?.render_height || 32);
     const base = Number(picked.properties?.min_height || picked.properties?.render_min_height || 0);
     return { geometry: picked.geometry, height: Math.max(height, 18), base: Math.max(base, 0) };
-  }
+}
   return { geometry: { type: 'Polygon', coordinates: squarePolygonAround(item.lng, item.lat) }, height: 26, base: 0 };
 }
-
 function renderMarkers() {
   ensureBuildingHighlightLayers();
   const fc = {
@@ -1354,14 +1481,11 @@ function renderMarkers() {
           lineColor: '#d4ff00',
           height: picked.height,
           base: picked.base
-        }
-      };
-    })
-  };
+} } ;
+} ) } ; 
   const src = map.getSource('fx-building-highlights');
   if (src) src.setData(fc);
 }
-
 // ─── RENDER FUNCTIONS ──────────────────────────────────────────
 function renderAll() {
   renderAddrs();
@@ -1383,7 +1507,7 @@ function renderAddrs() {
     const imgs = (p.media || []).slice(0, 4);
     const ir = imgs.length ? `<div class="pli-imgs">${imgs.map(m => `<div class="pli-img"><img src="${esc(m.url)}" alt=""/></div>`).join('')}</div>` : '';
     return `<div class="pli" data-id="${p.id}" style="border-left:3px solid ${p.color||'#d4ff00'}">
-      <div class="pli-top"><div class="pli-name">${esc(cl?.e||'')} ${esc(p.title)}${p.private ? ' 🔒' : ''}</div><button class="pli-del" data-del="${p.id}">🗑</button></div>
+      <div class="pli-top"><div class="pli-name">${esc(cl?.e||'')} ${esc(p.title)}</div><button class="pli-del" data-del="${p.id}">🗑</button></div>
       <div class="pli-sub">${esc(p.notes||'Sin comentario')}</div>
       <div class="pli-meta">${esc(p.createdAtLabel||'')}${p.source==='google'?' · Google Takeout':''}</div>
       ${ir}
@@ -1490,18 +1614,16 @@ function wireFlagPopover(pop, onPreset, onCustom) {
   pop.querySelectorAll('.fdot[data-cls]').forEach(d => d.addEventListener('click', (ev) => {
     ev.stopPropagation();
     onPreset(d.dataset.cls || null);
-  }));
+} ) ) ;
   pop.querySelector('.fcolor-apply').addEventListener('click', (ev) => {
     ev.stopPropagation();
     const color = pop.querySelector('.fcolor-input').value;
     const label = pop.querySelector('.fcolor-label').value.trim().slice(0, 16) || 'Personalizado';
     onCustom(color, label);
-  });
+} ) ;
   setTimeout(() => document.addEventListener('click', function onc(ev) { if (!pop.contains(ev.target)) { pop.remove(); document.removeEventListener('click', onc); } }), 0);
 }
-
 let mediaFilter = 'all';
-
 function renderMediaGrid() {
   const el = $('media-grid');
   const notHidden = mediaStore.filter(m => !m.hidden);
@@ -1533,32 +1655,31 @@ function renderMediaGrid() {
       ${flagColor ? `<div class="mthumb-flagdot" style="background:${flagColor}"></div>` : ''}
     </div>`;
   }).join('');
-
   el.querySelectorAll('.mthumb').forEach(t => {
     const idx = parseInt(t.dataset.idx);
     t.addEventListener('click', (e) => {
       if (e.target.closest('.mthumb-actions') || e.target.closest('.flag-pop')) return;
       const m = mediaStore[idx];
       if (m?.url) { $('lightbox-img').src = m.url; $('lightbox').classList.add('open'); }
-    });
+} ) ;
     t.querySelector('[data-act="vip"]').addEventListener('click', (e) => {
       e.stopPropagation();
       mediaStore[idx].vip = !mediaStore[idx].vip;
       saveAll(); renderMediaGrid();
-    });
+} ) ;
     t.querySelector('[data-act="hide"]').addEventListener('click', (e) => {
       e.stopPropagation();
       mediaStore[idx].hidden = true;
       saveAll(); renderMediaGrid();
       toast('👁 Archivo ocultado');
-    });
+} ) ;
     t.querySelector('[data-act="del"]').addEventListener('click', (e) => {
       e.stopPropagation();
       if (!confirm('¿Eliminar este archivo cifrado? Esta acción no se puede deshacer.')) return;
       mediaStore.splice(idx, 1);
       saveAll(); renderMediaGrid();
       toast('🗑 Archivo eliminado');
-    });
+} ) ;
     t.querySelector('[data-act="flag"]').addEventListener('click', (e) => {
       e.stopPropagation();
       document.querySelectorAll('.flag-pop').forEach(p => p.remove());
@@ -1568,14 +1689,12 @@ function renderMediaGrid() {
       wireFlagPopover(pop,
         (cls) => { mediaStore[idx].classification = cls; mediaStore[idx].customFlag = null; saveAll(); renderMediaGrid(); },
         (color, label) => { mediaStore[idx].customFlag = { color, label }; mediaStore[idx].classification = null; saveAll(); renderMediaGrid(); }
-      );
-    });
-  });
+) ;
+} ) ;
+} ) ;
 }
-
 // ─── FX AUTH GATE ───────────────────────────────────────────────
 let fxUnlocked = false;
-
 function openFxMediaPanel() {
   mediaFilter = 'all';
   document.querySelectorAll('.mcat').forEach(x => x.classList.remove('active'));
@@ -1603,7 +1722,6 @@ async function requestFxAccess() {
 function closeFxAuth() {
   $('fx-auth-modal').style.display = 'none';
 }
-
 function submitFxPassword() {
   const p = $('fx-auth-pass').value;
   if (p === settings.privPass) {
@@ -1611,11 +1729,9 @@ function submitFxPassword() {
     closeFxAuth();
     openFxMediaPanel();
     toast('✓ Acceso concedido');
-  } else {
+} else {
     toast('❌ Contraseña incorrecta');
-  }
-}
-
+} }
 async function attemptBiometricUnlock() {
   try {
     const cred = await navigator.credentials.create({
@@ -1626,25 +1742,20 @@ async function attemptBiometricUnlock() {
         pubKeyCredParams: [{ type: 'public-key', alg: -7 }],
         authenticatorSelection: { authenticatorAttachment: 'platform', userVerification: 'required' },
         timeout: 30000
-      }
-    });
+} } ) ;
     if (cred) {
       fxUnlocked = true;
       closeFxAuth();
       openFxMediaPanel();
       toast('✓ Identidad verificada');
-    }
-  } catch (e) {
+} } catch (e) {
     toast('❌ Verificación cancelada');
-  }
-}
-
+} }
 // ─── NOTAS ──────────────────────────────────────────────────────
 function renderNotesFolder() {
   const visible = notesStore.filter(n => !n.hidden);
   $('notes-count-lbl').textContent = `${visible.length} ${visible.length === 1 ? 'nota' : 'notas'}`;
 }
-
 function renderNotesList() {
   const el = $('notes-list');
   const visible = notesStore.filter(n => !n.hidden);
@@ -1666,8 +1777,7 @@ function renderNotesList() {
         <button class="mact-btn" data-act="del" title="Eliminar">🗑</button>
       </div>
     </div>`;
-  }).join('');
-
+} ) .join('') ;
   el.querySelectorAll('.note-item').forEach(card => {
     const idx = parseInt(card.dataset.idx);
     card.querySelector('[data-act="open"]').addEventListener('click', () => openNoteEditor(idx));
@@ -1675,21 +1785,21 @@ function renderNotesList() {
       e.stopPropagation();
       notesStore[idx].vip = !notesStore[idx].vip;
       saveAll(); renderNotesList();
-    });
+} ) ;
     card.querySelector('[data-act="hide"]').addEventListener('click', (e) => {
       e.stopPropagation();
       notesStore[idx].hidden = true;
       saveAll(); renderNotesList(); renderNotesFolder();
       toast('👁 Nota ocultada');
-    });
+} ) ;
     card.querySelector('[data-act="del"]').addEventListener('click', (e) => {
       e.stopPropagation();
       if (!confirm('¿Eliminar esta nota? Esta acción no se puede deshacer.')) return;
       notesStore.splice(idx, 1);
       saveAll(); renderNotesList(); renderNotesFolder();
       toast('🗑 Nota eliminada');
-    });
-    card.querySelector('[data-act="flag"]').addEventListener('click', (e) => {
+} ) ;
+     card.querySelector('[data-act="flag"]').addEventListener('click', (e) => {
       e.stopPropagation();
       document.querySelectorAll('.flag-pop').forEach(p => p.remove());
       const cf = notesStore[idx].customFlag;
@@ -1700,11 +1810,10 @@ function renderNotesList() {
       wireFlagPopover(pop,
         (cls) => { notesStore[idx].classification = cls; notesStore[idx].customFlag = null; saveAll(); renderNotesList(); },
         (color, label) => { notesStore[idx].customFlag = { color, label }; notesStore[idx].classification = null; saveAll(); renderNotesList(); }
-      );
-    });
-  });
+) ;
+} ) ;
+} ) ;
 }
-
 function openNoteEditor(idx = null) {
   noteEditingId = idx;
   const n = idx !== null ? notesStore[idx] : null;
@@ -1712,12 +1821,10 @@ function openNoteEditor(idx = null) {
   $('note-edit-body').value = n?.body || '';
   $('note-editor-modal').style.display = 'flex';
 }
-
 function closeNoteEditor() {
   $('note-editor-modal').style.display = 'none';
   noteEditingId = null;
 }
-
 function saveNoteEditor() {
   const title = $('note-edit-title').value.trim();
   const body = $('note-edit-body').value.trim();
@@ -1734,13 +1841,11 @@ function saveNoteEditor() {
   closeNoteEditor();
   toast('✓ Nota guardada');
 }
-
 function renderNotifBadge() {
   const u = notifications.filter(n => !n.read).length;
   const b = $('notif-badge');
   if (u > 0) { b.textContent = u; b.style.display = 'flex'; } else b.style.display = 'none';
 }
-
 function renderVipList() {
   const el = $('vip-list');
   if (!el) return;
@@ -1754,14 +1859,12 @@ function renderVipList() {
   }).join('');
   el.querySelectorAll('.bcard[data-id]').forEach(c => c.addEventListener('click', () => { flyTo(c.dataset.id); closeMenuModal(); }));
 }
-
 // ─── AI ────────────────────────────────────────────────────────
 function runAI() {
   $('ai-spin').classList.add('show');
   $('ai-out').classList.remove('show');
   setTimeout(renderAI, 500);
 }
-
 function renderAI() {
   const out = $('ai-out');
   const prompt = $('ai-prompt').value.trim();
@@ -1773,7 +1876,6 @@ function renderAI() {
   out.classList.add('show');
   $('ai-spin').classList.remove('show');
 }
-
 // ─── NOTIFICATIONS ────────────────────────────────────────────
 function renderNotifList() {
   const el = $('nlist');
@@ -1781,14 +1883,12 @@ function renderNotifList() {
   el.innerHTML = notifications.map((n, i) => `<div class="ni ${n.read?'':'unread'}" data-i="${i}"><div class="ni-icon">${n.icon||'🤖'}</div><div><div class="ni-text">${esc(n.text)}</div><div class="ni-time">${fmtDate(n.time)}</div></div></div>`).join('');
   el.querySelectorAll('.ni').forEach(item => item.addEventListener('click', () => { const i = parseInt(item.dataset.i); notifications[i].read = true; svl(SK.notifs, notifications); item.classList.remove('unread'); renderNotifBadge(); }));
 }
-
 function addNotif(text, icon = '🤖') {
   notifications.unshift({ id: crypto.randomUUID(), text, icon, time: new Date().toISOString(), read: false });
   if (notifications.length > 50) notifications = notifications.slice(0, 50);
   svl(SK.notifs, notifications);
   renderNotifBadge();
 }
-
 // ─── PLACE CRUD ───────────────────────────────────────────────
 function flyTo(id) {
   const p = places.find(x => x.id === id);
@@ -1797,58 +1897,207 @@ function flyTo(id) {
   map.easeTo({ center: [p.lng, p.lat], zoom: 17.3, pitch: BASE.pitch, bearing: BASE.bearing, duration: 320, essential: true });
   vibra();
 }
-
-// ─── DETAIL MODAL ───────────────────────────────────────────────
+// ─── DETAIL MODAL (panel arrastrable con tabs) ───────────────────
 let detailPlaceId = null;
-
+let dmActiveTab = 'info';
+let dmDragging = false, dmDragStart = { x: 0, y: 0 }, dmPos = { x: null, y: null };
+function dmSortedPlaces() {
+  return places;
+}
 function openDetailModal(id) {
   const p = places.find(x => x.id === id);
   if (!p) { toast('❌ Lugar no encontrado'); return; }
   detailPlaceId = id;
+  p.tags = p.tags || [];
+  p.comments = p.comments || [];
+  p.media = p.media || [];
   $('dm-title').value = p.title || '';
-  $('dm-addr').textContent = p.notes && p.hashtag ? p.hashtag : (p.label || 'Sin dirección registrada');
-  $('dm-notes').value = p.notes || '';
-  const media = $('dm-media');
-  media.innerHTML = (p.media || []).map(m => `<img src="${esc(m.url)}" style="width:64px;height:64px;object-fit:cover;border-radius:8px;flex:0 0 auto;cursor:pointer" data-url="${esc(m.url)}"/>`).join('');
-  media.querySelectorAll('img[data-url]').forEach(img => img.addEventListener('click', () => { $('lightbox-img').src = img.dataset.url; $('lightbox').classList.add('open'); }));
-  $('dm-vip-btn').classList.toggle('active', !!p.vip);
-  updateDetailFlagBtn(p);
-  const d = distM(userLocation, [p.lng, p.lat]);
-  $('dm-dist').textContent = fmtDist(d) + ' de tu posición';
-  $('detail-modal').style.display = 'flex';
+  $('dm-coords-line').textContent = `📍 CD: ${p.lat.toFixed(6)}, ${p.lng.toFixed(6)}`;
+  $('dm-city').textContent = p.city || 'No especificada';
+  $('dm-check-icon').classList.remove('show');
+  renderDmTags(p);
+  renderDmComments(p);
+  renderDmImages(p);
+  renderDmNav(p);
+  $('dm-ai-result').style.display = 'none';
+  $('dm-ai-empty').style.display = 'block';
+  $('dm-ai-text').textContent = '';
+  dmSetTab('info');
+  dmPos = { x: null, y: null };
+  $('dm-panel').style.top = '';
+  $('dm-panel').style.right = '';
+  $('dm-panel').style.left = '';
+  $('dm-panel').style.transform = '';
+  $('detail-modal').classList.add('open');
 }
-
 function closeDetailModal() {
-  $('detail-modal').style.display = 'none';
+  $('detail-modal').classList.remove('open');
   detailPlaceId = null;
-  document.querySelectorAll('.flag-pop').forEach(p => p.remove());
 }
-
-function updateDetailFlagBtn(p) {
-  const btn = $('dm-flag-btn');
-  const type = p.classification;
-  if (type && CLASS_META[type]) {
-    const m = CLASS_META[type];
-    const [r, g, b] = hexToRgb(m.c);
-    btn.style.cssText = `width:32px;height:32px;border-radius:8px;background:rgba(${r},${g},${b},.1);border:1.5px solid ${m.c};color:${m.c};display:grid;place-items:center;cursor:pointer;position:relative`;
-  } else {
-    btn.style.cssText = 'width:32px;height:32px;border-radius:8px;background:transparent;border:1.5px solid rgba(255,255,255,.07);color:#555;display:grid;place-items:center;cursor:pointer;position:relative';
-  }
+function dmSetTab(tab) {
+  dmActiveTab = tab;
+  document.querySelectorAll('.dm-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  document.querySelectorAll('.dm-pane').forEach(p => p.classList.remove('active'));
+  $('dm-pane-' + tab).classList.add('active');
 }
-
-function saveDetailModal() {
+function renderDmNav(p) {
+  const list = dmSortedPlaces();
+  const idx = list.findIndex(x => x.id === p.id);
+  $('dm-nav-count').textContent = `${idx + 1} de ${list.length}`;
+  $('dm-prev').disabled = idx <= 0;
+  $('dm-next').disabled = idx >= list.length - 1;
+}
+function dmNavigate(dir) {
+  const list = dmSortedPlaces();
+  const idx = list.findIndex(x => x.id === detailPlaceId);
+  const newIdx = dir === 'next' ? idx + 1 : idx - 1;
+  if (newIdx < 0 || newIdx >= list.length) return;
+  openDetailModal(list[newIdx].id);
+}
+function dmCopyCoords() {
   const p = places.find(x => x.id === detailPlaceId);
   if (!p) return;
-  p.title = $('dm-title').value.trim() || p.title;
-  p.notes = $('dm-notes').value.trim();
-  saveAll();
-  renderAll();
-  toast('✓ Cambios guardados');
-  closeDetailModal();
+  const coords = `${p.lat.toFixed(6)}, ${p.lng.toFixed(6)}`;
+  navigator.clipboard?.writeText(coords).catch(() => {});
+  $('dm-check-icon').classList.add('show');
+  toast('✓ Coordenadas copiadas');
+  setTimeout(() => $('dm-check-icon').classList.remove('show'), 2000);
+}
+// ── TAGS ──
+function renderDmTags(p) {
+  const el = $('dm-tags');
+  if (!p.tags.length) { el.innerHTML = `<span class="dm-empty-msg" style="width:100%">Sin etiquetas aún</span>`; return; }
+  el.innerHTML = p.tags.map((t, i) => `<span class="dm-tag-chip" data-i="${i}">${esc(t)}<button data-i="${i}">✕</button></span>`).join('');
+  el.querySelectorAll('button[data-i]').forEach(b => b.addEventListener('click', () => {
+    p.tags.splice(parseInt(b.dataset.i), 1);
+    saveAll(); renderDmTags(p);
+    toast('✓ Etiqueta eliminada');
+} ) ) ;
+}
+function dmAddTag() {
+  const p = places.find(x => x.id === detailPlaceId);
+  const input = $('dm-tag-input');
+  const val = input.value.trim();
+  if (!p || !val) return;
+  p.tags.push(val);
+  input.value = '';
+  saveAll(); renderDmTags(p);
+  toast('✓ Etiqueta agregada');
+}
+// ── COMENTARIOS ──
+function renderDmComments(p) {
+  const el = $('dm-comments');
+  if (!p.comments.length) { el.innerHTML = `<p class="dm-empty-msg">No hay comentarios aún</p>`; return; }
+  el.innerHTML = p.comments.map(c => {
+    const d = new Date(c.createdAt);
+    return `<div class="dm-comment">
+      <p>${esc(c.text)}</p>
+      <div class="dm-comment-meta">
+        <span>${d.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+        <span>·</span>
+        <span>${d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}</span>
+      </div>
+    </div>`;
+  }).reverse().join('');
 }
 
-function confirmDel(id) { pendingDelId = id; $('confirm-modal').classList.add('open'); }
+function dmAddComment() {
+  const p = places.find(x => x.id === detailPlaceId);
+  const input = $('dm-comment-input');
+  const val = input.value.trim();
+  if (!p || !val) return;
+  p.comments.push({ text: val, createdAt: new Date().toISOString() });
+  input.value = '';
+  saveAll(); renderDmComments(p);
+  toast('✓ Comentario agregado');
+}
 
+// ── IMÁGENES ──
+function renderDmImages(p) {
+  const el = $('dm-images-grid');
+  if (!p.media.length) { el.innerHTML = `<div class="dm-empty-msg" style="grid-column:1/-1">No hay imágenes aún</div>`; return; }
+  el.innerHTML = p.media.map((m, i) => `<div class="dm-image-item" data-i="${i}"><img src="${esc(m.url)}" alt=""/></div>`).join('');
+  el.querySelectorAll('.dm-image-item').forEach(item => item.addEventListener('click', () => {
+    const m = p.media[parseInt(item.dataset.i)];
+    if (m?.url) { $('lightbox-img').src = m.url; $('lightbox').classList.add('open'); }
+} ) ) ; 
+}
+function dmHandleFiles(files) {
+  const p = places.find(x => x.id === detailPlaceId);
+  if (!p || !files || !files.length) return;
+  const file = files[0];
+  if (!file.type.startsWith('image/')) { toast('❌ Solo se permiten imágenes'); return; }
+  $('dm-dropzone-icon').textContent = '⏳';
+  $('dm-dropzone-text').textContent = 'Subiendo...';
+  const reader = new FileReader();
+  reader.onload = () => {
+    p.media.push({ id: crypto.randomUUID(), name: file.name, type: file.type, url: reader.result, createdAt: new Date().toISOString() });
+    saveAll(); renderDmImages(p);
+    $('dm-dropzone-icon').textContent = '🖼';
+    $('dm-dropzone-text').textContent = 'Arrastra una imagen o toca para seleccionar';
+    toast('✓ Imagen subida exitosamente');
+  };
+  reader.onerror = () => {
+    $('dm-dropzone-icon').textContent = '🖼';
+    $('dm-dropzone-text').textContent = 'Arrastra una imagen o toca para seleccionar';
+    toast('❌ Error al subir imagen');
+} ;
+  reader.readAsDataURL(file);
+}
+// ── IA (análisis simulado local, sin backend) ──
+function dmAnalyze() {
+  const p = places.find(x => x.id === detailPlaceId);
+  if (!p) return;
+  $('dm-ai-analyze').disabled = true;
+  $('dm-ai-analyze').textContent = 'Analizando...';
+  setTimeout(() => {
+    const nearby = places.filter(x => x.id !== p.id && distM([p.lng, p.lat], [x.lng, x.lat]) < 800);
+    const typeLbl = CLASS_META[p.classification]?.l || 'Sin clasificar';
+    const parts = [
+      `Este lugar está clasificado como "${typeLbl}"${p.tags.length ? ` con las etiquetas: ${p.tags.join(', ')}` : ''}.`,
+      nearby.length
+        ? `Hay ${nearby.length} lugar${nearby.length === 1 ? '' : 'es'} guardado${nearby.length === 1 ? '' : 's'} a menos de 800m — podría ser parte de una zona que visitas seguido.`
+        : `No hay otros lugares guardados cerca — parece un punto aislado en tu mapa.`,
+      p.comments.length ? `Tiene ${p.comments.length} comentario${p.comments.length === 1 ? '' : 's'} registrado${p.comments.length === 1 ? '' : 's'}.` : `Aún no tiene comentarios.`
+    ];
+    $('dm-ai-text').textContent = parts.join(' ');
+    $('dm-ai-empty').style.display = 'none';
+    $('dm-ai-result').style.display = 'block';
+    $('dm-ai-analyze').disabled = false;
+    $('dm-ai-analyze').textContent = 'Analizar con IA';
+} , 900) ;
+}
+// ── ARRASTRAR PANEL ──
+function dmInitDrag() {
+  const header = $('dm-header');
+  const panel = $('dm-panel');
+  const onDown = (e) => {
+    if (e.target.closest('.no-drag')) return;
+    dmDragging = true;
+    header.classList.add('dragging');
+    const pt = e.touches?.[0] || e;
+    const rect = panel.getBoundingClientRect();
+    dmDragStart = { x: pt.clientX - rect.left, y: pt.clientY - rect.top };
+    e.preventDefault?.();
+} ;
+  const onMove = (e) => {
+    if (!dmDragging) return;
+    const pt = e.touches?.[0] || e;
+    const x = pt.clientX - dmDragStart.x;
+    const y = pt.clientY - dmDragStart.y;
+    panel.style.left = x + 'px';
+    panel.style.top = y + 'px';
+    panel.style.right = 'auto';
+} ;
+  const onUp = () => { dmDragging = false; header.classList.remove('dragging'); };
+  header.addEventListener('mousedown', onDown);
+  header.addEventListener('touchstart', onDown, { passive: false });
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('touchmove', onMove, { passive: false });
+  document.addEventListener('mouseup', onUp);
+  document.addEventListener('touchend', onUp);
+}
+function confirmDel(id) { pendingDelId = id; $('confirm-modal').classList.add('open'); }
 function doDel() {
   if (!pendingDelId) return;
   places = places.filter(p => p.id !== pendingDelId);
@@ -1858,7 +2107,6 @@ function doDel() {
   pendingDelId = null;
   $('confirm-modal').classList.remove('open');
 }
-
 // ─── SAVE MODAL ───────────────────────────────────────────────
 function openSaveModal(lng, lat, address = '') {
   pendingPoint = { lng, lat };
@@ -1874,9 +2122,7 @@ function openSaveModal(lng, lat, address = '') {
   updatePublishState();
   $('save-modal').classList.add('open');
 }
-
 function closeSaveModal() { $('save-modal').classList.remove('open'); }
-
 function resetSaveForm() {
   $('q-title').value = '';
   $('q-notes').value = '';
@@ -1899,7 +2145,6 @@ function resetSaveForm() {
   renderClassBtns();
   updatePublishState();
 }
-
 function updatePublishState() {
   const okType = !!(pendingClass);
   const okColor = !!(pendingColor || publishColor);
@@ -1909,60 +2154,44 @@ function updatePublishState() {
   const st = $('publish-status');
   if (st) st.textContent = ok ? 'Listo para confirmar publicación' : 'Selecciona ⚿|⚑ + 🔳 o 𖣿 Favorito para habilitar 🆗';
 }
-
 function renderPalette() {
   $('palette').innerHTML = COLORS.map(c => `<button type="button" class="color-tile${pendingColor===c.v?' active':''}" data-c="${c.v}" title="${c.n}" style="--tile:${c.v};background:${c.v}"></button>`).join('');
   $('palette').querySelectorAll('.color-tile').forEach(b => b.addEventListener('click', () => { pendingColor = b.dataset.c; publishColor = b.dataset.c; renderPalette(); updatePublishState(); $('palette').classList.remove('open'); }));
 }
-
 function renderClassBtns() {
   const order = ['save', 'flag'];
   $('class-btns').innerHTML = order.map(k => { const m = CLASS_META[k]; return `<button type="button" class="csbtn${pendingClass===k?' sel':''}" data-cls="${k}" title="${m.l}"><span class="csflag" style="background:${m.c}"></span></button>`; }).join('');
   $('class-btns').style.display = 'flex';
   $('class-btns').querySelectorAll('.csbtn').forEach(b => b.addEventListener('click', () => { pendingClass = b.dataset.cls; publishType = b.dataset.cls; renderClassBtns(); renderPalette(); updatePublishState(); }));
 }
-
 function renderSaveMedia() {
   $('save-mprev').innerHTML = pendingMedia.map(m => `<div class="mitem" data-id="${m.id}"><img src="${m.url}" alt=""/><button class="mdel" type="button">✕</button></div>`).join('');
   $('save-mprev').querySelectorAll('.mitem').forEach(card => {
     card.querySelector('img')?.addEventListener('click', () => { $('lightbox-img').src = pendingMedia.find(x => x.id === card.dataset.id)?.url || ''; $('lightbox').classList.add('open'); });
     card.querySelector('.mdel')?.addEventListener('click', () => { pendingMedia = pendingMedia.filter(x => x.id !== card.dataset.id); renderSaveMedia(); });
-  });
+} ) ;
 }
-
-// Validación de archivos: tipo MIME permitido + límite de tamaño (10MB) para
-// evitar que localStorage se sature con blobs base64 excesivos.
-const MAX_FILE_BYTES = 10 * 1024 * 1024;
-function isSafeMediaFile(file) {
-  const okType = /^image\/(jpeg|png|webp|gif)$/.test(file.type) || /^video\/(mp4|webm|quicktime)$/.test(file.type);
-  return okType && file.size > 0 && file.size <= MAX_FILE_BYTES;
-}
-
 function handleFiles(files, store = false) {
   Array.from(files || []).forEach(file => {
-    if (!isSafeMediaFile(file)) { toast('⚠ Archivo no admitido o muy pesado (máx. 10MB)'); return; }
+    const ok = file.type.startsWith('image/') || file.type.startsWith('video/');
+    if (!ok) return;
     const r = new FileReader();
     r.onload = () => {
       const item = { id: crypto.randomUUID(), name: file.name, type: file.type, url: r.result, createdAt: new Date().toISOString() };
       if (store) { mediaStore.unshift(item); svl(SK.media, mediaStore); renderMediaGrid(); toast('✓ Archivo almacenado (cifrado)'); } 
       else { pendingMedia.push(item); renderSaveMedia(); }
-    };
-    r.onerror = () => toast('⚠ No se pudo leer el archivo');
+} ;
     r.readAsDataURL(file);
-  });
+} ) ;
 }
-
 function savePlace() {
   if (!pendingPoint) return;
   if ($('q-save-act').classList.contains('disabled')) return;
-
   const title = $('q-title').value.trim() || 'Lugar sin título';
   const notes = $('q-notes').value.trim();
   const label = $('q-label').value.trim();
   const hashtag = $('q-hashtag')?.value.trim() || '';
-
   const now = new Date().toISOString();
-
   const item = {
     id: crypto.randomUUID(),
     title,
@@ -1976,10 +2205,12 @@ function savePlace() {
     classification: pendingClass,
     vip: pendingVip,
     tagColor: pendingTagColor,
+    tags: [],
+    comments: [],
+    city: (searchConfirmAddress || '').split(',')[1]?.trim() || '',
     createdAt: now,
     createdAtLabel: fmtDate(now)
-  };
-
+} ;
   places.unshift(item);
   saveAll();
   renderAll();
@@ -1990,7 +2221,6 @@ function savePlace() {
   vibra();
   addNotif(`Nueva ubicación: "${title}"`, CLASS_META[pendingClass]?.e || '⚑');
 }
-
 // ─── GEOCODING ──────────────────────────────────────────────────
 async function geocodeSearch(term) {
   const q = (term || '').trim();
@@ -2010,7 +2240,7 @@ async function geocodeSearch(term) {
     if (!feats.length) {
       res.innerHTML = '<div class="sr-empty">Sin resultados para "' + esc(q) + '"</div>';
       return;
-    }
+}
     res.innerHTML = feats.map((f, i) => {
       const [flng, flat] = f.center || [];
       const nearby = places.find(p => distM([flng, flat], [p.lng, p.lat]) < 40);
@@ -2018,7 +2248,7 @@ async function geocodeSearch(term) {
       const flagHtml = flagColor ? `<span style="color:${flagColor}">⚑</span>` : `<span>⚑</span>`;
       return `<div class="sr" data-idx="${i}">
       ${flagHtml}<div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:700;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${esc(f.text||f.place_name||'')}</div><div style="font-size:10px;color:var(--text-muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${esc(f.place_name||'')}</div></div>${nearby ? `<span class="sr-tag local" style="background:${flagColor}22;color:${flagColor}">GUARDADO</span>` : '<span class="sr-tag map">MAPA</span>'}</div>`;
-    }).join('');
+} ) .join('') ;
     res.querySelectorAll('.sr[data-idx]').forEach(item => item.addEventListener('click', () => {
       const f = feats[parseInt(item.dataset.idx)];
       if (!f) return;
@@ -2035,13 +2265,11 @@ async function geocodeSearch(term) {
       if (ctrlVisible) $('orbital').classList.remove('hidden');
       // Ahora sí crear la tarjeta de confirmación (ya no se borra)
       showSearchConfirmMarker(lng, lat, f.place_name || f.text || '');
-    }));
-  } catch (e) {
+} ) ) ;
+} catch (e) {
     if (e?.name === 'AbortError') return;
     res.innerHTML = '<div class="sr-empty">Error de búsqueda. Intenta de nuevo.</div>';
-  }
-}
-
+} }
 async function reverseGeocode(lng, lat) {
   try {
     const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${mapboxgl.accessToken}&language=es&limit=1`;
@@ -2049,9 +2277,8 @@ async function reverseGeocode(lng, lat) {
     if (!r.ok) return '';
     const data = await r.json();
     return data?.features?.[0]?.place_name || '';
-  } catch (e) { return ''; }
+} catch (e) { return ''; }
 }
-
 // ─── SEARCH CONFIRM MARKER ─────────────────────────────────────
 function clearSearchConfirmMarker() {
   if (searchConfirmMarker) { searchConfirmMarker.remove(); searchConfirmMarker = null; }
@@ -2060,7 +2287,6 @@ function clearSearchConfirmMarker() {
   const row = document.getElementById('sr-confirm');
   if (row) row.remove();
 }
-
 function showSearchConfirmMarker(lng, lat, address = '', placeId = null) {
   clearSearchConfirmMarker();
   searchConfirmPoint = { lng, lat };
@@ -2083,9 +2309,7 @@ function showSearchConfirmMarker(lng, lat, address = '', placeId = null) {
     res.appendChild(wrap);
     res.classList.add('open');
     wrap.addEventListener('click', () => { openPhotoModal(lng, lat, address, placeId); });
-  }
-}
-
+} }
 // ─── LOCAL SEARCH ──────────────────────────────────────────────
 function searchPlacesByTerm(term) {
   const q = (term || '').toLowerCase().trim();
@@ -2096,9 +2320,8 @@ function searchPlacesByTerm(term) {
     const label = (place.label || '').toLowerCase();
     const hashtag = (place.hashtag || '').toLowerCase();
     return title.includes(q) || notes.includes(q) || label.includes(q) || hashtag.includes(q);
-  });
+} ) ;
 }
-
 function localSearch(term) {
   const results = searchPlacesByTerm(term);
   const res = $('search-results');
@@ -2112,9 +2335,8 @@ function localSearch(term) {
     map.flyTo({ center: [p.lng, p.lat], zoom: 17, pitch: BASE.pitch, bearing: BASE.bearing, duration: 900, essential: true });
     setExplore(false);
     showSearchConfirmMarker(p.lng, p.lat, p.notes || p.title || '', p.id);
-  }));
+} ) ) ;
 }
-
 // ─── INIT SEARCH ───────────────────────────────────────────────
 function initSearch() {
   const si1 = $('si1'),
@@ -2126,11 +2348,10 @@ function initSearch() {
     clearTimeout(st1);
     if (searchMode === 'saved') {
       st1 = setTimeout(() => localSearch(si1.value), 250);
-    } else {
+} else {
       if (si1.value.trim().length < 3) { res.classList.remove('open'); res.innerHTML = ''; return; }
       st1 = setTimeout(() => geocodeSearch(si1.value.trim()), 450);
-    }
-  });
+} } ) ;
   si1.addEventListener('focus', clearSearchIdle);
   si1.addEventListener('blur', armSearchIdle);
   sc1.addEventListener('click', () => { si1.value = ''; $('sb1').classList.remove('has-text'); res.classList.remove('open'); res.innerHTML = ''; si1.focus(); clearSearchIdle(); });
@@ -2138,18 +2359,16 @@ function initSearch() {
     setSearchMode(searchMode === 'address' ? 'saved' : 'address');
     clearSearchIdle();
     si1.focus();
-  });
+} ) ;
   document.addEventListener('click', e => {
     if (!$('search-wrap').contains(e.target) && e.target !== $('search-explore-btn')) {
       res.classList.remove('open');
       res.innerHTML = '';
       if (exploreMode) armSearchIdle();
-    } else {
+} else {
       clearSearchIdle();
-    }
-  });
+} } ) ;
 }
-
 // ─── PICK MODAL ────────────────────────────────────────────────
 function renderPickFlags() {
   const el = $('pick-flags');
@@ -2202,44 +2421,65 @@ function pickToSave(classification) {
   closePickModal();
   openSaveModal(lng, lat, addr);
 }
-
-// ─── PHOTO MODAL HUD (tarjeta compacta) ─────────────────────────
+// ─── PHOTO MODAL HUD ───────────────────────────────────────────
 function findPlaceNear(lng, lat, tol = 0.0003) {
   return places.find(p => Math.abs(p.lng - lng) < tol && Math.abs(p.lat - lat) < tol) || null;
 }
-
 function hexToRgb(hex) {
   const v = (hex || '#4a4d51').replace('#', '');
   const n = parseInt(v.length === 6 ? v : '4a4d51', 16);
   if (Number.isNaN(n)) return [74, 77, 81];
   return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
 }
-
 let pmCurrentClass = null;
-let pmEditable = false;
-let pmPrivate = false;
-let pmPendingMedia = [];
-
+let pmTagColor = null;
+function renderPhotoFlags() {
+  const el = $('photo-flags');
+  if (!el) return;
+  el.innerHTML = COLORS.map(c => {
+    const isActive = pmTagColor === c.v;
+    return `<div class="pm-tag${isActive ? ' active' : ''}" data-color="${c.v}" style="background:${c.v};--pm-glow:${c.v}"></div>`;
+} ) .join('') ;
+  el.querySelectorAll('.pm-tag[data-color]').forEach(t => t.addEventListener('click', () => photoSetTagColor(t.dataset.color)));
+}
+function photoSetTagColor(color) {
+  if (!photoPoint) return;
+  pmTagColor = pmTagColor === color ? null : color;
+  if (photoExistingId) {
+    const p = places.find(x => x.id === photoExistingId);
+    if (p) { p.tagColor = pmTagColor; saveAll(); renderAll(); }
+} else {
+    pendingTagColor = pmTagColor;
+}
+  renderPhotoFlags() ;
+}
 function syncPhotoModalState() {
+  const dot = $('pm-active-dot');
+  const text = $('pm-active-text');
+  const cta = $('pm-save-cta');
   const saveBtn = $('photo-save-btn');
   const vipBtn = $('photo-vip-btn');
-  if (!saveBtn || !vipBtn) return;
-
+  if (!dot || !text || !cta || !saveBtn || !vipBtn) return;
   if (pmCurrentClass === 'save') {
     const m = CLASS_META.save;
     const [r,g,b] = hexToRgb(m.c);
     saveBtn.style.cssText = `background:rgba(${r},${g},${b},.1)!important;border:1.5px solid ${m.c}!important;color:${m.c}!important;box-shadow:0 0 10px rgba(${r},${g},${b},.4)!important`;
-  } else {
-    saveBtn.style.cssText = 'background:transparent!important;border:1.5px solid rgba(255,255,255,.09)!important;color:#888!important;box-shadow:none!important';
-  }
-  vipBtn.classList.toggle('active', pmCurrentClass === 'flag');
-
-  $('pm-edit-btn')?.classList.toggle('active', pmEditable);
-  $('pm-field-title').readOnly = !pmEditable;
-  $('pm-field-notes').readOnly = !pmEditable;
-  $('pm-lock-btn')?.classList.toggle('on', pmPrivate);
+} else {
+    saveBtn.style.cssText = 'background:transparent!important;border:1.5px solid rgba(255,255,255,.07)!important;color:#555!important;box-shadow:none!important';
 }
-
+  vipBtn.classList.toggle('active', pmCurrentClass === 'flag');
+  if (pmCurrentClass) {
+    const m = CLASS_META[pmCurrentClass];
+    dot.style.background = m.c;
+    text.style.color = m.c;
+    text.textContent = m.l.toUpperCase();
+} else {
+    dot.style.background = '#4a4d51';
+    text.style.color = '#4a4d51';
+    text.textContent = 'SIN ETIQUETA · OFF';
+}
+  cta.classList.toggle('disabled', !pmCurrentClass);
+}
 function openPhotoModal(lng, lat, address = '', placeId = null) {
   photoPoint = { lng, lat };
   photoAddress = address || '';
@@ -2248,22 +2488,17 @@ function openPhotoModal(lng, lat, address = '', placeId = null) {
   const name = existing?.title || (address ? address.split(',')[0].trim() : 'Lugar sin nombre');
   $('photo-name').textContent = name;
   $('photo-cat').textContent = address || 'Ubicación sin dirección';
-  $('pm-field-title').value = existing?.title || name || '';
-  $('pm-field-notes').value = existing?.notes || '';
+  $('photo-meta').textContent = existing?.notes || '';
   pmCurrentClass = existing?.classification || null;
-  pmEditable = false;
-  pmPrivate = existing?.private || false;
-  pmPendingMedia = [];
+  pmTagColor = existing?.tagColor || null;
+  renderPhotoFlags();
   syncPhotoModalState();
   $('photo-modal').classList.add('open');
 }
-
 function closePhotoModal() {
   $('photo-modal').classList.remove('open');
-  photoPoint = null; photoExistingId = null; pmCurrentClass = null;
-  pmEditable = false; pmPrivate = false; pmPendingMedia = [];
+  photoPoint = null; photoExistingId = null; pmCurrentClass = null; pmTagColor = null;
 }
-
 function initPhotoDragHandle() {
   const handle = $('pm-drag-handle');
   const box = $('pm-box');
@@ -2276,24 +2511,22 @@ function initPhotoDragHandle() {
     dy = Math.max(0, clientY - startY);
     box.style.transform = `translateY(${dy}px)`;
     box.style.opacity = String(1 - Math.min(dy / 220, .6));
-  };
+} ;
   const onUp = () => {
     if (!dragging) return;
     dragging = false;
     box.style.transition = 'transform .2s ease, opacity .2s ease';
     if (dy > 70) {
       closePhotoModal();
-    }
+}
     box.style.transform = '';
     box.style.opacity = '';
-  };
-
+} ;
   handle.addEventListener('pointerdown', (e) => { e.preventDefault(); onDown(e.clientY); handle.setPointerCapture(e.pointerId); });
   handle.addEventListener('pointermove', (e) => onMove(e.clientY));
   handle.addEventListener('pointerup', () => { const wasTap = dy < 6; onUp(); if (wasTap) closePhotoModal(); });
   handle.addEventListener('pointercancel', onUp);
 }
-
 function photoSelectType(type) {
   if (!photoPoint) return;
   const next = pmCurrentClass === type ? null : type;
@@ -2306,80 +2539,21 @@ function photoSelectType(type) {
       p.vip = next === 'flag';
       saveAll(); renderAll();
       toast(next ? `✓ ${CLASS_META[next].l}` : 'Etiqueta quitada');
-    }
-  } else {
+} } else {
     pendingClass = next || 'save';
     pendingColor = next ? CLASS_META[next].c : '';
     pendingVip = next === 'flag';
-  }
+}
   syncPhotoModalState();
 }
-
-// Guarda cambios de la tarjeta compacta (título/notas/privado/medios)
-function pmSaveCard() {
-  if (!photoPoint) { closePhotoModal(); return; }
-  const title = ($('pm-field-title').value || '').trim() || (photoAddress.split(',')[0] || '').trim() || 'Lugar sin título';
-  const notes = ($('pm-field-notes').value || '').trim();
-
-  if (photoExistingId) {
-    const p = places.find(x => x.id === photoExistingId);
-    if (p) {
-      p.title = title;
-      p.notes = notes;
-      p.private = pmPrivate;
-      if (pmPendingMedia.length) p.media = [...(p.media || []), ...pmPendingMedia];
-      saveAll();
-      renderAll();
-      toast('✓ Cambios guardados');
-    }
-  } else {
-    const now = new Date().toISOString();
-    const item = {
-      id: crypto.randomUUID(),
-      title, notes,
-      lat: photoPoint.lat, lng: photoPoint.lng,
-      color: CLASS_META.save.c,
-      media: [...pmPendingMedia],
-      classification: pmCurrentClass || 'save',
-      vip: pmCurrentClass === 'flag',
-      private: pmPrivate,
-      createdAt: now,
-      createdAtLabel: fmtDate(now)
-    };
-    places.unshift(item);
-    saveAll();
-    renderAll();
-    clearSearchConfirmMarker();
-    addNotif(`Nueva ubicación: "${title}"`, CLASS_META[item.classification]?.e || '📍');
-    toast('✓ Lugar guardado');
-  }
-  vibra();
+function photoToSave() {
+  if (!photoPoint) return;
+  if (photoExistingId) { openDetailModal(photoExistingId); closePhotoModal(); return; }
+  const { lng, lat } = photoPoint;
+  const addr = photoAddress;
   closePhotoModal();
+  openSaveModal(lng, lat, addr);
 }
-
-function pmToggleEdit() {
-  pmEditable = !pmEditable;
-  syncPhotoModalState();
-  if (pmEditable) $('pm-field-title').focus();
-}
-
-function pmToggleLock() {
-  pmPrivate = !pmPrivate;
-  syncPhotoModalState();
-}
-
-function pmDeleteCard() {
-  if (photoExistingId) {
-    const id = photoExistingId;
-    closePhotoModal();
-    confirmDel(id);
-  } else {
-    closePhotoModal();
-    clearSearchConfirmMarker();
-    toast('Sin lugar guardado que eliminar');
-  }
-}
-
 // ─── ENCRYPT ────────────────────────────────────────────────────
 function updateEncStatus() {
   const st = $('enc-status');
@@ -2388,23 +2562,20 @@ function updateEncStatus() {
     st.textContent = '🔒 Datos cifrados — ingresa tu clave para desbloquear';
     $('enc-toggle').textContent = 'Desbloquear';
     $('enc-badge').style.display = 'flex';
-  } else if (encKey) {
+} else if (encKey) {
     st.className = 'enc-status unlocked';
     st.textContent = '🔓 Datos cifrados activos';
     $('enc-toggle').textContent = 'Desactivar cifrado';
     $('enc-badge').style.display = 'flex';
-  } else {
+} else {
     st.className = 'enc-status locked';
     st.textContent = '⚿ Datos sin cifrar';
     $('enc-toggle').textContent = 'Activar cifrado';
     $('enc-badge').style.display = 'none';
-  }
-}
-
+} }
 function toggleEncrypt() {
   const key = $('enc-key').value.trim();
   if (!key) { toast('Ingresa una clave'); return; }
-
   if (placesLocked) {
     // Intentar desbloquear con la clave ingresada
     const raw = localStorage.getItem('fxmap.enc');
@@ -2415,17 +2586,17 @@ function toggleEncrypt() {
       placesLocked = false;
       renderAll();
       toast('🔓 Datos desbloqueados');
-    } else {
+} else {
       toast('❌ Clave incorrecta');
       return;
-    }
-  } else if (encKey) {
+}
+} else if (encKey) {
     // Desactivar cifrado: descifrar de vuelta a claro y borrar el blob cifrado
     svl(SK.places, places);
     localStorage.removeItem('fxmap.enc');
     encKey = null;
     toast('🔓 Cifrado desactivado, datos restaurados');
-  } else {
+} else {
     // Activar por primera vez: cifrar y BORRAR el dato en claro real
     const t = encD(places, key);
     if (t) {
@@ -2433,18 +2604,16 @@ function toggleEncrypt() {
       localStorage.removeItem(SK.places);
       encKey = key;
       toast('✓ Datos cifrados AES-256');
-    } else {
+} else {
       toast('Error al cifrar');
       return;
-    }
-  }
+} }
   updateEncStatus();
   closeEncModal();
 }
-
 function openEncModal() { updateEncStatus(); $('enc-key').value = ''; $('enc-modal').classList.add('open'); }
-function closeEncModal() { $('enc-modal').classList.remove('open'); }
-
+function closeEncModal() { $('enc-modal').classList.remove('open'); 
+}
 // ─── SETTINGS ──────────────────────────────────────────────────
 function syncCfgUI() { $('cfg-name').value = settings.name || ''; $('cfg-phone').value = settings.phone || ''; $('cfg-tg').value = settings.telegram || ''; $('cfg-api').value = settings.apikey || ''; $('cfg-radius').value = settings.radius || 500; }
 
@@ -2587,7 +2756,8 @@ function bindAll() {
       const pane = document.getElementById(`pp-${target}`);
       if (pane) pane.classList.add('active');
       if (target === 'vip') renderVipList();
-  } ) ; } ) ;
+  });
+  });
   // ─── NOTIFY CLEAR ───
   $('notif-clear').addEventListener('click', () => { notifications.forEach(n => n.read = true); svl(SK.notifs, notifications); renderNotifBadge(); renderNotifList(); toast('Notificaciones limpiadas'); });
   // ─── ENCRYPT ───
@@ -2612,6 +2782,7 @@ function bindAll() {
   $('q-notes-ok').addEventListener('click', () => $('q-notes').blur());
   $('q-notes-del').addEventListener('click', () => { $('q-notes').value = ''; $('save-hero-note').textContent = '"Algún comentario"'; });
   updatePublishState();
+
   // ─── MEDIA UPLOAD ───
   const gi = document.createElement('input');
   gi.type = 'file';
@@ -2621,6 +2792,7 @@ function bindAll() {
   document.body.appendChild(gi);
   $('tool-media').addEventListener('click', () => gi.click());
   gi.addEventListener('change', e => handleFiles(e.target.files));
+
   // ─── LOC POPUP ACTIONS ───
   $('loc-popup').querySelectorAll('.loc-act[data-ac]').forEach(btn => btn.addEventListener('click', () => {
     if (!locPopupCoords) return;
@@ -2653,39 +2825,41 @@ function bindAll() {
   // ─── DETAIL MODAL ───
   $('dm-close').addEventListener('click', closeDetailModal);
   $('detail-modal').addEventListener('click', e => { if (e.target.id === 'detail-modal') closeDetailModal(); });
-  $('dm-save').addEventListener('click', saveDetailModal);
-  $('dm-flyto').addEventListener('click', () => { if (detailPlaceId) { flyTo(detailPlaceId); closeDetailModal(); } });
   $('dm-delete').addEventListener('click', () => { if (detailPlaceId) { closeDetailModal(); confirmDel(detailPlaceId); } });
-  $('dm-vip-btn').addEventListener('click', () => {
+  $('dm-coords-btn').addEventListener('click', dmCopyCoords);
+  $('dm-coords-line').addEventListener('click', dmCopyCoords);
+  $('dm-prev').addEventListener('click', () => dmNavigate('prev'));
+  $('dm-next').addEventListener('click', () => dmNavigate('next'));
+  document.querySelectorAll('.dm-tab').forEach(t => t.addEventListener('click', () => dmSetTab(t.dataset.tab)));
+  $('dm-title').addEventListener('change', () => {
     const p = places.find(x => x.id === detailPlaceId);
-    if (!p) return;
-    p.vip = !p.vip;
-    saveAll(); renderAll();
-    $('dm-vip-btn').classList.toggle('active', !!p.vip);
-    toast(p.vip ? '𖣿 Agregado a VIP' : 'Quitado de VIP');
+    if (p) { p.title = $('dm-title').value.trim() || p.title; saveAll(); renderAll(); }
   });
-  $('dm-flag-btn').addEventListener('click', (e) => {
-    e.stopPropagation();
-    const p = places.find(x => x.id === detailPlaceId);
-    if (!p) return;
-    document.querySelectorAll('.flag-pop').forEach(el => el.remove());
-    const pop = buildFlagPopover();
-    pop.style.top = '38px';
-    pop.style.left = '0';
-    $('dm-flag-btn').appendChild(pop);
-    wireFlagPopover(pop,
-      (cls) => { p.classification = cls; if (cls) p.color = CLASS_META[cls].c; p.vip = cls === 'flag' ? p.vip : p.vip; saveAll(); renderAll(); updateDetailFlagBtn(p); },
-      (color, label) => { p.color = color; p.customFlag = { color, label }; saveAll(); renderAll(); updateDetailFlagBtn(p); }
-    ) ; } ) ;
+  $('dm-tag-add').addEventListener('click', dmAddTag);
+  $('dm-tag-input').addEventListener('keydown', e => { if (e.key === 'Enter') dmAddTag(); });
+  $('dm-comment-add').addEventListener('click', dmAddComment);
+  $('dm-comment-input').addEventListener('keydown', e => { if (e.key === 'Enter') dmAddComment(); });
+  $('dm-dropzone').addEventListener('click', () => $('dm-file-input').click());
+  $('dm-file-input').addEventListener('change', e => dmHandleFiles(e.target.files));
+  $('dm-dropzone').addEventListener('dragover', e => { e.preventDefault(); $('dm-dropzone').classList.add('drag-active'); });
+  $('dm-dropzone').addEventListener('dragleave', () => $('dm-dropzone').classList.remove('drag-active'));
+  $('dm-dropzone').addEventListener('drop', e => { e.preventDefault(); $('dm-dropzone').classList.remove('drag-active'); dmHandleFiles(e.dataTransfer.files); });
+  $('dm-ai-analyze').addEventListener('click', dmAnalyze);
+  $('dm-ai-clear').addEventListener('click', () => { $('dm-ai-result').style.display = 'none'; $('dm-ai-empty').style.display = 'block'; });
+  dmInitDrag();
+
   // ─── LIGHTBOX ───
   $('lightbox').addEventListener('click', () => $('lightbox').classList.remove('open'));
+
   // ─── AI ───
   $('btn-ai').addEventListener('click', runAI);
   document.querySelectorAll('.ai-chip[data-q]').forEach(c => c.addEventListener('click', () => { $('ai-prompt').value = c.dataset.q; runAI(); }));
+
   // ─── CONFIG ───
   $('cfg-save').addEventListener('click', saveSettings);
   $('btn-export').addEventListener('click', exportJson);
   $('btn-import').addEventListener('change', e => importJson(e.target.files[0]));
+
   // ─── NEW ROUTE ───
   $('btn-new-route').addEventListener('click', () => {
     const name = prompt('Nombre de la nueva ruta:');
@@ -2696,7 +2870,8 @@ function bindAll() {
     saveAll();
     renderAll();
     toast('✓ Ruta creada');
-  } ) ;
+  });
+
   // ─── PRIVATE ───
   $('priv-unlock').addEventListener('click', () => {
     const p = $('priv-pass').value;
@@ -2707,7 +2882,7 @@ function bindAll() {
       renderPrivate();
       toast('✓ Acceso concedido');
     } else toast('❌ Contraseña incorrecta');
-  } ) ;
+  });
   $('priv-pass').addEventListener('keydown', e => { if (e.key === 'Enter') $('priv-unlock').click(); });
   $('priv-lock-btn').addEventListener('click', () => {
     privUnlocked = false;
@@ -2715,7 +2890,7 @@ function bindAll() {
     $('priv-content').classList.remove('unlocked');
     $('priv-pass').value = '';
     toast('🔒 Cajón bloqueado');
-  } ) ;
+} ) ;
   // ─── MEDIA UPLOAD ───
   $('media-upload-input').addEventListener('change', e => handleFiles(e.target.files, true));
   // ─── MEDIA CATS ───
@@ -2724,7 +2899,7 @@ function bindAll() {
     this.classList.add('active');
     mediaFilter = this.dataset.mc || 'all';
     renderMediaGrid();
-  } ) ) ;
+} ) ) ;
   // ─── MEDIA SECTIONS (Multimedia / Notas) ───
   document.querySelectorAll('.msec').forEach(s => s.addEventListener('click', function() {
     document.querySelectorAll('.msec').forEach(x => x.classList.remove('active'));
@@ -2732,17 +2907,17 @@ function bindAll() {
     document.querySelectorAll('.media-section-pane').forEach(p => p.classList.remove('active'));
     $('sec-' + this.dataset.sec).classList.add('active');
     if (this.dataset.sec === 'notas') renderNotesFolder();
-  } ) ) ;
+} ) ) ;
   $('notes-folder-open').addEventListener('click', () => {
     $('notes-folder-view').style.display = 'none';
     $('notes-list-view').style.display = 'flex';
     renderNotesList();
-  } ) ;
+} ) ;
   $('notes-back-btn').addEventListener('click', () => {
     $('notes-list-view').style.display = 'none';
     $('notes-folder-view').style.display = 'block';
     renderNotesFolder();
-  } ) ;
+} ) ;
   $('btn-new-note').addEventListener('click', () => openNoteEditor(null));
   $('note-edit-cancel').addEventListener('click', closeNoteEditor);
   $('note-edit-save').addEventListener('click', saveNoteEditor);
@@ -2764,39 +2939,22 @@ function bindAll() {
     const lng = e.lngLat.lng;
     const lat = e.lngLat.lat;
     openPickModal(lng, lat);
-  } ) ;
+} ) ;
   // ─── PICK MODAL ───
   $('pick-x').addEventListener('click', closePickModal);
   $('pick-modal').addEventListener('click', function(e) {
     if (e.target === this || e.target.id === 'pick-modal') {
       closePickModal();
-  } } ) ;
-  // ─── PHOTO MODAL (tarjeta compacta) ───
+} } ) ;
+  // ─── PHOTO MODAL ───
   initPhotoDragHandle();
   $('photo-save-btn').addEventListener('click', () => photoSelectType('save'));
   $('photo-vip-btn').addEventListener('click', () => photoSelectType('flag'));
-  $('pm-edit-btn').addEventListener('click', pmToggleEdit);
-  $('pm-lock-btn').addEventListener('click', pmToggleLock);
-  $('pm-del-btn').addEventListener('click', pmDeleteCard);
-  $('pm-img-btn').addEventListener('click', () => $('pm-img-input').click());
-  $('pm-img-input').addEventListener('change', (e) => {
-    Array.from(e.target.files || []).forEach(file => {
-      if (!isSafeMediaFile(file)) { toast('⚠ Imagen no admitida o muy pesada (máx. 10MB)'); return; }
-      const r = new FileReader();
-      r.onload = () => { pmPendingMedia.push({ id: crypto.randomUUID(), name: file.name, type: file.type, url: r.result, createdAt: new Date().toISOString() }); toast('✓ Imagen añadida'); };
-      r.onerror = () => toast('⚠ No se pudo leer la imagen');
-      r.readAsDataURL(file);
-    });
-    e.target.value = '';
-  });
-  $('pm-cancel-btn').addEventListener('click', closePhotoModal);
-  $('pm-save-cta').addEventListener('click', pmSaveCard);
+  $('pm-save-cta').addEventListener('click', photoToSave);
   $('photo-modal').addEventListener('click', function(e) {
     if (e.target === this || e.target.id === 'photo-modal') {
       closePhotoModal();
-    }
-  });
-
+} } ) ;
   // ─── DRAWER TABS ───
   document.querySelectorAll('.dtab').forEach(btn => {
     btn.addEventListener('click', function(e) {
@@ -2808,9 +2966,8 @@ function bindAll() {
       const pane = document.getElementById(`dp-${target}`);
       if (pane) pane.classList.add('active');
       if (target === 'board') renderBoard();
-    });
-  });
-
+} ) ;
+} ) ;
   // ─── ESC ───
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
@@ -2819,29 +2976,26 @@ function bindAll() {
         const el = $(id);
         if (el) el.classList.remove('open');
       });
-      if ($('detail-modal')?.style.display === 'flex') closeDetailModal();
+      if ($('detail-modal')?.classList.contains('open')) closeDetailModal();
       if ($('save-modal')?.classList.contains('open')) {
         closeSaveModal();
         resetSaveForm();
         clearSearchConfirmMarker();
-      }
+}
       if ($('menu-panel')?.classList.contains('open')) closeMenuModal();
       closeAll();
-    }
-  });
-
+}
+} ) ;
   // ─── Cierra palette pop al hacer clic fuera ───
   document.addEventListener('click', function(e) {
     if (!e.target.closest('#act-color')) {
       const palette = $('palette');
       if (palette) palette.classList.remove('open');
-    }
-  });
-
+}
+} ) ;
   setSearchMode('address');
-
   // ─── FIX: teclado iOS tapa inputs en modales position:fixed ───
-  const keyboardSafeInputs = ['q-title', 'q-notes', 'q-label', 'q-hashtag', 'note-edit-title', 'note-edit-body', 'dm-title', 'dm-notes', 'fx-auth-pass', 'enc-key', 'pm-field-title', 'pm-field-notes'];
+  const keyboardSafeInputs = ['q-title', 'q-notes', 'q-label', 'q-hashtag', 'note-edit-title', 'note-edit-body', 'dm-title', 'dm-tag-input', 'dm-comment-input', 'fx-auth-pass', 'enc-key'];
   keyboardSafeInputs.forEach(id => {
     const el = $(id);
     if (!el) return;
@@ -2851,16 +3005,15 @@ function bindAll() {
       modal.style.alignItems = 'flex-start';
       modal.style.paddingTop = '32px';
       modal.style.overflowY = 'auto';
-    });
+} ) ;
     el.addEventListener('blur', () => {
       if (!modal) return;
       modal.style.alignItems = '';
       modal.style.paddingTop = '';
       modal.style.overflowY = '';
-    });
-  });
+} ) ;
+} ) ;
 }
-
 // ─── MAP EVENTS ──────────────────────────────────────────────────
 map.on('style.load', () => {
   try {
@@ -2870,13 +3023,11 @@ map.on('style.load', () => {
       'horizon-blend': 0.07,
       'space-color': 'rgb(4,6,10)',
       'star-intensity': 0
-    });
-  } catch (e) {}
-});
-
+} ) ;
+} catch (e) {}
+} ) ;
 map.on('load', () => {
   map.easeTo({ center: BASE.center, zoom: BASE.zoom, pitch: BASE.pitch, bearing: BASE.bearing, duration: 0, essential: true });
-
   try {
     map.setConfigProperty('basemap', 'lightPreset', 'night');
     map.setConfigProperty('basemap', 'show3dObjects', true);
@@ -2885,21 +3036,19 @@ map.on('load', () => {
     map.setConfigProperty('basemap', 'showRoadLabels', false);
     map.setConfigProperty('basemap', 'showTransitLabels', false);
   } catch (e) {}
-
   // Geolocate control (oculto)
   const geo = new mapboxgl.GeolocateControl({
     positionOptions: { enableHighAccuracy: true },
     trackUserLocation: true,
     showUserHeading: true,
     showAccuracyCircle: false
-  });
+} ) ;
   map.addControl(geo, 'bottom-right');
   geo.on('geolocate', e => { userLocation = [e.coords.longitude, e.coords.latitude]; });
   setTimeout(() => {
     const gc = document.querySelector('.mapboxgl-ctrl-geolocate');
     if (gc) gc.style.display = 'none';
-  }, 600);
-
+}, 600);
   ensureBuildingHighlightLayers();
   loadAll();
   renderAll();
@@ -2910,13 +3059,184 @@ map.on('load', () => {
   updateEncStatus();
   if (placesLocked) {
     setTimeout(() => { openEncModal(); toast('🔒 Tus lugares están cifrados — ingresa tu clave'); }, 400);
-  }
-
+}
   map.on('moveend', () => { if (buildingHighlightReady) renderMarkers(); });
   map.on('zoomend', () => { if (buildingHighlightReady) renderMarkers(); });
-});
-
+} ) ;
 // ─── INICIALIZACIÓN ──────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+// SUPABASE SYNC LAYER — vanilla, offline-first, single-file
+// ═══════════════════════════════════════════════════════════════
+const SB_URL  = 'https://fovyxpzkwyhdwkmxmdco.supabase.co';
+const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZvdnl4cHprd3loZHdrbXhtZGNvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5OTg2OTYsImV4cCI6MjA3NDU3NDY5Nn0.bRBwhQsEncToukGInHswb51w98Yo6x_3rOuIA8zTxr0';
+const sb = window.supabase.createClient(SB_URL, SB_ANON, {
+  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'pkce' }
+} ) ;
+let fxUser = null;
+let syncQueue = ldl('fxmap.syncq', [] ) ;
+let syncing = false;
+// ─── Mappers local ↔ DB (coinciden con la estructura real: tagColor en places, customFlag en notes) ──
+const toDbPlace = p => ({
+  id: p.id, title: p.title||'', notes: p.notes||'', label: p.label||null, hashtag: p.hashtag||null,
+  tags: p.tags||[], lat: p.lat, lng: p.lng, color: p.color||null, tag_color: p.tagColor||null,
+  classification: p.classification||'save', vip: !!p.vip, media: p.media||[],
+  created_at: p.createdAt || new Date().toISOString(), updated_at: new Date().toISOString()
+} ) ;
+const fromDbPlace = r => ({
+  id: r.id, title: r.title||'', notes: r.notes||'', label: r.label||'', hashtag: r.hashtag||'',
+  tags: r.tags||[], lat: r.lat, lng: r.lng, color: r.color||'', tagColor: r.tag_color||null,
+  classification: r.classification||'save', vip: !!r.vip, media: r.media||[],
+  createdAt: r.created_at, createdAtLabel: fmtDate(r.created_at)
+} ) ;
+const toDbRoute = r => ({ id:r.id, name:r.name, stops:r.stops||[], created_at:r.createdAt||new Date().toISOString() });
+const fromDbRoute = r => ({ id:r.id, name:r.name, stops:r.stops||[], createdAt:r.created_at });
+const toDbNote = n => ({
+  id:n.id, title:n.title||'', body:n.body||'', classification:n.classification||'save',
+  custom_flag_color: n.customFlag?.color || null, custom_flag_label: n.customFlag?.label || null,
+  tags:n.tags||[], linked_place_ids:n.linkedPlaceIds||[], vip:!!n.vip, hidden:!!n.hidden,
+  created_at:n.createdAt||new Date().toISOString(), updated_at:new Date().toISOString()
+} ) ;
+const fromDbNote = r => ({
+  id:r.id, title:r.title||'', body:r.body||'', classification:r.classification||'save',
+  customFlag: r.custom_flag_color ? { color: r.custom_flag_color, label: r.custom_flag_label || '' } : null,
+  tags:r.tags||[], linkedPlaceIds:r.linked_place_ids||[], vip:!!r.vip, hidden:!!r.hidden,
+  createdAt:r.created_at, updatedAt:r.updated_at
+} ) ;
+// ─── Auth UI ──────────────────────────────────────────────
+function updateAuthUI() {
+  const el = document.getElementById('fx-auth-chip');
+  if (!el) return;
+  if (fxUser) {
+    const initial = (fxUser.user_metadata?.full_name || fxUser.email || '?').charAt(0).toUpperCase();
+    el.innerHTML = `<span style="width:22px;height:22px;border-radius:50%;background:var(--neon-green);color:#060606;font-weight:900;display:grid;place-items:center;font-size:11px">${initial}</span><span style="font-size:9px">☁ SYNC</span>`;
+    el.title = fxUser.email || 'Cuenta conectada';
+  } else {
+    el.innerHTML = `<span style="font-size:12px">☁</span><span style="font-size:9px">LOGIN</span>`;
+    el.title = 'Iniciar sesión con Google';
+} }
+async function signInGoogle() {
+  const { error } = await sb.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin + window.location.pathname }
+} ) ;
+  if (error) toast('❌ Error de login: ' + error.message);
+}
+async function signOutUser() {
+  await sb.auth.signOut();
+  fxUser = null;
+  updateAuthUI();
+  toast('👋 Sesión cerrada');
+}
+function showAuthMenu() {
+  if (fxUser) {
+    if (confirm(`Sesión: ${fxUser.email}\n\n¿Cerrar sesión?`)) signOutUser();
+  } else {
+    signInGoogle();
+} }
+// ─── Push (upsert) ────────────────────────────────────────
+async function pushRow(table, row) {
+  if (!fxUser) { syncQueue.push({table,row}); svl('fxmap.syncq', syncQueue); return; }
+  try {
+    const { error } = await sb.from(table).upsert({ ...row, user_id: fxUser.id });
+    if (error) throw error;
+  } catch (e) {
+    console.warn('push failed, queued', e);
+    syncQueue.push({table,row}); svl('fxmap.syncq', syncQueue);
+} }
+async function deleteRow(table, id) {
+  if (!fxUser) return;
+  try { await sb.from(table).delete().eq('id', id); } catch (e) { console.warn(e); }
+}
+async function flushQueue() {
+  if (!fxUser || !navigator.onLine || syncing || !syncQueue.length) return;
+  syncing = true;
+  const q = [...syncQueue]; syncQueue = []; svl('fxmap.syncq', syncQueue);
+  for (const item of q) {
+    try { await sb.from(item.table).upsert({ ...item.row, user_id: fxUser.id }); }
+    catch (e) { syncQueue.push(item); }
+}
+  svl('fxmap.syncq', syncQueue);
+  syncing = false;
+}
+// ─── Pull (sync from cloud) ───────────────────────────────
+async function syncFromCloud() {
+  if (!fxUser) return;
+  try {
+    const [pl, rt, nt, no, us] = await Promise.all([
+      sb.from('places').select('*'),
+      sb.from('routes').select('*'),
+      sb.from('notes').select('*'),
+      sb.from('notifications').select('*').order('created_at', {ascending:false}).limit(50),
+      sb.from('user_settings').select('*').eq('user_id', fxUser.id).maybeSingle()
+] ) ;
+    if (pl.data && !pl.error) { places = pl.data.map(fromDbPlace); svl(SK.places, places); }
+    if (rt.data && !rt.error) { routes = rt.data.map(fromDbRoute); svl(SK.routes, routes); }
+    if (nt.data && !nt.error) { notesStore = nt.data.map(fromDbNote); svl(SK.notes, notesStore); }
+    if (no.data && !no.error) {
+      notifications = no.data.map(n => ({id:n.id,text:n.text,icon:n.icon,read:n.read,time:n.created_at}));
+      svl(SK.notifs, notifications);
+}
+    if (us.data && !us.error) {
+      settings = { ...settings, name:us.data.name||'', phone:us.data.phone||'', telegram:us.data.telegram||'', apikey:us.data.apikey||'', radius:us.data.radius||500 };
+      svl(SK.settings, settings); syncCfgUI();
+}
+    renderAll();
+  } catch (e) { console.warn('sync error', e); }
+}
+// ─── Migración: subir datos locales a la cuenta al 1er login ──
+async function migrateLocalToCloud() {
+  if (!fxUser) return;
+  const key = 'fxmap.migrated.' + fxUser.id;
+  if (localStorage.getItem(key)) return;
+  toast('☁ Migrando tus datos...');
+  try {
+    if (places.length) await sb.from('places').upsert(places.map(p => ({...toDbPlace(p), user_id:fxUser.id})));
+    if (routes.length) await sb.from('routes').upsert(routes.map(r => ({...toDbRoute(r), user_id:fxUser.id})));
+    if (notesStore.length) await sb.from('notes').upsert(notesStore.map(n => ({...toDbNote(n), user_id:fxUser.id})));
+    if (settings.name || settings.phone) {
+      await sb.from('user_settings').upsert({ user_id:fxUser.id, name:settings.name, phone:settings.phone, telegram:settings.telegram, apikey:settings.apikey, radius:settings.radius });
+}
+    localStorage.setItem(key, '1');
+    toast('✓ Datos en la nube');
+} catch (e) {
+    console.warn('migration', e);
+    toast('⚠ Migración parcial — reintentar con ↺');
+} }
+// ─── Hook: interceptar saveAll para replicar a la nube ────
+const _saveAllOrig = saveAll;
+saveAll = function() {
+  _saveAllOrig();
+  if (!fxUser) return;
+  clearTimeout(saveAll._t);
+  saveAll._t = setTimeout(async () => {
+    if (places.length)      places.forEach(p => pushRow('places', toDbPlace(p)));
+    if (routes.length)      routes.forEach(r => pushRow('routes', toDbRoute(r)));
+    if (notesStore.length)  notesStore.forEach(n => pushRow('notes', toDbNote(n)));
+    if (settings.name || settings.phone || settings.telegram || settings.apikey) {
+      pushRow('user_settings', { name:settings.name, phone:settings.phone, telegram:settings.telegram, apikey:settings.apikey, radius:settings.radius });
+} } , 600) ; 
+} ;
+// ─── Init ─────────────────────────────────────────────────
+async function initFxAuth() {
+  const { data: { session } } = await sb.auth.getSession();
+  fxUser = session?.user || null;
+  updateAuthUI();
+  if (fxUser) { await migrateLocalToCloud(); await syncFromCloud(); await flushQueue(); }
+  sb.auth.onAuthStateChange(async (event, session) => {
+    fxUser = session?.user || null;
+    updateAuthUI();
+    if (event === 'SIGNED_IN' && fxUser) {
+      await migrateLocalToCloud();
+      await syncFromCloud();
+      await flushQueue();
+      toast('✓ Sesión iniciada');
+}
+    if (event === 'SIGNED_OUT') toast('Sesión cerrada');
+} ) ;
+  window.addEventListener('online', flushQueue);
+  setInterval(flushQueue, 30000);
+}
+initFxAuth();
 console.log('FX MAP X11 — CYBERPUNK NEON — Cargado correctamente 🚀');
 </script>
 </body>
