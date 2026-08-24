@@ -6,3 +6,7 @@ src/
 _check.js
 mis-cambios-web.patch
 push_error.txt
+tags_data.json
+web/
+.env*
+private_data/

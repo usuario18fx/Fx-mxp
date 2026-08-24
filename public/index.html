@@ -389,28 +389,26 @@ button{cursor:pointer}
 .pm-corner.tr{top:-1px;right:-1px;border-top:2px solid;border-right:2px solid;border-radius:0 10px 0 0}
 .pm-corner.bl{bottom:-1px;left:-1px;border-bottom:2px solid;border-left:2px solid;border-radius:0 0 0 10px}
 .pm-corner.br{bottom:-1px;right:-1px;border-bottom:2px solid;border-right:2px solid;border-radius:0 0 10px 0}
-.pm-head{display:flex;justify-content:flex-end;align-items:center;margin-bottom:14px}
-.pm-icons{display:flex;gap:7px;align-items:center}
-.pm-icon-btn{width:34px;height:34px;border-radius:9px;background:transparent!important;border:1.5px solid rgba(255,255,255,.09)!important;color:#888!important;display:grid;place-items:center;cursor:pointer;font-size:15px;transition:all .2s;box-shadow:none!important}
+.pm-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.pm-sponsor{font-size:10px;letter-spacing:.16em;color:var(--text-muted);font-weight:700;text-transform:uppercase}
+.pm-icons{display:flex;gap:7px;align-items:center;margin-right:14px}
+.pm-icon-btn{width:32px;height:32px;border-radius:8px;background:transparent!important;border:1.5px solid rgba(255,255,255,.07)!important;color:#555!important;display:grid;place-items:center;cursor:pointer;font-size:14px;transition:all .2s;box-shadow:none!important}
 .pm-icon-btn.active{color:#ffe760!important;border-color:rgba(255,231,96,.5)!important;background:rgba(255,231,96,.08)!important}
-#photo-save-btn{width:34px;height:34px;border-radius:9px;background:transparent!important;border:1.5px solid rgba(255,255,255,.09)!important;color:#888!important;display:grid;place-items:center;cursor:pointer;font-size:15px;transition:all .2s;clip-path:unset!important;-webkit-clip-path:unset!important;box-shadow:none!important}
-.pm-title{font-weight:900;font-size:20px;line-height:1.25;color:var(--text-primary);margin:0 0 4px;word-break:break-word}
-.pm-addr{font-size:11px;color:var(--text-secondary);line-height:1.4;margin:0 0 16px}
-.pm-fields{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
-.pm-input{width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);border-radius:10px;padding:11px 13px;color:var(--text-primary);font-size:12px;font-family:inherit;outline:none;transition:border-color .2s,background .2s,opacity .2s}
-.pm-input:focus{border-color:rgba(212,255,0,.3);background:rgba(255,255,255,.05)}
-.pm-input[readonly]{opacity:.5;cursor:default}
-.pm-input::placeholder{color:var(--text-muted)}
-.pm-textarea{min-height:56px;resize:none;line-height:1.5}
-.pm-actionrow{display:flex;gap:8px;margin-bottom:18px}
-.pm-mini-btn{width:38px;height:38px;border-radius:9px;background:rgba(255,255,255,.94);border:1.5px solid transparent;color:#111;display:grid;place-items:center;font-size:15px;cursor:pointer;transition:all .15s}
-.pm-mini-btn.active{border-color:var(--neon-green);box-shadow:0 0 10px rgba(212,255,0,.4)}
-.pm-mini-btn.on{color:var(--neon-green);border-color:var(--neon-green)}
-.pm-mini-btn.danger{color:#c02020}
-.pm-mini-btn:active{transform:scale(.88)}
-.pm-footer{display:flex;gap:10px;margin-top:2px}
-.pm-btn-secondary,.pm-btn-primary{flex:1;height:44px;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:filter .15s,transform .1s;background:#8a8a8a;color:#1a1a1a}
-.pm-btn-secondary:active,.pm-btn-primary:active{filter:brightness(.9);transform:scale(.98)}
+.pm-close-btn{width:32px;height:32px;border-radius:8px;background:transparent;border:none;color:var(--text-muted);display:grid;place-items:center;cursor:pointer;font-size:16px;transition:color .2s}
+#photo-save-btn{width:32px;height:32px;border-radius:8px;background:transparent!important;border:1.5px solid rgba(255,255,255,.07)!important;color:#555!important;display:grid;place-items:center;cursor:pointer;font-size:14px;transition:all .2s;clip-path:unset!important;-webkit-clip-path:unset!important;box-shadow:none!important}
+.pm-title{font-weight:900;font-size:20px;line-height:1.25;color:var(--text-primary);margin:0 0 4px;word-break:break-word;padding-right:34px}
+.pm-addr{font-size:11px;color:var(--text-secondary);line-height:1.4;margin:0 0 6px;padding-right:34px}
+.pm-desc{font-size:10px;color:var(--text-muted);line-height:1.5;margin:0 0 16px;padding-right:34px}
+.pm-footer{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:4px;padding-right:38px}
+.pm-active{display:flex;align-items:center;gap:6px}
+.pm-active-dot{width:7px;height:7px;border-radius:50%;flex:0 0 auto;background:#4a4d51}
+.pm-active-text{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#4a4d51}
+#pm-save-cta{padding:7px 16px;border-radius:6px;border:none;cursor:pointer;background:var(--neon-green);box-shadow:0 1px 0 rgba(255,255,255,.35) inset,0 3px 0 #86a300,0 4px 6px rgba(0,0,0,.5);font-weight:900;font-size:10px;color:#060606;letter-spacing:.12em;text-transform:uppercase;transform:translateY(0);transition:transform .08s,box-shadow .08s,opacity .2s;flex:0 0 auto}
+#pm-save-cta:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(255,255,255,.25) inset,0 0 0 #86a300,0 1px 2px rgba(0,0,0,.4)}
+#pm-save-cta.disabled{opacity:.35;pointer-events:none;background:#3a3a3a;color:#1a1a1a;box-shadow:none}
+.pm-tags{position:absolute;top:68px;right:14px;display:flex;flex-direction:column;gap:6px}
+.pm-tag{height:24px;width:12px;border-radius:3px 0 0 3px;cursor:pointer;transition:width .15s,opacity .15s;opacity:.85}
+.pm-tag.active{width:22px;opacity:1;box-shadow:0 0 8px var(--pm-glow,rgba(255,255,255,.4))}
 ::-webkit-scrollbar{width:3px;height:3px}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 @media (hover: hover) and (pointer: fine) {
@@ -459,11 +457,264 @@ button{cursor:pointer}
 .pick-close:hover{background:rgba(255,255,255,.18)}
 .pm-drag-handle:hover .pm-drag-bar{background:rgba(255,255,255,.32)}
 .pm-icon-btn:hover{background:rgba(255,255,255,.06)!important;border-color:rgba(255,255,255,.2)!important;color:var(--text)!important}
+.pm-close-btn:hover{color:var(--text)}
 #photo-save-btn:hover{background:rgba(255,255,255,.06)!important;border-color:rgba(255,255,255,.2)!important;color:var(--text)!important}
-.pm-mini-btn:hover{filter:brightness(.94)}
-.pm-btn-secondary:hover,.pm-btn-primary:hover{filter:brightness(.95)}
+.pm-tag:hover{width:18px;opacity:1}
 }
+/* ═══════════════════════════════════════════════════════════
+   DETAIL PANEL — paleta "Jewel & Tactical" escopada (dm-*)
+   No toca las variables globales del resto de la app.
+   ═══════════════════════════════════════════════════════════ */
+.dm-root{
+  --dmbg:#07090F; --dmsurf:#131620; --dmglass:rgba(19,22,32,.72);
+  --dmborder:rgba(255,255,255,.09); --dmtxt:#ffffff; --dmtxt2:#94A3B8;
+  --dmgreen:#4ADE80; --dmamber:#F59E0B; --dmred:#EF4444;
+  position:fixed;inset:0;z-index:205;display:none;
+}
+.dm-root.open{display:block}
+.dm-panel{
+  position:fixed;top:1rem;right:1rem;width:min(384px,92vw);
+  max-height:calc(100vh - 2rem);display:flex;flex-direction:column;
+  background:var(--dmglass);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border:1px solid var(--dmborder);border-radius:18px;
+  box-shadow:0 8px 32px rgba(0,0,0,.5);overflow:hidden;
+  font-family:'IBM Plex Sans',var(--font-body,sans-serif);
+  touch-action:none;
+}
+.dm-header{padding:20px;border-bottom:1px solid var(--dmborder);cursor:grab}
+.dm-header.dragging{cursor:grabbing}
+.dm-header-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.dm-eyebrow-row{display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:6px;width:fit-content}
+.dm-eyebrow{font-family:'Chivo',var(--font-display,sans-serif);font-weight:800;font-size:17px;letter-spacing:-.01em;color:var(--dmgreen)}
+.dm-copy-icon{width:14px;height:14px;color:var(--dmtxt2);opacity:0;transition:opacity .2s}
+.dm-eyebrow-row:hover .dm-copy-icon{opacity:1}
+.dm-check-icon{width:14px;height:14px;color:var(--dmgreen);display:none}
+.dm-check-icon.show{display:block}
+.dm-check-icon.show ~ .dm-copy-icon{display:none}
+.dm-name-input{
+  width:100%;background:transparent;border:none;outline:none;
+  font-family:'Chivo',sans-serif;font-weight:600;font-size:16px;color:var(--dmtxt);
+  padding:2px 0 6px;margin-bottom:2px;
+}
+.dm-name-input::placeholder{color:var(--dmtxt2)}
+.dm-coords-line,.dm-city-line{font-size:11px;color:var(--dmtxt2);line-height:1.6}
+.dm-coords-line{cursor:pointer;transition:color .15s}
+.dm-coords-line:hover{color:var(--dmgreen)}
+.dm-close-btn{
+  width:32px;height:32px;border-radius:9px;background:transparent;border:none;
+  color:var(--dmtxt2);font-size:15px;cursor:pointer;flex:0 0 auto;transition:background .15s;
+}
+.dm-close-btn:hover{background:rgba(255,255,255,.1);color:var(--dmtxt)}
+.dm-nav-row{display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:14px;border-top:1px solid var(--dmborder)}
+.dm-nav-btn{
+  display:flex;align-items:center;gap:5px;padding:7px 11px;border-radius:9px;
+  background:rgba(255,255,255,.05);border:none;color:var(--dmtxt);font-size:11px;cursor:pointer;transition:background .15s;
+}
+.dm-nav-btn:hover{background:rgba(255,255,255,.1)}
+.dm-nav-btn:disabled{opacity:.3;cursor:not-allowed;pointer-events:none}
+.dm-nav-count{font-size:10px;color:var(--dmtxt2)}
+
+.dm-tabs{display:flex;border-bottom:1px solid var(--dmborder);background:rgba(255,255,255,.03)}
+.dm-tab{
+  flex:1;padding:11px 4px;font-size:12px;font-weight:600;cursor:pointer;
+  background:none;border:none;color:var(--dmtxt2);border-bottom:2px solid transparent;transition:all .15s;
+}
+.dm-tab.active{color:var(--dmgreen);border-bottom-color:var(--dmgreen)}
+.dm-tab:hover:not(.active){color:var(--dmtxt)}
+
+.dm-content{flex:1;overflow-y:auto;padding:18px}
+.dm-pane{display:none}
+.dm-pane.active{display:block}
+
+.dm-label{font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--dmtxt2);display:block;margin-bottom:10px}
+.dm-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px}
+.dm-tag-chip{
+  display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:7px;
+  background:rgba(255,255,255,.08);color:rgba(255,255,255,.85);font-family:'JetBrains Mono',monospace;font-size:11px;
+}
+.dm-tag-chip button{background:none;border:none;color:inherit;cursor:pointer;opacity:.5;font-size:11px;line-height:1;padding:0}
+.dm-tag-chip button:hover{opacity:1;color:var(--dmred)}
+.dm-empty-msg{font-size:12px;color:var(--dmtxt2);text-align:center;padding:14px 0}
+
+.dm-row{display:flex;gap:8px}
+.dm-input{
+  flex:1;min-width:0;padding:9px 11px;border-radius:10px;
+  background:rgba(255,255,255,.05);border:1px solid var(--dmborder);color:var(--dmtxt);
+  font-size:12px;outline:none;transition:border-color .15s;
+}
+.dm-input:focus{border-color:var(--dmgreen)}
+.dm-input::placeholder{color:var(--dmtxt2)}
+.dm-icon-action{
+  width:38px;height:38px;flex:0 0 auto;border-radius:10px;border:none;cursor:pointer;
+  background:var(--dmgreen);color:#07090F;font-size:15px;display:grid;place-items:center;transition:opacity .15s;
+}
+.dm-icon-action:hover{opacity:.85}
+
+.dm-comments{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;max-height:180px;overflow-y:auto}
+.dm-comment{padding:10px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid var(--dmborder)}
+.dm-comment p{font-size:12px;color:var(--dmtxt);line-height:1.5;margin-bottom:6px}
+.dm-comment-meta{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--dmtxt2)}
+
+.dm-dropzone{
+  border:2px dashed var(--dmborder);border-radius:14px;padding:30px 14px;text-align:center;
+  cursor:pointer;transition:all .15s;margin-bottom:14px;
+}
+.dm-dropzone.drag-active{border-color:var(--dmgreen);background:rgba(74,222,128,.08)}
+.dm-dropzone-icon{font-size:34px;margin-bottom:8px;opacity:.7}
+.dm-dropzone-text{font-size:11px;color:var(--dmtxt2)}
+.dm-images-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.dm-image-item{aspect-ratio:1;border-radius:11px;overflow:hidden;background:rgba(255,255,255,.05);border:1px solid var(--dmborder);position:relative;cursor:pointer}
+.dm-image-item img{width:100%;height:100%;object-fit:cover}
+
+.dm-ai-empty{text-align:center;padding:26px 10px}
+.dm-ai-icon{font-size:34px;margin-bottom:12px}
+.dm-ai-empty p{font-size:12px;color:var(--dmtxt2);margin-bottom:16px;line-height:1.5}
+.dm-ai-btn{
+  padding:10px 22px;border-radius:10px;border:none;cursor:pointer;
+  background:var(--dmamber);color:#fff;font-weight:700;font-size:12px;display:inline-flex;align-items:center;gap:8px;transition:opacity .15s;
+}
+.dm-ai-btn:hover{opacity:.9}
+.dm-ai-btn:disabled{opacity:.5;cursor:wait}
+.dm-ai-card{padding:14px;border-radius:12px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);margin-bottom:12px}
+.dm-ai-card-head{display:flex;align-items:center;gap:7px;font-weight:700;font-size:12px;margin-bottom:8px;color:var(--dmtxt)}
+.dm-ai-card p{font-size:12px;color:rgba(255,255,255,.9);line-height:1.6;white-space:pre-wrap}
+.dm-ai-clear-btn{width:100%;padding:9px;border-radius:10px;background:rgba(255,255,255,.05);border:none;color:var(--dmtxt2);font-size:11px;cursor:pointer}
+.dm-ai-clear-btn:hover{background:rgba(255,255,255,.1)}
+
+.dm-footer{padding:14px 18px;border-top:1px solid var(--dmborder)}
+.dm-delete-btn{
+  width:100%;padding:10px;border-radius:10px;cursor:pointer;
+  background:rgba(239,68,68,.1);border:none;color:var(--dmred);font-weight:600;font-size:12px;
+  display:flex;align-items:center;justify-content:center;gap:7px;transition:background .15s;
+}
+.dm-delete-btn:hover{background:rgba(239,68,68,.2)}
+
+@media (max-width:480px){
+  .dm-panel{top:0;right:0;left:0;width:100%;max-height:88dvh;max-height:88vh;border-radius:18px 18px 0 0;bottom:0;position:fixed;top:auto}
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MODALES UNIFICADOS — heredan el lenguaje Jewel & Tactical
+   del detail-modal sin alterar la lógica de cada flujo.
+   ═══════════════════════════════════════════════════════════ */
+:is(#enc-modal,#save-modal,#sos-modal,#fx-auth-modal,#note-editor-modal,#confirm-modal,#pick-modal,#photo-modal).jewel-modal{
+  --j-bg:#07090F;--j-surface:#131620;--j-glass:rgba(19,22,32,.78);
+  --j-border:rgba(255,255,255,.09);--j-text:#fff;--j-muted:#94A3B8;
+  --j-green:#4ADE80;--j-amber:#F59E0B;--j-red:#EF4444;
+  --neon-green:var(--j-green);--text-primary:var(--j-text);--text-secondary:var(--j-muted);
+  --text-muted:#64748B;--border:var(--j-border);--border2:var(--j-border);
+  padding:16px;background:rgba(3,5,9,.76);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  font-family:'IBM Plex Sans',var(--font-body,sans-serif);isolation:isolate;
+}
+#fx-auth-modal.jewel-modal,#note-editor-modal.jewel-modal{display:none;align-items:center;justify-content:center}
+
+:is(#enc-modal,#save-modal,#sos-modal,#fx-auth-modal,#note-editor-modal,#confirm-modal,#pick-modal,#photo-modal)>.jewel-panel{
+  position:relative;background:var(--j-glass);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border:1px solid var(--j-border);border-radius:18px;color:var(--j-text);
+  box-shadow:0 8px 32px rgba(0,0,0,.5),0 0 0 1px rgba(74,222,128,.025) inset;
+  overflow:auto;animation:jewel-modal-in .24s cubic-bezier(.22,1,.36,1);
+}
+:is(#enc-modal,#save-modal,#sos-modal,#fx-auth-modal,#note-editor-modal,#confirm-modal,#pick-modal,#photo-modal)>.jewel-panel::after{
+  content:'';position:absolute;z-index:3;top:-1px;left:18px;right:18px;height:1px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(74,222,128,.88),transparent);
+  box-shadow:0 0 14px rgba(74,222,128,.28);
+}
+@keyframes jewel-modal-in{from{opacity:0;transform:translateY(14px) scale(.975)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+.jewel-modal :is(.enc-title,.save-title,.auth-title,.pick-name,.pm-sponsor){
+  font-family:'Chivo',var(--font-display,sans-serif);color:var(--j-green);font-weight:800;
+  text-shadow:none;letter-spacing:.08em;
+}
+.jewel-modal :is(.enc-sub,.save-sub,.sos-sub,.pick-addr,.pick-coords,.pm-addr,.pm-desc){color:var(--j-muted)}
+.jewel-modal :is(.save-hd,.pick-top,.pm-head){padding-bottom:14px;border-bottom:1px solid var(--j-border)}
+.jewel-modal .enc-sub{padding-bottom:14px;border-bottom:1px solid var(--j-border)}
+
+.jewel-modal :is(input:not([type=file]),textarea){
+  background:rgba(255,255,255,.05)!important;border:1px solid var(--j-border)!important;
+  border-radius:10px!important;color:var(--j-text)!important;outline:none;box-shadow:none!important;
+  transition:border-color .15s,background .15s;
+}
+.jewel-modal :is(input:not([type=file]),textarea):focus{
+  border-color:var(--j-green)!important;background:rgba(255,255,255,.07)!important;
+  box-shadow:0 0 0 3px rgba(74,222,128,.08)!important;
+}
+.jewel-modal :is(input,textarea)::placeholder{color:var(--j-muted)!important}
+.jewel-modal :is(.clbl,.field label){color:var(--j-muted)}
+
+.jewel-modal :is(.btn-p,.btn-full,#pm-save-cta){
+  border:0!important;background:var(--j-green)!important;color:var(--j-bg)!important;
+  box-shadow:none!important;border-radius:10px!important;transition:opacity .15s,transform .15s!important;
+}
+.jewel-modal :is(.btn-p,.btn-full,#pm-save-cta):hover{opacity:.88;transform:translateY(-1px)}
+.jewel-modal :is(.btn-g,.btn-dim){
+  background:rgba(255,255,255,.05)!important;border:1px solid var(--j-border)!important;
+  color:var(--j-muted)!important;border-radius:10px!important;box-shadow:none!important;
+}
+.jewel-modal :is(.btn-g,.btn-dim):hover{background:rgba(255,255,255,.1)!important;color:var(--j-text)!important}
+.jewel-modal :is(.pclose,.pick-close,.pm-close-btn,.auth-cancel){
+  color:var(--j-muted)!important;background:transparent!important;border:0!important;box-shadow:none!important;
+}
+.jewel-modal :is(.pclose,.pick-close,.pm-close-btn,.auth-cancel):hover{color:var(--j-text)!important;background:rgba(255,255,255,.08)!important}
+
+#enc-modal>.jewel-panel{width:min(400px,94vw)}
+#enc-modal .enc-status{background:rgba(255,255,255,.05);border:1px solid var(--j-border)}
+#enc-modal .enc-status.locked{color:var(--j-red);border-color:rgba(239,68,68,.22)}
+#enc-modal .enc-status.unlocked{color:var(--j-green);border-color:rgba(74,222,128,.22)}
+
+#save-modal>.jewel-panel{width:min(440px,94vw);max-height:calc(100dvh - 48px)}
+#save-modal :is(.save-hero,.publish-status,.pchip){background:rgba(255,255,255,.04);border-color:var(--j-border)}
+#save-modal .save-hero-title{color:var(--j-text)}
+#save-modal .save-hero-note{color:var(--j-muted)}
+
+#sos-modal>.jewel-panel{width:100%;max-width:500px}
+#sos-modal .sos-title{font-family:'Chivo',var(--font-display,sans-serif);color:var(--j-red);text-shadow:none}
+#sos-modal .sos-loc{background:rgba(255,255,255,.05);border-color:var(--j-border);color:var(--j-text)}
+#sos-modal .sos-pbtn{background:rgba(255,255,255,.04);border-color:var(--j-border);color:var(--j-text)}
+#sos-modal .sos-pbtn:hover{background:rgba(239,68,68,.09);border-color:rgba(239,68,68,.24)}
+
+#fx-auth-modal>.jewel-panel{width:min(340px,90vw);padding:24px 20px;text-align:center}
+.auth-icon{font-size:26px;margin-bottom:8px;filter:drop-shadow(0 0 12px rgba(74,222,128,.2))}
+.auth-title{font-size:12px;text-transform:uppercase;margin-bottom:16px}
+.auth-input{width:100%;padding:12px;text-align:center;font-size:16px;letter-spacing:.3em;box-sizing:border-box;margin-bottom:10px}
+.auth-cancel{width:100%;min-height:36px;margin-top:10px;border-radius:9px!important;font-size:10px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+
+#note-editor-modal>.jewel-panel{width:min(380px,92vw);padding:20px}
+.note-title-input{width:100%;padding:11px 12px;font-size:13px;font-weight:800;box-sizing:border-box;margin-bottom:10px}
+.note-body-input{width:100%;height:140px;padding:11px 12px;font-size:12px;line-height:1.55;resize:none;box-sizing:border-box;font-family:inherit}
+.note-editor-actions{display:flex;gap:8px;margin-top:12px}
+.note-editor-actions .btn-dim{margin-top:0}
+
+#confirm-modal>.jewel-panel{width:min(340px,92vw)}
+#confirm-modal .cfm-box h3{font-family:'Chivo',var(--font-display,sans-serif);color:var(--j-red)}
+#confirm-modal .cfm-box p{color:var(--j-muted)}
+#confirm-modal #confirm-del{background:var(--j-red)!important;color:#fff!important}
+
+#pick-modal>.jewel-panel{width:100%;max-width:520px}
+#pick-modal .pick-box::before{background:var(--j-green);opacity:.45;box-shadow:0 0 12px rgba(74,222,128,.3)}
+#pick-modal .pick-marker{background:rgba(74,222,128,.12);border-color:rgba(74,222,128,.35);color:var(--j-green)}
+#pick-modal .pick-flag.sel .flagico{outline-color:var(--j-green);filter:drop-shadow(0 0 10px rgba(74,222,128,.4))}
+#pick-modal .pick-flag.sel .flaglbl{color:var(--j-green)}
+
+#photo-modal>.jewel-panel{width:min(420px,92vw)}
+#photo-modal .pm-corner{border-color:var(--j-green)}
+#photo-modal .pm-drag-bar{background:rgba(74,222,128,.32)}
+#photo-modal .pm-title{color:var(--j-text)}
+#photo-modal .pm-active-text{color:var(--j-muted)}
+#photo-modal :is(.pm-icon-btn,#photo-save-btn){border-color:var(--j-border)!important;color:var(--j-muted)!important}
+#photo-modal :is(.pm-icon-btn,#photo-save-btn):hover{border-color:rgba(74,222,128,.35)!important;color:var(--j-green)!important}
+
+@media (max-width:480px){
+  :is(#enc-modal,#save-modal,#sos-modal,#fx-auth-modal,#note-editor-modal,#confirm-modal,#pick-modal,#photo-modal).jewel-modal{
+    align-items:flex-end!important;padding:0!important;
+  }
+  :is(#enc-modal,#save-modal,#sos-modal,#fx-auth-modal,#note-editor-modal,#confirm-modal,#pick-modal,#photo-modal)>.jewel-panel{
+    width:100%!important;max-width:100%!important;max-height:88dvh!important;margin:0!important;
+    border-radius:18px 18px 0 0!important;padding-bottom:calc(20px + var(--safe-bottom));
+  }
+}
+@media (prefers-reduced-motion:reduce){.jewel-modal>.jewel-panel{animation:none}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 </head>
 <body>
 
@@ -489,6 +740,9 @@ button{cursor:pointer}
 
 <!-- ─── RIGHT COL ─── -->
 <div id="right-col">
+  <button class="rc-btn" id="fx-auth-chip" onclick="showAuthMenu()" title="Cuenta" style="flex-direction:column;gap:1px;font-size:10px;line-height:1;padding:4px 0">
+    <span style="font-size:12px">☁</span><span style="font-size:9px">LOGIN</span>
+  </button>
   <button class="rc-btn danger" id="btn-enc" title="Cifrado">⛓︎<div class="rc-badge" id="enc-badge" style="display:none">E</div></button>
   <button class="rc-btn" id="btn-refresh" title="Actualizar">⇄</button>
   <button class="rc-btn" id="btn-notif" title="Notificaciones">✉<div class="rc-badge" id="notif-badge" style="display:none">0</div></button>
@@ -582,7 +836,7 @@ button{cursor:pointer}
     <button class="ptab" data-pt="labels">𝐄𝐓𝐈𝐐</button>
     <button class="ptab" data-pt="addrs">𝐀𝐃𝐃𝐑𝐄𝐒𝐒</button>
     <button class="ptab" data-pt="vip">𝐅𝐀𝐕𝐒</button>
-    <button class="ptab" data-pt="ai">•ΙΑ</button>
+    <button class="ptab" data-pt="ai">•DATA</button>
     <button class="ptab" data-pt="cfg">𝐂𝐎𝐍𝐅𝐈𝐆</button>
   </div>
   <div class="pbody">
@@ -591,9 +845,9 @@ button{cursor:pointer}
     <div class="ppane" id="pp-addrs"><div class="plbl">Direcciones guardadas</div><div id="addrs-list"></div><button class="btn-dim" id="btn-export" style="margin-top:8px">↓ Exportar JSON</button><label class="btn-dim" style="cursor:pointer">↑ Importar JSON<input type="file" id="btn-import" accept=".json" style="position:absolute;inset:0;opacity:0"/></label></div>
     <div class="ppane" id="pp-vip"><div class="plbl">𖣿</div><div id="vip-list"></div></div>
     <div class="ppane" id="pp-ai">
-      <div class="plbl">Análisis con IA</div>
-      <div class="ai-wrap" style="margin-bottom:10px"><textarea id="ai-prompt" placeholder="Pregunta sobre tus puntos, o deja vacío para análisis automático..."></textarea></div>
-      <button class="btn-full" id="btn-ai">◈|IA</button>
+      <div class="plbl">Análisis local de tus datos</div>
+      <div class="ai-wrap" style="margin-bottom:10px"><textarea id="ai-prompt" placeholder="Escribe una pregunta o deja vacío para el resumen automático..."></textarea></div>
+      <button class="btn-full" id="btn-ai">◈ ANALIZAR</button>
       <div class="ai-spin" id="ai-spin"><div class="dots"><span></span><span></span><span></span></div>&nbsp;analizando...</div>
       <div class="ai-out" id="ai-out"></div>
       <div class="plbl" style="margin-top:14px;margin-bottom:7px">Sugerencias rápidas</div>
@@ -610,7 +864,6 @@ button{cursor:pointer}
       <div class="cfield"><div class="clbl">Nombre de emergencia</div><input type="text" class="cinput" id="cfg-name" placeholder="Nombre del contacto"/></div>
       <div class="cfield"><div class="clbl">☎︎</div><input type="text" class="cinput" id="cfg-phone" placeholder="+1 416 555 0000"/></div>
       <div class="cfield"><div class="clbl">➤</div><input type="text" class="cinput" id="cfg-tg" placeholder="@usuario_telegram"/></div>
-      <div class="cfield"><div class="clbl">Clave API Claude (opcional)</div><input type="password" class="cinput" id="cfg-api" placeholder="sk-ant-..."/></div>
       <div class="cfield"><div class="clbl">Contraseña cajón privado</div><input type="password" class="cinput" id="cfg-privpass" placeholder="Nueva contraseña (def: 0000)"/></div>
       <div class="cfield"><div class="clbl">Radio de alerta de proximidad (m)</div><input type="number" class="cinput" id="cfg-radius" placeholder="500" value="500"/></div>
       <button class="btn-p" id="cfg-save" style="width:100%;margin-top:4px">⚿ Guardar configuración</button>
@@ -620,25 +873,25 @@ button{cursor:pointer}
 
 <!-- ─── NOTIFICATIONS ─── -->
 <div id="notif-panel">
-  <div class="nh"><div class="nh-title">✉|IA</div><div style="display:flex;gap:8px;align-items:center"><button class="nclear" id="notif-clear">Limpiar</button><button class="pclose" id="notif-close">⛝</button></div></div>
+  <div class="nh"><div class="nh-title">✉|ACTIVIDAD</div><div style="display:flex;gap:8px;align-items:center"><button class="nclear" id="notif-clear">Limpiar</button><button class="pclose" id="notif-close">⛝</button></div></div>
   <div class="nlist" id="nlist"><div class="notif-empty">Sin notificaciones. Usa ↺ para actualizar.</div></div>
 </div>
 
 <!-- ─── ENCRYPT MODAL ─── -->
-<div id="enc-modal">
-  <div class="enc-box">
-    <div class="enc-title">⚿ Cifrado extremo de datos</div>
-    <div class="enc-sub">Protege tus lugares con cifrado AES-256 local. La clave nunca sale de tu dispositivo.</div>
+<div id="enc-modal" class="jewel-modal">
+  <div class="enc-box jewel-panel">
+    <div class="enc-title">⚿ Cifrado local completo</div>
+    <div class="enc-sub">Protege lugares, rutas, notas, multimedia y configuración. La clave nunca sale de tu dispositivo.</div>
     <div class="enc-status locked" id="enc-status">⚿ Datos sin cifrar</div>
     <div class="cfield"><div class="clbl">Clave de cifrado</div><input type="password" class="cinput" id="enc-key" placeholder="Tu clave secreta..."/></div>
     <div class="arow"><button class="btn-p" id="enc-toggle">Activar cifrado</button><button class="btn-g" id="enc-cancel">Cancelar</button></div>
-    <div style="margin-top:12px;padding:10px;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid var(--border2);font-size:9px;color:var(--muted);line-height:1.7"><b style="color:var(--text)">Cifrado local AES-256</b> — Tus datos se cifran en tu dispositivo. Sin la clave correcta son ilegibles. Ningún dato sale a servidores externos.</div>
+    <div style="margin-top:12px;padding:10px;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid var(--border2);font-size:9px;color:var(--muted);line-height:1.7"><b style="color:var(--text)">Cifrado local AES</b> — Mientras esté activo, la sincronización cloud queda pausada para no enviar copias sin cifrar.</div>
   </div>
 </div>
 
 <!-- ─── SAVE MODAL ─── -->
-<div id="save-modal">
-  <div class="save-box">
+<div id="save-modal" class="jewel-modal">
+  <div class="save-box jewel-panel">
     <div class="save-hd"><div><div class="save-title">Add location</div><div class="save-sub">Confirma el lugar y guarda rápido</div></div><button class="pclose" id="save-close">⛝</button></div>
     <div class="save-hero">
       <div class="save-hero-main"><div class="save-hash">#</div><div><div class="save-hero-title" id="save-hero-title"># Usuario</div><div class="save-hero-note" id="save-hero-note">"Algún comentario"</div></div></div>
@@ -687,8 +940,8 @@ button{cursor:pointer}
 </div>
 
 <!-- ─── SOS MODAL ─── -->
-<div id="sos-modal">
-  <div class="sos-box">
+<div id="sos-modal" class="jewel-modal">
+  <div class="sos-box jewel-panel">
     <div class="sos-title">⛑︎</div>
     <div class="sos-sub">Se enviará tu ubicación y mensaje de auxilio a tu contacto de confianza.</div>
     <div class="sos-loc" id="sos-loc">Obteniendo ubicación...</div>
@@ -703,7 +956,7 @@ button{cursor:pointer}
 
 <!-- ─── MEDIA PANEL ─── -->
 <div id="media-panel">
-  <div class="media-ph"><div class="media-ph-title">🜲 FX-01MAP|Almacén Cifrado</div><button class="pclose" id="media-close">⛝</button></div>
+  <div class="media-ph"><div class="media-ph-title">🜲 FX-01MAP|Almacén Local</div><button class="pclose" id="media-close">⛝</button></div>
   <div class="media-sections">
     <button class="msec active" data-sec="multimedia">Multimedia</button>
     <button class="msec" data-sec="notas">Notas</button>
@@ -717,7 +970,7 @@ button{cursor:pointer}
       <div class="mcat" data-mc="doc">Docs</div>
     </div>
     <div class="media-grid" id="media-grid"></div>
-    <label class="media-upload">📎 Agregar archivo cifrado<input type="file" id="media-upload-input" accept="image/*,video/*" multiple/></label>
+    <label class="media-upload">📎 Agregar archivo<input type="file" id="media-upload-input" accept="image/*,video/*" multiple/></label>
   </div>
 
   <div class="media-section-pane" id="sec-notas">
@@ -742,23 +995,23 @@ button{cursor:pointer}
 </div>
 
 <!-- ─── FX AUTH MODAL ─── -->
-<div id="fx-auth-modal" style="position:fixed;inset:0;z-index:230;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.72);backdrop-filter:blur(12px)">
-  <div style="width:min(320px,88vw);background:rgba(9,9,9,.98);border-radius:14px;border:1.5px solid rgba(212,255,0,.2);padding:22px 18px;box-sizing:border-box;text-align:center">
-    <div style="font-size:26px;margin-bottom:6px">🔒</div>
-    <div style="color:var(--neon-green);font-size:11px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;margin-bottom:14px">Acceso protegido</div>
-    <input type="password" id="fx-auth-pass" placeholder="● ● ● ●" style="width:100%;text-align:center;background:rgba(255,255,255,.03);border:1px solid rgba(212,255,0,.15);border-radius:10px;padding:12px;color:var(--text-primary);font-size:16px;letter-spacing:.3em;box-sizing:border-box;margin-bottom:10px"/>
+<div id="fx-auth-modal" class="jewel-modal">
+  <div class="jewel-panel auth-box">
+    <div class="auth-icon">🔒</div>
+    <div class="auth-title">Acceso protegido</div>
+    <input type="password" id="fx-auth-pass" class="auth-input" placeholder="● ● ● ●"/>
     <button id="fx-auth-submit" class="btn-full" style="width:100%;margin-bottom:8px">Desbloquear</button>
     <button id="fx-auth-bio" class="btn-dim" style="width:100%;display:none">👤 Usar Face ID / Huella</button>
-    <button id="fx-auth-cancel" style="width:100%;background:none;border:none;color:var(--text-muted);font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-top:10px;cursor:pointer">Cancelar</button>
+    <button id="fx-auth-cancel" class="auth-cancel">Cancelar</button>
   </div>
 </div>
 
 <!-- ─── NOTE EDITOR MODAL ─── -->
-<div id="note-editor-modal" style="position:fixed;inset:0;z-index:210;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.65);backdrop-filter:blur(10px)">
-  <div style="width:min(360px,90vw);background:rgba(9,9,9,.98);border-radius:12px;border:1px solid rgba(212,255,0,.12);padding:16px;box-sizing:border-box">
-    <input type="text" id="note-edit-title" placeholder="Título de la nota" style="width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(212,255,0,.1);border-radius:8px;padding:9px 11px;color:var(--text-primary);font-size:12px;font-weight:800;margin-bottom:8px;box-sizing:border-box"/>
-    <textarea id="note-edit-body" placeholder="Escribe tu nota..." style="width:100%;height:120px;background:rgba(255,255,255,.03);border:1px solid rgba(212,255,0,.1);border-radius:8px;padding:9px 11px;color:var(--text-secondary);font-size:11px;line-height:1.5;resize:none;box-sizing:border-box;font-family:inherit"></textarea>
-    <div style="display:flex;gap:8px;margin-top:10px">
+<div id="note-editor-modal" class="jewel-modal">
+  <div class="jewel-panel note-editor-box">
+    <input type="text" id="note-edit-title" class="note-title-input" placeholder="Título de la nota"/>
+    <textarea id="note-edit-body" class="note-body-input" placeholder="Escribe tu nota..."></textarea>
+    <div class="note-editor-actions">
       <button id="note-edit-cancel" class="btn-dim" style="flex:1">Cancelar</button>
       <button id="note-edit-save" class="btn-full" style="flex:1">Guardar</button>
     </div>
@@ -766,8 +1019,8 @@ button{cursor:pointer}
 </div>
 
 <!-- ─── CONFIRM MODAL ─── -->
-<div id="confirm-modal">
-  <div class="cfm-box">
+<div id="confirm-modal" class="jewel-modal">
+  <div class="cfm-box jewel-panel">
     <h3>⚠ Borrar lugar</h3>
     <p>¿Confirmas que quieres eliminar este punto? Esta acción no se puede deshacer.</p>
     <div class="arow"><button class="btn-p" id="confirm-del">Borrar</button><button class="btn-g" id="confirm-cancel">Cancelar</button></div>
@@ -775,31 +1028,92 @@ button{cursor:pointer}
 </div>
 
 <!-- ─── DETAIL MODAL ─── -->
-<div id="detail-modal" style="position:fixed;inset:0;z-index:205;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.72);backdrop-filter:blur(12px)">
-  <div style="width:min(400px,92vw);max-height:85dvh;max-height:85vh;overflow-y:auto;background:rgba(9,9,9,.98);border-radius:14px;border:1.5px solid rgba(212,255,0,.18);padding:18px;box-sizing:border-box">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px">
-      <input type="text" id="dm-title" style="flex:1;min-width:0;background:transparent;border:none;border-bottom:1px solid rgba(212,255,0,.15);color:var(--text-primary);font-size:17px;font-weight:900;padding:4px 0"/>
-      <button id="dm-close" style="width:30px;height:30px;border-radius:8px;background:transparent;border:none;color:var(--text-muted);font-size:16px;cursor:pointer;flex:0 0 auto">✕</button>
-    </div>
-    <div id="dm-addr" style="font-size:11px;color:var(--text-secondary);margin-bottom:12px;line-height:1.4"></div>
+<div id="detail-modal" class="dm-root">
+  <div id="dm-panel" class="dm-panel">
 
-    <div id="dm-media" style="display:flex;gap:6px;overflow-x:auto;margin-bottom:12px"></div>
-
-    <textarea id="dm-notes" placeholder="Notas..." style="width:100%;min-height:70px;background:rgba(255,255,255,.03);border:1px solid rgba(212,255,0,.1);border-radius:8px;padding:9px 11px;color:var(--text-secondary);font-size:11px;line-height:1.5;resize:vertical;box-sizing:border-box;font-family:inherit;margin-bottom:12px"></textarea>
-
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-      <div style="display:flex;gap:8px;align-items:center">
-        <button id="dm-vip-btn" class="pm-icon-btn vip" title="VIP">𖣿</button>
-        <button id="dm-flag-btn" style="width:32px;height:32px;border-radius:8px;background:transparent;border:1.5px solid rgba(255,255,255,.07);color:#555;display:grid;place-items:center;cursor:pointer;position:relative" title="Bandera">◆</button>
+    <!-- Header (arrastrable) -->
+    <div class="dm-header" id="dm-header">
+      <div class="dm-header-top">
+        <div style="flex:1;min-width:0">
+          <div class="dm-eyebrow-row no-drag" id="dm-coords-btn" title="Copiar coordenadas">
+            <span class="dm-eyebrow">Dirección</span>
+            <svg class="dm-copy-icon" id="dm-copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+            <svg class="dm-check-icon" id="dm-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+          </div>
+          <input type="text" id="dm-title" class="dm-name-input no-drag" placeholder="Nombre del lugar"/>
+          <div class="dm-coords-line no-drag" id="dm-coords-line">📍 CD: —</div>
+          <div class="dm-city-line no-drag">🏙️ Ciudad: <span id="dm-city">No especificada</span></div>
+        </div>
+        <button id="dm-close" class="dm-close-btn no-drag">✕</button>
       </div>
-      <span id="dm-dist" style="font-size:10px;color:var(--text-muted)"></span>
+
+      <div class="dm-nav-row no-drag">
+        <button id="dm-prev" class="dm-nav-btn">‹ Anterior</button>
+        <span class="dm-nav-count" id="dm-nav-count">1 de 1</span>
+        <button id="dm-next" class="dm-nav-btn">Siguiente ›</button>
+      </div>
     </div>
 
-    <div style="display:flex;gap:8px">
-      <button id="dm-flyto" class="btn-dim" style="flex:1;margin-top:0">📍 Ver en mapa</button>
-      <button id="dm-save" class="btn-full" style="flex:1">Guardar cambios</button>
+    <!-- Tabs -->
+    <div class="dm-tabs no-drag">
+      <button class="dm-tab active" data-tab="info">Info</button>
+      <button class="dm-tab" data-tab="images">Imágenes</button>
+      <button class="dm-tab" data-tab="ai">Datos</button>
     </div>
-    <button id="dm-delete" style="width:100%;margin-top:8px;background:rgba(255,59,59,.08);border:1px solid rgba(255,59,59,.25);color:var(--red);border-radius:10px;padding:9px;font-size:10px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">🗑 Eliminar lugar</button>
+
+    <!-- Content -->
+    <div class="dm-content no-drag" id="dm-content">
+
+      <!-- ── TAB INFO ── -->
+      <div class="dm-pane active" id="dm-pane-info">
+        <label class="dm-label">Etiquetas</label>
+        <div class="dm-tags" id="dm-tags"></div>
+        <div class="dm-row">
+          <input type="text" id="dm-tag-input" class="dm-input" placeholder="Nueva etiqueta"/>
+          <button id="dm-tag-add" class="dm-icon-action">🏷</button>
+        </div>
+
+        <label class="dm-label" style="margin-top:20px">Comentarios</label>
+        <div class="dm-comments" id="dm-comments"></div>
+        <div class="dm-row">
+          <input type="text" id="dm-comment-input" class="dm-input" placeholder="Nuevo comentario"/>
+          <button id="dm-comment-add" class="dm-icon-action">💬</button>
+        </div>
+      </div>
+
+      <!-- ── TAB IMÁGENES ── -->
+      <div class="dm-pane" id="dm-pane-images">
+        <div class="dm-dropzone" id="dm-dropzone">
+          <input type="file" id="dm-file-input" accept="image/*" style="display:none"/>
+          <div class="dm-dropzone-icon" id="dm-dropzone-icon">🖼</div>
+          <p class="dm-dropzone-text" id="dm-dropzone-text">Arrastra una imagen o toca para seleccionar</p>
+        </div>
+        <div class="dm-images-grid" id="dm-images-grid"></div>
+      </div>
+
+      <!-- ── TAB DATOS ── -->
+      <div class="dm-pane" id="dm-pane-ai">
+        <div id="dm-ai-empty" class="dm-ai-empty">
+          <div class="dm-ai-icon">✨</div>
+          <p>Analiza esta ubicación localmente para encontrar relaciones y patrones</p>
+          <button id="dm-ai-analyze" class="dm-ai-btn">Analizar datos</button>
+        </div>
+        <div id="dm-ai-result" class="dm-ai-result" style="display:none">
+          <div class="dm-ai-card">
+            <div class="dm-ai-card-head">✨ Análisis local</div>
+            <p id="dm-ai-text"></p>
+          </div>
+          <button id="dm-ai-clear" class="dm-ai-clear-btn">Limpiar análisis</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="dm-footer no-drag">
+      <button id="dm-delete" class="dm-delete-btn">🗑 Eliminar ubicación</button>
+    </div>
+
   </div>
 </div>
 
@@ -811,8 +1125,8 @@ button{cursor:pointer}
 
 
 <!-- ─── PICK MODAL ─── -->
-<div id="pick-modal">
-  <div class="pick-box">
+<div id="pick-modal" class="jewel-modal">
+  <div class="pick-box jewel-panel">
     <div class="pick-top">
       <div class="pick-marker">⚑</div>
       <div style="flex:1;min-width:0">
@@ -827,8 +1141,8 @@ button{cursor:pointer}
 </div>
 
 <!-- ─── PHOTO MODAL HUD ─── -->
-<div id="photo-modal">
-  <div class="photo-box" id="pm-box">
+<div id="photo-modal" class="jewel-modal">
+  <div class="photo-box jewel-panel" id="pm-box">
     <span class="pm-corner tl"></span>
     <span class="pm-corner tr"></span>
     <span class="pm-corner bl"></span>
@@ -837,42 +1151,31 @@ button{cursor:pointer}
     <div class="pm-drag-handle" id="pm-drag-handle"><span class="pm-drag-bar"></span></div>
 
     <div class="pm-head">
+      <span class="pm-sponsor">PATROCINADO</span>
       <div class="pm-icons">
-        <button class="pm-icon-btn vip" id="photo-vip-btn" title="Favorito">👑</button>
+        <button class="pm-icon-btn vip" id="photo-vip-btn" title="VIP">𖣿</button>
         <button id="photo-save-btn" title="Ver / guardar"><svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5C1 1.22386 1.22386 1 1.5 1H12.5C12.7761 1 13 1.22386 13 1.5V14.5C13 14.9319 12.4816 15.1512 12.1739 14.8492L7.34833 10.1129C7.1521 9.92064 6.8479 9.92064 6.65167 10.1129L1.82611 14.8492C1.51839 15.1512 1 14.9319 1 14.5V1.5Z" fill="currentColor" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg></button>
       </div>
     </div>
 
     <h2 class="pm-title" id="photo-name">Lugar</h2>
     <div class="pm-addr" id="photo-cat"></div>
-
-    <div class="pm-fields">
-      <input type="text" id="pm-field-title" class="pm-input" placeholder="Nombre del lugar" readonly/>
-      <textarea id="pm-field-notes" class="pm-input pm-textarea" placeholder="Notas..." readonly></textarea>
-    </div>
-
-    <div class="pm-actionrow">
-      <button type="button" class="pm-mini-btn" id="pm-edit-btn" title="Editar">✎</button>
-      <button type="button" class="pm-mini-btn" id="pm-img-btn" title="Añadir imagen">🖼</button>
-      <button type="button" class="pm-mini-btn" id="pm-lock-btn" title="Privado">🔒</button>
-      <button type="button" class="pm-mini-btn danger" id="pm-del-btn" title="Eliminar">🗑</button>
-    </div>
-    <input type="file" id="pm-img-input" accept="image/*" multiple style="display:none"/>
+    <div class="pm-desc" id="photo-meta"></div>
 
     <div class="pm-footer">
-      <button type="button" id="pm-cancel-btn" class="pm-btn-secondary">Cancelar</button>
-      <button type="button" id="pm-save-cta" class="pm-btn-primary">Guardar</button>
+      <div class="pm-active" id="pm-active">
+        <span class="pm-active-dot" id="pm-active-dot"></span>
+        <span class="pm-active-text" id="pm-active-text">SIN ETIQUETA · OFF</span>
+      </div>
+      <button id="pm-save-cta" class="disabled">GUARDAR</button>
     </div>
+
+    <div class="pm-tags" id="photo-flags"></div>
   </div>
 </div>
-
 <script>
-// ════════════════════════════════════════════════════════════════
 // FX MAP X11 — FULL LOGIC (optimized) — CYBERPUNK NEON VERSION
-// ════════════════════════════════════════════════════════════════
-
 mapboxgl.accessToken = 'pk.eyJ1IjoiLXVzZXIxOGZ4IiwiYSI6ImNtczg1dmhnbjBiOG4yenE1aWJsdTVsdDMifQ.DCpulj_HXHw2KBfQWIeUYw';
-
 // ─── CONFIGURATION ──────────────────────────────────────────────
 const BASE = {
   center: [-79.86125, 43.25295],
@@ -880,8 +1183,7 @@ const BASE = {
   pitch: 61.5,
   bearing: 15,
   style: 'mapbox://styles/mapbox/standard'
-};
-
+} ;
 const SK = {
   places: 'fxmap.v8.places',
   routes: 'fxmap.v8.routes',
@@ -891,22 +1193,18 @@ const SK = {
   settings: 'fxmap.v8.settings',
   notifs: 'fxmap.v8.notifs',
   imported: 'fxmap.v8.imported'
-};
-
+} ;
 const CLASS_META = {
   save: { e: '⚿', l: 'Guardado', t: 'safe', c: '#0088ff' },
   flag: { e: '⚑', l: 'Etiqueta', t: 'flag', c: '#ffe760' },
-};
-
+} ;
 const COLORS = [
   { n: 'Morado', v: '#ee0df9' },
   { n: 'Rojo',   v: '#ff3b3b' },
   { n: 'Cyan',   v: '#18e0ff' },
   { n: 'Verde',  v: '#00ff73' },
-];
-
+] ;
 const FLAG_ORDER = ['save', 'flag'];
-
 // ─── MAP INIT ──────────────────────────────────────────────────
 const map = new mapboxgl.Map({
   container: 'map',
@@ -930,17 +1228,13 @@ const map = new mapboxgl.Map({
       showPointOfInterestLabels: false,
       showRoadLabels: false,
       showTransitLabels: false
-    }
-  }
-});
-
+} } } ) ;
 // Disable all zoom controls
 map.scrollZoom.disable();
 map.doubleClickZoom.disable();
 map.touchZoomRotate.disable();
 map.boxZoom.disable();
 map.keyboard.disable();
-
 // ─── VIEWPORT / RESIZE FIX (corrige corte de pantalla en iOS Safari) ──
 function setAppHeight() {
   document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
@@ -953,26 +1247,24 @@ if (window.visualViewport) {
   window.visualViewport.addEventListener('resize', setAppHeight);
   window.visualViewport.addEventListener('scroll', setAppHeight);
 }
-
 // ─── STATE ──────────────────────────────────────────────────────
+const DEFAULT_SETTINGS = Object.freeze({
+  name: '',
+  phone: '',
+  telegram: '',
+  privPass: '0000',
+  radius: 500
+});
+const ENC_STORAGE_KEY = 'fxmap.enc.v2';
+const LEGACY_ENC_STORAGE_KEY = 'fxmap.enc';
 let places = [],
     routes = [],
     labels = [],
     mediaStore = [],
     notesStore = [],
     notifications = [];
-
 let noteEditingId = null;
-
-let settings = {
-  name: '',
-  phone: '',
-  telegram: '',
-  apikey: '',
-  privPass: '0000',
-  radius: 500
-};
-
+let settings = { ...DEFAULT_SETTINGS };
 let userLocation = [...BASE.center];
 let ctrlMode = 'zoom',
     ctrlVisible = true,
@@ -990,7 +1282,9 @@ let selectedId = null,
     privUnlocked = false;
 let pressTimer = null,
     locPopupCoords = null;
-let buildingHighlightReady = false;
+let buildingHighlightReady = false,
+    routeLayerReady = false,
+    activeRouteId = null;
 let searchConfirmMarker = null,
     searchConfirmPoint = null,
     searchConfirmAddress = '';
@@ -1005,7 +1299,6 @@ let photoPoint = null,
     photoExistingId = null;
 let publishColor = '',
     publishType = '';
-
 // ─── UTILITIES ──────────────────────────────────────────────────
 const vibra = () => { try { navigator.vibrate([12]); } catch (e) {} };
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -1023,12 +1316,10 @@ const svl = (k, v) => {
       const isQuota = e.name === 'QuotaExceededError' || e.code === 22 || e.code === 1014;
       toast(isQuota ? '⚠ Almacenamiento lleno — este cambio NO se guardó' : '⚠ Error al guardar — revisa el modo privado del navegador');
       setTimeout(() => { svlErrorShown = false; }, 4000);
-    }
+}
     return false;
-  }
-};
+}};
 const ldl = (k, fb) => { try { return JSON.parse(localStorage.getItem(k) || 'null') ?? fb; } catch { return fb; } };
-
 function distM(a, b) {
   const R = 6371000,
         dLat = (b[1] - a[1]) * Math.PI / 180,
@@ -1046,10 +1337,8 @@ function toast(msg, dur = 2000) {
   clearTimeout(toast._t);
   toast._t = setTimeout(() => t.classList.remove('show'), dur);
 }
-
 // Click feedback
 document.addEventListener('click', e => { if (e.target.closest('button')) vibra(); }, { capture: true, passive: true });
-
 // ─── ENCRYPTION ─────────────────────────────────────────────────
 function encD(d, k) {
   try { return CryptoJS.AES.encrypt(JSON.stringify(d), k).toString(); } catch { return null; }
@@ -1057,14 +1346,77 @@ function encD(d, k) {
 function decD(s, k) {
   try { const b = CryptoJS.AES.decrypt(s, k); return JSON.parse(b.toString(CryptoJS.enc.Utf8)); } catch { return null; }
 }
-
+function readCiphertext(key) {
+  const raw = localStorage.getItem(key);
+  if (!raw) return '';
+  try {
+    const parsed = JSON.parse(raw);
+    return typeof parsed === 'string' ? parsed : raw;
+  } catch {
+    return raw;
+  }
+}
+function normalizeSettings(value = {}) {
+  return {
+    ...DEFAULT_SETTINGS,
+    name: String(value.name || ''),
+    phone: String(value.phone || ''),
+    telegram: String(value.telegram || ''),
+    privPass: String(value.privPass || DEFAULT_SETTINGS.privPass),
+    radius: Number(value.radius) > 0 ? Number(value.radius) : DEFAULT_SETTINGS.radius
+  };
+}
+function stateSnapshot() {
+  return {
+    version: 2,
+    places,
+    routes,
+    labels,
+    media: mediaStore,
+    notes: notesStore,
+    notifications,
+    syncQueue,
+    settings: normalizeSettings(settings),
+    savedAt: new Date().toISOString()
+  };
+}
+function applySnapshot(value = {}) {
+  places = Array.isArray(value.places) ? value.places : [];
+  routes = Array.isArray(value.routes) ? value.routes : [];
+  labels = Array.isArray(value.labels) ? value.labels : [];
+  mediaStore = Array.isArray(value.media) ? value.media : [];
+  notesStore = Array.isArray(value.notes) ? value.notes : [];
+  notifications = Array.isArray(value.notifications) ? value.notifications : [];
+  syncQueue = Array.isArray(value.syncQueue) ? value.syncQueue : [];
+  settings = normalizeSettings(value.settings);
+}
+function clearPlainState() {
+  [SK.places, SK.routes, SK.labels, SK.media, SK.notes, SK.notifs, SK.settings, 'fxmap.syncq'].forEach(key => localStorage.removeItem(key));
+}
+function writePlainState() {
+  return [
+    svl(SK.places, places),
+    svl(SK.routes, routes),
+    svl(SK.labels, labels),
+    svl(SK.media, mediaStore),
+    svl(SK.notes, notesStore),
+    svl(SK.notifs, notifications),
+    svl('fxmap.syncq', syncQueue),
+    svl(SK.settings, normalizeSettings(settings))
+  ].every(Boolean);
+}
 // ─── LOAD / SAVE ──────────────────────────────────────────────
 function loadAll() {
-  settings = ldl(SK.settings, settings);
-  syncCfgUI();
-  const encBlob = localStorage.getItem('fxmap.enc');
-  if (encBlob) {
-    // Hay datos cifrados: no cargar nada en claro hasta que se ingrese la clave correcta
+  const encryptedState = readCiphertext(ENC_STORAGE_KEY);
+  const legacyEncryptedPlaces = readCiphertext(LEGACY_ENC_STORAGE_KEY);
+  if (encryptedState) {
+    applySnapshot({});
+    placesLocked = true;
+    syncCfgUI();
+    return;
+  }
+  settings = normalizeSettings(ldl(SK.settings, settings));
+  if (legacyEncryptedPlaces) {
     places = [];
     placesLocked = true;
   } else {
@@ -1084,29 +1436,38 @@ function loadAll() {
   mediaStore = ldl(SK.media, []);
   notesStore = ldl(SK.notes, []);
   notifications = ldl(SK.notifs, []);
+  syncCfgUI();
   // Migrar a claves nuevas si vinieron de claves viejas (solo si no está bloqueado)
   if (!placesLocked) {
     svl(SK.places, places);
     svl(SK.routes, routes);
     svl(SK.imported, true);
-  }
-}
-
+}}
 function saveAll() {
+  if (placesLocked) return false;
   if (encKey) {
-    const t = encD(places, encKey);
-    if (t) svl('fxmap.enc', t);
-    else toast('⚠ Error al re-cifrar, cambios no guardados con seguridad');
+    const encrypted = encD(stateSnapshot(), encKey);
+    if (!encrypted) {
+      toast('⚠ Error al cifrar — cambio no guardado');
+      return false;
+    }
+    try {
+      localStorage.setItem(ENC_STORAGE_KEY, encrypted);
+      localStorage.removeItem(LEGACY_ENC_STORAGE_KEY);
+      clearPlainState();
+      return true;
+    } catch {
+      toast('⚠ Almacenamiento lleno — cambio no guardado');
+      return false;
+    }
   } else {
-    svl(SK.places, places);
+    const written = writePlainState();
+    if (!written) return false;
+    localStorage.removeItem(ENC_STORAGE_KEY);
+    localStorage.removeItem(LEGACY_ENC_STORAGE_KEY);
+    return true;
   }
-  svl(SK.routes, routes);
-  svl(SK.labels, labels);
-  svl(SK.media, mediaStore);
-  svl(SK.notes, notesStore);
-  svl(SK.notifs, notifications);
 }
-
 // ─── D-PAD CONTROLS ────────────────────────────────────────────
 function dpadAction(dir) {
   vibra();
@@ -1119,9 +1480,7 @@ function dpadAction(dir) {
     ease({ bearing: map.getBearing() - 12 });
   } else if (dir === 'rt') {
     ease({ bearing: map.getBearing() + 12 });
-  }
-}
-
+}}
 function startHold(dir) {
   dpadAction(dir);
   const iv = setInterval(() => dpadAction(dir), 180);
@@ -1129,27 +1488,23 @@ function startHold(dir) {
   document.addEventListener('mouseup', stop);
   document.addEventListener('touchend', stop);
 }
-
 function setCtrlMode(mode) {
   ctrlMode = mode;
   $('ctrl-a').classList.toggle('on', mode === 'zoom');
   $('ctrl-b').classList.toggle('on', mode === 'tilt');
   toast(mode === 'tilt' ? 'Modo inclinación' : 'Modo zoom');
 }
-
 function toggleCtrlVisible() {
   ctrlVisible = !ctrlVisible;
   $('orbital').classList.toggle('hidden', !ctrlVisible);
   $('btn-toggle').classList.toggle('active', ctrlVisible);
   toast(ctrlVisible ? 'Controles visibles' : 'Controles ocultos');
 }
-
 function centerUser() {
   vibra();
   map.easeTo({ center: userLocation, zoom: BASE.zoom, pitch: BASE.pitch, bearing: BASE.bearing, duration: 400, essential: true });
   toast('📍 Centrando ubicación');
 }
-
 // ─── EXPLORE MODE ──────────────────────────────────────────────
 let modePopupTimer = null;
 function flashModePopup(text, explore) {
@@ -1171,7 +1526,6 @@ function setExplore(on) {
   if (on) { $('orbital').classList.add('hidden'); $('search-wrap').classList.add('open'); armSearchIdle(); } 
   else { if (ctrlVisible) $('orbital').classList.remove('hidden'); $('search-wrap').classList.remove('open'); $('search-results').classList.remove('open'); clearLocPopup(); clearSearchIdle(); }
 }
-
 // ─── SEARCH IDLE ───────────────────────────────────────────────
 function clearSearchIdle() { clearTimeout(searchIdleTimer); $('search-wrap')?.classList.remove('idle'); }
 function armSearchIdle() {
@@ -1179,7 +1533,6 @@ function armSearchIdle() {
   $('search-wrap')?.classList.remove('idle');
   searchIdleTimer = setTimeout(() => { $('search-wrap')?.classList.add('idle'); }, 3000);
 }
-
 function setSearchMode(mode) {
   searchMode = mode;
   const icon = $('mode-toggle-icon');
@@ -1198,10 +1551,8 @@ function setSearchMode(mode) {
   $('search-results').classList.remove('open');
   $('search-results').innerHTML = '';
 }
-
 // ─── LONG PRESS ────────────────────────────────────────────────
 let pressStartXY = null;
-
 function onPressStart(e) {
   if (!exploreMode) return;
   const pt = e.touches?.[0] || e;
@@ -1238,20 +1589,17 @@ function onPressMove(e) {
   const dy = pt.clientY - pressStartXY.y;
   if (Math.hypot(dx, dy) > 10) onPressEnd();
 }
-
 function onPressEnd() {
   clearTimeout(pressTimer);
   pressTimer = null;
   pressStartXY = null;
   $('press-ring').style.display = 'none';
 }
-
 function clearLocPopup() {
   $('loc-popup').style.display = 'none';
   $('loc-card').style.display = 'none';
   locPopupCoords = null;
 }
-
 // ─── BUILDING HIGHLIGHTS ──────────────────────────────────────
 function ensureBuildingHighlightLayers() {
   if (buildingHighlightReady) return;
@@ -1259,8 +1607,8 @@ function ensureBuildingHighlightLayers() {
     map.addSource('fx-building-highlights', {
       type: 'geojson',
       data: { type: 'FeatureCollection', features: [] }
-    });
-  }
+});
+}
   if (!map.getLayer('fx-building-highlight-fill')) {
     map.addLayer({
       id: 'fx-building-highlight-fill',
@@ -1284,12 +1632,10 @@ function ensureBuildingHighlightLayers() {
         'line-color': ['get', 'lineColor'],
         'line-width': 2.2,
         'line-opacity': 0.95
-      }
-    });
-  }
+} } ) ;
+}
   buildingHighlightReady = true;
 }
-
 function squarePolygonAround(lng, lat, size = 0.000055) {
   return [[
     [lng - size, lat - size],
@@ -1297,28 +1643,26 @@ function squarePolygonAround(lng, lat, size = 0.000055) {
     [lng + size, lat + size],
     [lng - size, lat + size],
     [lng - size, lat - size]
-  ]];
+] ] ;
 }
-
 function getBuildingFeatureForPoint(item) {
   const point = map.project([item.lng, item.lat]);
   let feats = [];
   if (map.getLayer('building')) {
     try {
       feats = map.queryRenderedFeatures([[point.x - 8, point.y - 8], [point.x + 8, point.y + 8]], { layers: ['building'] }) || [];
-    } catch (e) {
+} catch (e) {
       feats = [];
-    }
-  }
+}
+}
   const picked = feats.find(f => f.geometry && (f.geometry.type === 'Polygon' || f.geometry.type === 'MultiPolygon'));
   if (picked) {
     const height = Number(picked.properties?.height || picked.properties?.render_height || 32);
     const base = Number(picked.properties?.min_height || picked.properties?.render_min_height || 0);
     return { geometry: picked.geometry, height: Math.max(height, 18), base: Math.max(base, 0) };
-  }
+}
   return { geometry: { type: 'Polygon', coordinates: squarePolygonAround(item.lng, item.lat) }, height: 26, base: 0 };
 }
-
 function renderMarkers() {
   ensureBuildingHighlightLayers();
   const fc = {
@@ -1337,14 +1681,82 @@ function renderMarkers() {
           lineColor: '#d4ff00',
           height: picked.height,
           base: picked.base
-        }
-      };
-    })
-  };
+} } ;
+} ) } ; 
   const src = map.getSource('fx-building-highlights');
   if (src) src.setData(fc);
 }
-
+function routeStopLabel(stop) {
+  if (typeof stop === 'string') return stop;
+  return stop?.title || stop?.name || 'Parada';
+}
+function resolveRouteStop(stop) {
+  if (stop && typeof stop === 'object') {
+    const linked = stop.placeId ? places.find(p => p.id === stop.placeId) : null;
+    if (linked) return linked;
+    if (Number.isFinite(Number(stop.lng)) && Number.isFinite(Number(stop.lat))) return stop;
+  }
+  const term = String(stop || '').trim().toLowerCase();
+  return places.find(p => [p.title, p.label, p.hashtag].some(value => String(value || '').trim().toLowerCase() === term)) || null;
+}
+function ensureRouteLayers() {
+  if (routeLayerReady || !map.isStyleLoaded()) return;
+  if (!map.getSource('fx-active-route')) {
+    map.addSource('fx-active-route', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
+  }
+  if (!map.getLayer('fx-active-route-line')) {
+    map.addLayer({
+      id: 'fx-active-route-line',
+      type: 'line',
+      source: 'fx-active-route',
+      filter: ['==', ['geometry-type'], 'LineString'],
+      paint: { 'line-color': '#d4ff00', 'line-width': 5, 'line-opacity': .9, 'line-blur': .4 }
+    });
+  }
+  if (!map.getLayer('fx-active-route-stops')) {
+    map.addLayer({
+      id: 'fx-active-route-stops',
+      type: 'circle',
+      source: 'fx-active-route',
+      filter: ['==', ['geometry-type'], 'Point'],
+      paint: { 'circle-radius': 6, 'circle-color': '#11151d', 'circle-stroke-color': '#d4ff00', 'circle-stroke-width': 2 }
+    });
+  }
+  routeLayerReady = true;
+}
+function renderActiveRoute(fit = false) {
+  ensureRouteLayers();
+  const src = map.getSource('fx-active-route');
+  if (!src) return;
+  const route = routes.find(r => r.id === activeRouteId);
+  const stops = route ? (route.stops || []).map(resolveRouteStop).filter(Boolean) : [];
+  const coords = stops.map(p => [Number(p.lng), Number(p.lat)]);
+  const features = coords.map((coordinates, index) => ({ type: 'Feature', geometry: { type: 'Point', coordinates }, properties: { index } }));
+  if (coords.length >= 2) features.unshift({ type: 'Feature', geometry: { type: 'LineString', coordinates: coords }, properties: {} });
+  src.setData({ type: 'FeatureCollection', features });
+  if (fit && coords.length) {
+    const bounds = coords.reduce((b, c) => b.extend(c), new mapboxgl.LngLatBounds(coords[0], coords[0]));
+    map.fitBounds(bounds, { padding: 70, maxZoom: 17, duration: 700 });
+  }
+}
+function showRoute(id) {
+  const route = routes.find(r => r.id === id);
+  if (!route) return;
+  const resolved = (route.stops || []).map(resolveRouteStop).filter(Boolean);
+  if (resolved.length < 2) {
+    toast('⚠ La ruta necesita al menos 2 lugares guardados válidos');
+    return;
+  }
+  activeRouteId = id;
+  renderActiveRoute(true);
+  closeMenuModal();
+  toast(`✓ Ruta activa: ${route.name}`);
+}
+function clearActiveRoute() {
+  activeRouteId = null;
+  renderActiveRoute(false);
+  toast('Ruta ocultada');
+}
 // ─── RENDER FUNCTIONS ──────────────────────────────────────────
 function renderAll() {
   renderAddrs();
@@ -1355,6 +1767,7 @@ function renderAll() {
   renderMediaGrid();
   renderNotifBadge();
   renderMarkers();
+  renderActiveRoute(false);
   renderVipList();
 }
 
@@ -1366,7 +1779,7 @@ function renderAddrs() {
     const imgs = (p.media || []).slice(0, 4);
     const ir = imgs.length ? `<div class="pli-imgs">${imgs.map(m => `<div class="pli-img"><img src="${esc(m.url)}" alt=""/></div>`).join('')}</div>` : '';
     return `<div class="pli" data-id="${p.id}" style="border-left:3px solid ${p.color||'#d4ff00'}">
-      <div class="pli-top"><div class="pli-name">${esc(cl?.e||'')} ${esc(p.title)}${p.private ? ' 🔒' : ''}</div><button class="pli-del" data-del="${p.id}">🗑</button></div>
+      <div class="pli-top"><div class="pli-name">${esc(cl?.e||'')} ${esc(p.title)}</div><button class="pli-del" data-del="${p.id}">🗑</button></div>
       <div class="pli-sub">${esc(p.notes||'Sin comentario')}</div>
       <div class="pli-meta">${esc(p.createdAtLabel||'')}${p.source==='google'?' · Google Takeout':''}</div>
       ${ir}
@@ -1397,20 +1810,39 @@ function renderRoutes() {
   const el = $('routes-list');
   if (!routes.length) { el.innerHTML = `<div style="color:var(--text-muted);font-size:11px;padding:10px 0">Sin rutas guardadas.</div>`; return; }
   el.innerHTML = routes.map(r => `
-    <div class="rcard"><div class="rcard-head"><div><div class="rcard-name">${esc(r.name)}</div><div class="rcard-meta">${fmtDate(r.createdAt)}</div></div><div class="rcard-badge">${r.stops.length} PARADAS</div></div>
-    <div class="rcard-stops">${r.stops.map(s => `<div class="rstop"><div class="rstop-dot"></div><div class="rstop-name">${esc(s)}</div></div>`).join('')}</div></div>`).join('');
+    <div class="rcard${activeRouteId===r.id?' active':''}" data-route="${r.id}"><div class="rcard-head"><div><div class="rcard-name">${esc(r.name)}</div><div class="rcard-meta">${fmtDate(r.createdAt)}</div></div><div class="rcard-badge">${(r.stops||[]).length} PARADAS</div></div>
+    <div class="rcard-stops">${(r.stops||[]).map(s => `<div class="rstop"><div class="rstop-dot"></div><div class="rstop-name">${esc(routeStopLabel(s))}</div></div>`).join('')}</div>
+    <div style="display:flex;gap:6px;margin-top:9px"><button class="btn-full" data-route-view="${r.id}" style="flex:1">${activeRouteId===r.id?'Ocultar':'Ver en mapa'}</button><button class="btn-dim" data-route-del="${r.id}" style="width:auto">🗑</button></div></div>`).join('');
+  el.querySelectorAll('[data-route-view]').forEach(button => button.addEventListener('click', () => {
+    button.dataset.routeView === activeRouteId ? clearActiveRoute() : showRoute(button.dataset.routeView);
+    renderRoutes();
+  }));
+  el.querySelectorAll('[data-route-del]').forEach(button => button.addEventListener('click', () => {
+    const id = button.dataset.routeDel;
+    const route = routes.find(r => r.id === id);
+    if (!route || !confirm(`¿Eliminar la ruta "${route.name}"?`)) return;
+    const routeIndex = routes.findIndex(r => r.id === id);
+    const wasActive = activeRouteId === id;
+    routes = routes.filter(r => r.id !== id);
+    if (wasActive) activeRouteId = null;
+    if (!saveAll()) { routes.splice(Math.max(0, routeIndex), 0, route); if (wasActive) activeRouteId = id; return; }
+    if (!encKey && !placesLocked) deleteRow('routes', id);
+    renderAll();
+    toast('✓ Ruta eliminada');
+  }));
 }
 
 function renderBoard() {
   const el = $('board-grid');
   $('board-count').textContent = `${places.length} registros`;
+  const labelCount = new Set(places.map(p => String(p.label || '').trim()).filter(Boolean)).size;
   const counts = { save: 0, flag: 0 };
   places.forEach(p => { const k = p.classification || 'save'; if (counts[k] != null) counts[k]++; });
   el.innerHTML = `
     <div class="bcard bcard-kpi" style="grid-column:1/-1">
       <div class="bcard-body">
         <div class="bcard-title">Dashboard CYBER</div>
-        <div class="bcard-sub">${places.length} ubicaciones · ${routes.length} rutas · ${labels.length} etiquetas</div>
+        <div class="bcard-sub">${places.length} ubicaciones · ${routes.length} rutas · ${labelCount} etiquetas</div>
         <div class="bcard-tags">
           <span class="ctag safe">⚿ ${counts.save}</span>
           <span class="ctag flag">⚑ ${counts.flag}</span>
@@ -1473,18 +1905,16 @@ function wireFlagPopover(pop, onPreset, onCustom) {
   pop.querySelectorAll('.fdot[data-cls]').forEach(d => d.addEventListener('click', (ev) => {
     ev.stopPropagation();
     onPreset(d.dataset.cls || null);
-  }));
+} ) ) ;
   pop.querySelector('.fcolor-apply').addEventListener('click', (ev) => {
     ev.stopPropagation();
     const color = pop.querySelector('.fcolor-input').value;
     const label = pop.querySelector('.fcolor-label').value.trim().slice(0, 16) || 'Personalizado';
     onCustom(color, label);
-  });
+} ) ;
   setTimeout(() => document.addEventListener('click', function onc(ev) { if (!pop.contains(ev.target)) { pop.remove(); document.removeEventListener('click', onc); } }), 0);
 }
-
 let mediaFilter = 'all';
-
 function renderMediaGrid() {
   const el = $('media-grid');
   const notHidden = mediaStore.filter(m => !m.hidden);
@@ -1516,32 +1946,31 @@ function renderMediaGrid() {
       ${flagColor ? `<div class="mthumb-flagdot" style="background:${flagColor}"></div>` : ''}
     </div>`;
   }).join('');
-
   el.querySelectorAll('.mthumb').forEach(t => {
     const idx = parseInt(t.dataset.idx);
     t.addEventListener('click', (e) => {
       if (e.target.closest('.mthumb-actions') || e.target.closest('.flag-pop')) return;
       const m = mediaStore[idx];
       if (m?.url) { $('lightbox-img').src = m.url; $('lightbox').classList.add('open'); }
-    });
+} ) ;
     t.querySelector('[data-act="vip"]').addEventListener('click', (e) => {
       e.stopPropagation();
       mediaStore[idx].vip = !mediaStore[idx].vip;
       saveAll(); renderMediaGrid();
-    });
+} ) ;
     t.querySelector('[data-act="hide"]').addEventListener('click', (e) => {
       e.stopPropagation();
       mediaStore[idx].hidden = true;
       saveAll(); renderMediaGrid();
       toast('👁 Archivo ocultado');
-    });
+} ) ;
     t.querySelector('[data-act="del"]').addEventListener('click', (e) => {
       e.stopPropagation();
-      if (!confirm('¿Eliminar este archivo cifrado? Esta acción no se puede deshacer.')) return;
+      if (!confirm('¿Eliminar este archivo? Esta acción no se puede deshacer.')) return;
       mediaStore.splice(idx, 1);
       saveAll(); renderMediaGrid();
       toast('🗑 Archivo eliminado');
-    });
+} ) ;
     t.querySelector('[data-act="flag"]').addEventListener('click', (e) => {
       e.stopPropagation();
       document.querySelectorAll('.flag-pop').forEach(p => p.remove());
@@ -1551,14 +1980,12 @@ function renderMediaGrid() {
       wireFlagPopover(pop,
         (cls) => { mediaStore[idx].classification = cls; mediaStore[idx].customFlag = null; saveAll(); renderMediaGrid(); },
         (color, label) => { mediaStore[idx].customFlag = { color, label }; mediaStore[idx].classification = null; saveAll(); renderMediaGrid(); }
-      );
-    });
-  });
+) ;
+} ) ;
+} ) ;
 }
-
 // ─── FX AUTH GATE ───────────────────────────────────────────────
 let fxUnlocked = false;
-
 function openFxMediaPanel() {
   mediaFilter = 'all';
   document.querySelectorAll('.mcat').forEach(x => x.classList.remove('active'));
@@ -1586,7 +2013,6 @@ async function requestFxAccess() {
 function closeFxAuth() {
   $('fx-auth-modal').style.display = 'none';
 }
-
 function submitFxPassword() {
   const p = $('fx-auth-pass').value;
   if (p === settings.privPass) {
@@ -1594,11 +2020,9 @@ function submitFxPassword() {
     closeFxAuth();
     openFxMediaPanel();
     toast('✓ Acceso concedido');
-  } else {
+} else {
     toast('❌ Contraseña incorrecta');
-  }
-}
-
+} }
 async function attemptBiometricUnlock() {
   try {
     const cred = await navigator.credentials.create({
@@ -1609,25 +2033,20 @@ async function attemptBiometricUnlock() {
         pubKeyCredParams: [{ type: 'public-key', alg: -7 }],
         authenticatorSelection: { authenticatorAttachment: 'platform', userVerification: 'required' },
         timeout: 30000
-      }
-    });
+} } ) ;
     if (cred) {
       fxUnlocked = true;
       closeFxAuth();
       openFxMediaPanel();
       toast('✓ Identidad verificada');
-    }
-  } catch (e) {
+} } catch (e) {
     toast('❌ Verificación cancelada');
-  }
-}
-
+} }
 // ─── NOTAS ──────────────────────────────────────────────────────
 function renderNotesFolder() {
   const visible = notesStore.filter(n => !n.hidden);
   $('notes-count-lbl').textContent = `${visible.length} ${visible.length === 1 ? 'nota' : 'notas'}`;
 }
-
 function renderNotesList() {
   const el = $('notes-list');
   const visible = notesStore.filter(n => !n.hidden);
@@ -1649,8 +2068,7 @@ function renderNotesList() {
         <button class="mact-btn" data-act="del" title="Eliminar">🗑</button>
       </div>
     </div>`;
-  }).join('');
-
+} ) .join('') ;
   el.querySelectorAll('.note-item').forEach(card => {
     const idx = parseInt(card.dataset.idx);
     card.querySelector('[data-act="open"]').addEventListener('click', () => openNoteEditor(idx));
@@ -1658,21 +2076,24 @@ function renderNotesList() {
       e.stopPropagation();
       notesStore[idx].vip = !notesStore[idx].vip;
       saveAll(); renderNotesList();
-    });
+} ) ;
     card.querySelector('[data-act="hide"]').addEventListener('click', (e) => {
       e.stopPropagation();
       notesStore[idx].hidden = true;
       saveAll(); renderNotesList(); renderNotesFolder();
       toast('👁 Nota ocultada');
-    });
+} ) ;
     card.querySelector('[data-act="del"]').addEventListener('click', (e) => {
       e.stopPropagation();
       if (!confirm('¿Eliminar esta nota? Esta acción no se puede deshacer.')) return;
-      notesStore.splice(idx, 1);
-      saveAll(); renderNotesList(); renderNotesFolder();
+      const deletedId = notesStore[idx]?.id;
+      const [deletedNote] = notesStore.splice(idx, 1);
+      if (!saveAll()) { notesStore.splice(idx, 0, deletedNote); return; }
+      renderNotesList(); renderNotesFolder();
+      if (deletedId && !encKey && !placesLocked) deleteRow('notes', deletedId);
       toast('🗑 Nota eliminada');
-    });
-    card.querySelector('[data-act="flag"]').addEventListener('click', (e) => {
+} ) ;
+     card.querySelector('[data-act="flag"]').addEventListener('click', (e) => {
       e.stopPropagation();
       document.querySelectorAll('.flag-pop').forEach(p => p.remove());
       const cf = notesStore[idx].customFlag;
@@ -1683,11 +2104,10 @@ function renderNotesList() {
       wireFlagPopover(pop,
         (cls) => { notesStore[idx].classification = cls; notesStore[idx].customFlag = null; saveAll(); renderNotesList(); },
         (color, label) => { notesStore[idx].customFlag = { color, label }; notesStore[idx].classification = null; saveAll(); renderNotesList(); }
-      );
-    });
-  });
+) ;
+} ) ;
+} ) ;
 }
-
 function openNoteEditor(idx = null) {
   noteEditingId = idx;
   const n = idx !== null ? notesStore[idx] : null;
@@ -1695,35 +2115,38 @@ function openNoteEditor(idx = null) {
   $('note-edit-body').value = n?.body || '';
   $('note-editor-modal').style.display = 'flex';
 }
-
 function closeNoteEditor() {
   $('note-editor-modal').style.display = 'none';
   noteEditingId = null;
 }
-
 function saveNoteEditor() {
+  if (placesLocked) { closeNoteEditor(); openEncModal(); toast('🔒 Desbloquea tus datos primero'); return; }
   const title = $('note-edit-title').value.trim();
   const body = $('note-edit-body').value.trim();
   if (!title && !body) { closeNoteEditor(); return; }
+  const previous = noteEditingId !== null ? { ...notesStore[noteEditingId] } : null;
   if (noteEditingId !== null) {
     notesStore[noteEditingId].title = title || 'Sin título';
     notesStore[noteEditingId].body = body;
   } else {
     notesStore.unshift({ id: crypto.randomUUID(), title: title || 'Sin título', body, createdAt: new Date().toISOString(), vip: false, classification: null, hidden: false });
   }
-  saveAll();
+  if (!saveAll()) {
+    if (noteEditingId !== null && previous) notesStore[noteEditingId] = previous;
+    else notesStore.shift();
+    toast('⚠ La nota no pudo guardarse');
+    return;
+  }
   renderNotesList();
   renderNotesFolder();
   closeNoteEditor();
   toast('✓ Nota guardada');
 }
-
 function renderNotifBadge() {
   const u = notifications.filter(n => !n.read).length;
   const b = $('notif-badge');
   if (u > 0) { b.textContent = u; b.style.display = 'flex'; } else b.style.display = 'none';
 }
-
 function renderVipList() {
   const el = $('vip-list');
   if (!el) return;
@@ -1737,41 +2160,48 @@ function renderVipList() {
   }).join('');
   el.querySelectorAll('.bcard[data-id]').forEach(c => c.addEventListener('click', () => { flyTo(c.dataset.id); closeMenuModal(); }));
 }
-
 // ─── AI ────────────────────────────────────────────────────────
 function runAI() {
   $('ai-spin').classList.add('show');
   $('ai-out').classList.remove('show');
   setTimeout(renderAI, 500);
 }
-
 function renderAI() {
   const out = $('ai-out');
   const prompt = $('ai-prompt').value.trim();
   const total = places.length;
-  const favs = places.filter(p => p.classification === 'flag' || p.vip).length;
-  const clusters = Math.max(1, Math.min(14, Math.ceil(total / 4)));
+  const favs = places.filter(p => p.vip).length;
+  const flagged = places.filter(p => p.classification === 'flag').length;
+  const cities = new Set(places.map(p => (p.city || '').trim()).filter(Boolean)).size;
+  let nearbyPairs = 0;
+  places.forEach((p, i) => places.slice(i + 1).forEach(other => {
+    if (distM([p.lng, p.lat], [other.lng, other.lat]) < 800) nearbyPairs++;
+  }));
   const avgDist = places.length ? Math.round(places.reduce((a, p) => a + distM(userLocation, [p.lng, p.lat]), 0) / places.length) : 0;
-  out.innerHTML = `<div class="ai-chip">${Math.max(0, 100 - Math.min(78, favs * 9))}% similitud</div> <div class="ai-chip">${Math.min(99, 24 + favs * 8)}% favoritos</div> <div class="ai-chip">A-${String(clusters).padStart(2, '0')} cluster</div> <div class="ai-chip">${fmtDist(avgDist)} distancia media</div> <div class="ai-chip">${total} ubicaciones</div><div style="margin-top:10px;line-height:1.7;color:var(--text-primary)">${esc(prompt || 'Análisis rápido: tu tablero combina marcadores guardados, favoritos y proximidad.')}</div>`;
+  const q = prompt.toLowerCase();
+  let answer = `Tienes ${total} ubicaciones, ${favs} favoritas, ${flagged} etiquetadas y ${nearbyPairs} conexiones a menos de 800 m.`;
+  if (q.includes('favorit')) answer = `${favs} de ${total} ubicaciones están marcadas como favoritas${total ? ` (${Math.round(favs / total * 100)}%)` : ''}.`;
+  else if (q.includes('zona') || q.includes('frecuent') || q.includes('cluster')) answer = `${nearbyPairs} pares de ubicaciones están a menos de 800 m y tus registros abarcan ${cities || 'ninguna ciudad identificada automáticamente'}.`;
+  else if (q.includes('categor') || q.includes('resumen')) answer = `Resumen: ${total - flagged} guardadas, ${flagged} etiquetadas, ${favs} favoritas y ${routes.length} rutas.`;
+  else if (q.includes('conex')) answer = `${nearbyPairs} conexiones cercanas detectadas entre tus ubicaciones, usando un radio de 800 m.`;
+  else if (prompt) answer += ` Consulta: ${prompt}`;
+  out.innerHTML = `<div class="ai-chip">${favs} favoritos</div> <div class="ai-chip">${flagged} etiquetas</div> <div class="ai-chip">${nearbyPairs} conexiones</div> <div class="ai-chip">${fmtDist(avgDist)} distancia media</div> <div class="ai-chip">${total} ubicaciones</div><div style="margin-top:10px;line-height:1.7;color:var(--text-primary)">${esc(answer)}</div>`;
   out.classList.add('show');
   $('ai-spin').classList.remove('show');
 }
-
 // ─── NOTIFICATIONS ────────────────────────────────────────────
 function renderNotifList() {
   const el = $('nlist');
   if (!notifications.length) { el.innerHTML = '<div class="notif-empty">Sin notificaciones. Usa  ↺ para actualizar.</div>'; return; }
   el.innerHTML = notifications.map((n, i) => `<div class="ni ${n.read?'':'unread'}" data-i="${i}"><div class="ni-icon">${n.icon||'🤖'}</div><div><div class="ni-text">${esc(n.text)}</div><div class="ni-time">${fmtDate(n.time)}</div></div></div>`).join('');
-  el.querySelectorAll('.ni').forEach(item => item.addEventListener('click', () => { const i = parseInt(item.dataset.i); notifications[i].read = true; svl(SK.notifs, notifications); item.classList.remove('unread'); renderNotifBadge(); }));
+  el.querySelectorAll('.ni').forEach(item => item.addEventListener('click', () => { const i = parseInt(item.dataset.i); notifications[i].read = true; saveAll(); item.classList.remove('unread'); renderNotifBadge(); }));
 }
-
 function addNotif(text, icon = '🤖') {
   notifications.unshift({ id: crypto.randomUUID(), text, icon, time: new Date().toISOString(), read: false });
   if (notifications.length > 50) notifications = notifications.slice(0, 50);
-  svl(SK.notifs, notifications);
+  saveAll();
   renderNotifBadge();
 }
-
 // ─── PLACE CRUD ───────────────────────────────────────────────
 function flyTo(id) {
   const p = places.find(x => x.id === id);
@@ -1780,68 +2210,223 @@ function flyTo(id) {
   map.easeTo({ center: [p.lng, p.lat], zoom: 17.3, pitch: BASE.pitch, bearing: BASE.bearing, duration: 320, essential: true });
   vibra();
 }
-
-// ─── DETAIL MODAL ───────────────────────────────────────────────
+// ─── DETAIL MODAL (panel arrastrable con tabs) ───────────────────
 let detailPlaceId = null;
-
+let dmActiveTab = 'info';
+let dmDragging = false, dmDragStart = { x: 0, y: 0 }, dmPos = { x: null, y: null };
+function dmSortedPlaces() {
+  return places;
+}
 function openDetailModal(id) {
   const p = places.find(x => x.id === id);
   if (!p) { toast('❌ Lugar no encontrado'); return; }
   detailPlaceId = id;
+  p.tags = p.tags || [];
+  p.comments = p.comments || [];
+  p.media = p.media || [];
   $('dm-title').value = p.title || '';
-  $('dm-addr').textContent = p.notes && p.hashtag ? p.hashtag : (p.label || 'Sin dirección registrada');
-  $('dm-notes').value = p.notes || '';
-  const media = $('dm-media');
-  media.innerHTML = (p.media || []).map(m => `<img src="${esc(m.url)}" style="width:64px;height:64px;object-fit:cover;border-radius:8px;flex:0 0 auto;cursor:pointer" data-url="${esc(m.url)}"/>`).join('');
-  media.querySelectorAll('img[data-url]').forEach(img => img.addEventListener('click', () => { $('lightbox-img').src = img.dataset.url; $('lightbox').classList.add('open'); }));
-  $('dm-vip-btn').classList.toggle('active', !!p.vip);
-  updateDetailFlagBtn(p);
-  const d = distM(userLocation, [p.lng, p.lat]);
-  $('dm-dist').textContent = fmtDist(d) + ' de tu posición';
-  $('detail-modal').style.display = 'flex';
+  $('dm-coords-line').textContent = `📍 CD: ${p.lat.toFixed(6)}, ${p.lng.toFixed(6)}`;
+  $('dm-city').textContent = p.city || 'No especificada';
+  $('dm-check-icon').classList.remove('show');
+  renderDmTags(p);
+  renderDmComments(p);
+  renderDmImages(p);
+  renderDmNav(p);
+  $('dm-ai-result').style.display = 'none';
+  $('dm-ai-empty').style.display = 'block';
+  $('dm-ai-text').textContent = '';
+  dmSetTab('info');
+  dmPos = { x: null, y: null };
+  $('dm-panel').style.top = '';
+  $('dm-panel').style.right = '';
+  $('dm-panel').style.left = '';
+  $('dm-panel').style.transform = '';
+  $('detail-modal').classList.add('open');
 }
-
 function closeDetailModal() {
-  $('detail-modal').style.display = 'none';
+  $('detail-modal').classList.remove('open');
   detailPlaceId = null;
-  document.querySelectorAll('.flag-pop').forEach(p => p.remove());
 }
-
-function updateDetailFlagBtn(p) {
-  const btn = $('dm-flag-btn');
-  const type = p.classification;
-  if (type && CLASS_META[type]) {
-    const m = CLASS_META[type];
-    const [r, g, b] = hexToRgb(m.c);
-    btn.style.cssText = `width:32px;height:32px;border-radius:8px;background:rgba(${r},${g},${b},.1);border:1.5px solid ${m.c};color:${m.c};display:grid;place-items:center;cursor:pointer;position:relative`;
-  } else {
-    btn.style.cssText = 'width:32px;height:32px;border-radius:8px;background:transparent;border:1.5px solid rgba(255,255,255,.07);color:#555;display:grid;place-items:center;cursor:pointer;position:relative';
-  }
+function dmSetTab(tab) {
+  dmActiveTab = tab;
+  document.querySelectorAll('.dm-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  document.querySelectorAll('.dm-pane').forEach(p => p.classList.remove('active'));
+  $('dm-pane-' + tab).classList.add('active');
 }
-
-function saveDetailModal() {
+function renderDmNav(p) {
+  const list = dmSortedPlaces();
+  const idx = list.findIndex(x => x.id === p.id);
+  $('dm-nav-count').textContent = `${idx + 1} de ${list.length}`;
+  $('dm-prev').disabled = idx <= 0;
+  $('dm-next').disabled = idx >= list.length - 1;
+}
+function dmNavigate(dir) {
+  const list = dmSortedPlaces();
+  const idx = list.findIndex(x => x.id === detailPlaceId);
+  const newIdx = dir === 'next' ? idx + 1 : idx - 1;
+  if (newIdx < 0 || newIdx >= list.length) return;
+  openDetailModal(list[newIdx].id);
+}
+function dmCopyCoords() {
   const p = places.find(x => x.id === detailPlaceId);
   if (!p) return;
-  p.title = $('dm-title').value.trim() || p.title;
-  p.notes = $('dm-notes').value.trim();
-  saveAll();
-  renderAll();
-  toast('✓ Cambios guardados');
-  closeDetailModal();
+  const coords = `${p.lat.toFixed(6)}, ${p.lng.toFixed(6)}`;
+  navigator.clipboard?.writeText(coords).catch(() => {});
+  $('dm-check-icon').classList.add('show');
+  toast('✓ Coordenadas copiadas');
+  setTimeout(() => $('dm-check-icon').classList.remove('show'), 2000);
+}
+// ── TAGS ──
+function renderDmTags(p) {
+  const el = $('dm-tags');
+  if (!p.tags.length) { el.innerHTML = `<span class="dm-empty-msg" style="width:100%">Sin etiquetas aún</span>`; return; }
+  el.innerHTML = p.tags.map((t, i) => `<span class="dm-tag-chip" data-i="${i}">${esc(t)}<button data-i="${i}">✕</button></span>`).join('');
+  el.querySelectorAll('button[data-i]').forEach(b => b.addEventListener('click', () => {
+    p.tags.splice(parseInt(b.dataset.i), 1);
+    saveAll(); renderDmTags(p);
+    toast('✓ Etiqueta eliminada');
+} ) ) ;
+}
+function dmAddTag() {
+  const p = places.find(x => x.id === detailPlaceId);
+  const input = $('dm-tag-input');
+  const val = input.value.trim();
+  if (!p || !val) return;
+  p.tags.push(val);
+  input.value = '';
+  saveAll(); renderDmTags(p);
+  toast('✓ Etiqueta agregada');
+}
+// ── COMENTARIOS ──
+function renderDmComments(p) {
+  const el = $('dm-comments');
+  if (!p.comments.length) { el.innerHTML = `<p class="dm-empty-msg">No hay comentarios aún</p>`; return; }
+  el.innerHTML = p.comments.map(c => {
+    const d = new Date(c.createdAt);
+    return `<div class="dm-comment">
+      <p>${esc(c.text)}</p>
+      <div class="dm-comment-meta">
+        <span>${d.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+        <span>·</span>
+        <span>${d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}</span>
+      </div>
+    </div>`;
+  }).reverse().join('');
 }
 
-function confirmDel(id) { pendingDelId = id; $('confirm-modal').classList.add('open'); }
+function dmAddComment() {
+  const p = places.find(x => x.id === detailPlaceId);
+  const input = $('dm-comment-input');
+  const val = input.value.trim();
+  if (!p || !val) return;
+  p.comments.push({ text: val, createdAt: new Date().toISOString() });
+  input.value = '';
+  saveAll(); renderDmComments(p);
+  toast('✓ Comentario agregado');
+}
 
+// ── IMÁGENES ──
+function renderDmImages(p) {
+  const el = $('dm-images-grid');
+  if (!p.media.length) { el.innerHTML = `<div class="dm-empty-msg" style="grid-column:1/-1">No hay imágenes aún</div>`; return; }
+  el.innerHTML = p.media.map((m, i) => `<div class="dm-image-item" data-i="${i}"><img src="${esc(m.url)}" alt=""/></div>`).join('');
+  el.querySelectorAll('.dm-image-item').forEach(item => item.addEventListener('click', () => {
+    const m = p.media[parseInt(item.dataset.i)];
+    if (m?.url) { $('lightbox-img').src = m.url; $('lightbox').classList.add('open'); }
+} ) ) ; 
+}
+function dmHandleFiles(files) {
+  const p = places.find(x => x.id === detailPlaceId);
+  if (!p || !files || !files.length) return;
+  const file = files[0];
+  if (!file.type.startsWith('image/')) { toast('❌ Solo se permiten imágenes'); return; }
+  $('dm-dropzone-icon').textContent = '⏳';
+  $('dm-dropzone-text').textContent = 'Subiendo...';
+  const reader = new FileReader();
+  reader.onload = () => {
+    p.media.push({ id: crypto.randomUUID(), name: file.name, type: file.type, url: reader.result, createdAt: new Date().toISOString() });
+    saveAll(); renderDmImages(p);
+    $('dm-dropzone-icon').textContent = '🖼';
+    $('dm-dropzone-text').textContent = 'Arrastra una imagen o toca para seleccionar';
+    toast('✓ Imagen subida exitosamente');
+  };
+  reader.onerror = () => {
+    $('dm-dropzone-icon').textContent = '🖼';
+    $('dm-dropzone-text').textContent = 'Arrastra una imagen o toca para seleccionar';
+    toast('❌ Error al subir imagen');
+} ;
+  reader.readAsDataURL(file);
+}
+// ── ANÁLISIS LOCAL ──
+function dmAnalyze() {
+  const p = places.find(x => x.id === detailPlaceId);
+  if (!p) return;
+  $('dm-ai-analyze').disabled = true;
+  $('dm-ai-analyze').textContent = 'Analizando...';
+  setTimeout(() => {
+    const nearby = places.filter(x => x.id !== p.id && distM([p.lng, p.lat], [x.lng, x.lat]) < 800);
+    const typeLbl = CLASS_META[p.classification]?.l || 'Sin clasificar';
+    const parts = [
+      `Este lugar está clasificado como "${typeLbl}"${p.tags.length ? ` con las etiquetas: ${p.tags.join(', ')}` : ''}.`,
+      nearby.length
+        ? `Hay ${nearby.length} lugar${nearby.length === 1 ? '' : 'es'} guardado${nearby.length === 1 ? '' : 's'} a menos de 800m — podría ser parte de una zona que visitas seguido.`
+        : `No hay otros lugares guardados cerca — parece un punto aislado en tu mapa.`,
+      p.comments.length ? `Tiene ${p.comments.length} comentario${p.comments.length === 1 ? '' : 's'} registrado${p.comments.length === 1 ? '' : 's'}.` : `Aún no tiene comentarios.`
+    ];
+    $('dm-ai-text').textContent = parts.join(' ');
+    $('dm-ai-empty').style.display = 'none';
+    $('dm-ai-result').style.display = 'block';
+    $('dm-ai-analyze').disabled = false;
+    $('dm-ai-analyze').textContent = 'Analizar datos';
+} , 900) ;
+}
+// ── ARRASTRAR PANEL ──
+function dmInitDrag() {
+  const header = $('dm-header');
+  const panel = $('dm-panel');
+  const onDown = (e) => {
+    if (e.target.closest('.no-drag')) return;
+    dmDragging = true;
+    header.classList.add('dragging');
+    const pt = e.touches?.[0] || e;
+    const rect = panel.getBoundingClientRect();
+    dmDragStart = { x: pt.clientX - rect.left, y: pt.clientY - rect.top };
+    e.preventDefault?.();
+} ;
+  const onMove = (e) => {
+    if (!dmDragging) return;
+    const pt = e.touches?.[0] || e;
+    const x = pt.clientX - dmDragStart.x;
+    const y = pt.clientY - dmDragStart.y;
+    panel.style.left = x + 'px';
+    panel.style.top = y + 'px';
+    panel.style.right = 'auto';
+} ;
+  const onUp = () => { dmDragging = false; header.classList.remove('dragging'); };
+  header.addEventListener('mousedown', onDown);
+  header.addEventListener('touchstart', onDown, { passive: false });
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('touchmove', onMove, { passive: false });
+  document.addEventListener('mouseup', onUp);
+  document.addEventListener('touchend', onUp);
+}
+function confirmDel(id) { pendingDelId = id; $('confirm-modal').classList.add('open'); }
 function doDel() {
   if (!pendingDelId) return;
-  places = places.filter(p => p.id !== pendingDelId);
-  saveAll();
+  const deletedId = pendingDelId;
+  const deletedIndex = places.findIndex(p => p.id === deletedId);
+  const deletedPlace = places[deletedIndex];
+  places = places.filter(p => p.id !== deletedId);
+  if (!saveAll()) {
+    if (deletedPlace) places.splice(Math.max(0, deletedIndex), 0, deletedPlace);
+    return;
+  }
+  if (!encKey && !placesLocked) deleteRow('places', deletedId);
   renderAll();
   toast('✓ Lugar eliminado');
   pendingDelId = null;
   $('confirm-modal').classList.remove('open');
 }
-
 // ─── SAVE MODAL ───────────────────────────────────────────────
 function openSaveModal(lng, lat, address = '') {
   pendingPoint = { lng, lat };
@@ -1857,9 +2442,7 @@ function openSaveModal(lng, lat, address = '') {
   updatePublishState();
   $('save-modal').classList.add('open');
 }
-
 function closeSaveModal() { $('save-modal').classList.remove('open'); }
-
 function resetSaveForm() {
   $('q-title').value = '';
   $('q-notes').value = '';
@@ -1882,7 +2465,6 @@ function resetSaveForm() {
   renderClassBtns();
   updatePublishState();
 }
-
 function updatePublishState() {
   const okType = !!(pendingClass);
   const okColor = !!(pendingColor || publishColor);
@@ -1892,60 +2474,51 @@ function updatePublishState() {
   const st = $('publish-status');
   if (st) st.textContent = ok ? 'Listo para confirmar publicación' : 'Selecciona ⚿|⚑ + 🔳 o 𖣿 Favorito para habilitar 🆗';
 }
-
 function renderPalette() {
   $('palette').innerHTML = COLORS.map(c => `<button type="button" class="color-tile${pendingColor===c.v?' active':''}" data-c="${c.v}" title="${c.n}" style="--tile:${c.v};background:${c.v}"></button>`).join('');
   $('palette').querySelectorAll('.color-tile').forEach(b => b.addEventListener('click', () => { pendingColor = b.dataset.c; publishColor = b.dataset.c; renderPalette(); updatePublishState(); $('palette').classList.remove('open'); }));
 }
-
 function renderClassBtns() {
   const order = ['save', 'flag'];
   $('class-btns').innerHTML = order.map(k => { const m = CLASS_META[k]; return `<button type="button" class="csbtn${pendingClass===k?' sel':''}" data-cls="${k}" title="${m.l}"><span class="csflag" style="background:${m.c}"></span></button>`; }).join('');
   $('class-btns').style.display = 'flex';
   $('class-btns').querySelectorAll('.csbtn').forEach(b => b.addEventListener('click', () => { pendingClass = b.dataset.cls; publishType = b.dataset.cls; renderClassBtns(); renderPalette(); updatePublishState(); }));
 }
-
 function renderSaveMedia() {
   $('save-mprev').innerHTML = pendingMedia.map(m => `<div class="mitem" data-id="${m.id}"><img src="${m.url}" alt=""/><button class="mdel" type="button">✕</button></div>`).join('');
   $('save-mprev').querySelectorAll('.mitem').forEach(card => {
     card.querySelector('img')?.addEventListener('click', () => { $('lightbox-img').src = pendingMedia.find(x => x.id === card.dataset.id)?.url || ''; $('lightbox').classList.add('open'); });
     card.querySelector('.mdel')?.addEventListener('click', () => { pendingMedia = pendingMedia.filter(x => x.id !== card.dataset.id); renderSaveMedia(); });
-  });
+} ) ;
 }
-
-// Validación de archivos: tipo MIME permitido + límite de tamaño (10MB) para
-// evitar que localStorage se sature con blobs base64 excesivos.
-const MAX_FILE_BYTES = 10 * 1024 * 1024;
-function isSafeMediaFile(file) {
-  const okType = /^image\/(jpeg|png|webp|gif)$/.test(file.type) || /^video\/(mp4|webm|quicktime)$/.test(file.type);
-  return okType && file.size > 0 && file.size <= MAX_FILE_BYTES;
-}
-
 function handleFiles(files, store = false) {
+  if (placesLocked) { openEncModal(); toast('🔒 Desbloquea tus datos primero'); return; }
   Array.from(files || []).forEach(file => {
-    if (!isSafeMediaFile(file)) { toast('⚠ Archivo no admitido o muy pesado (máx. 10MB)'); return; }
+    const ok = file.type.startsWith('image/') || file.type.startsWith('video/');
+    if (!ok) return;
     const r = new FileReader();
     r.onload = () => {
       const item = { id: crypto.randomUUID(), name: file.name, type: file.type, url: r.result, createdAt: new Date().toISOString() };
-      if (store) { mediaStore.unshift(item); svl(SK.media, mediaStore); renderMediaGrid(); toast('✓ Archivo almacenado (cifrado)'); } 
+      if (store) {
+        mediaStore.unshift(item);
+        if (!saveAll()) { mediaStore.shift(); renderMediaGrid(); return; }
+        renderMediaGrid();
+        toast(encKey ? '✓ Archivo almacenado y cifrado localmente' : '✓ Archivo almacenado localmente');
+      }
       else { pendingMedia.push(item); renderSaveMedia(); }
-    };
-    r.onerror = () => toast('⚠ No se pudo leer el archivo');
+} ;
     r.readAsDataURL(file);
-  });
+} ) ;
 }
-
 function savePlace() {
   if (!pendingPoint) return;
+  if (placesLocked) { closeSaveModal(); openEncModal(); toast('🔒 Desbloquea tus datos primero'); return; }
   if ($('q-save-act').classList.contains('disabled')) return;
-
   const title = $('q-title').value.trim() || 'Lugar sin título';
   const notes = $('q-notes').value.trim();
   const label = $('q-label').value.trim();
   const hashtag = $('q-hashtag')?.value.trim() || '';
-
   const now = new Date().toISOString();
-
   const item = {
     id: crypto.randomUUID(),
     title,
@@ -1959,21 +2532,22 @@ function savePlace() {
     classification: pendingClass,
     vip: pendingVip,
     tagColor: pendingTagColor,
+    tags: [],
+    comments: [],
+    city: (searchConfirmAddress || '').split(',')[1]?.trim() || '',
     createdAt: now,
     createdAtLabel: fmtDate(now)
-  };
-
+  } ;
   places.unshift(item);
-  saveAll();
+  if (!saveAll()) { places.shift(); toast('⚠ El lugar no pudo guardarse'); return; }
   renderAll();
   clearSearchConfirmMarker();
   closeSaveModal();
   resetSaveForm();
   toast('✓ Lugar guardado');
   vibra();
-  addNotif(`Nueva ubicación: "${title}"`, CLASS_META[pendingClass]?.e || '⚑');
+  addNotif(`Nueva ubicación: "${title}"`, CLASS_META[item.classification]?.e || '⚑');
 }
-
 // ─── GEOCODING ──────────────────────────────────────────────────
 async function geocodeSearch(term) {
   const q = (term || '').trim();
@@ -1993,7 +2567,7 @@ async function geocodeSearch(term) {
     if (!feats.length) {
       res.innerHTML = '<div class="sr-empty">Sin resultados para "' + esc(q) + '"</div>';
       return;
-    }
+}
     res.innerHTML = feats.map((f, i) => {
       const [flng, flat] = f.center || [];
       const nearby = places.find(p => distM([flng, flat], [p.lng, p.lat]) < 40);
@@ -2001,7 +2575,7 @@ async function geocodeSearch(term) {
       const flagHtml = flagColor ? `<span style="color:${flagColor}">⚑</span>` : `<span>⚑</span>`;
       return `<div class="sr" data-idx="${i}">
       ${flagHtml}<div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:700;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${esc(f.text||f.place_name||'')}</div><div style="font-size:10px;color:var(--text-muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${esc(f.place_name||'')}</div></div>${nearby ? `<span class="sr-tag local" style="background:${flagColor}22;color:${flagColor}">GUARDADO</span>` : '<span class="sr-tag map">MAPA</span>'}</div>`;
-    }).join('');
+} ) .join('') ;
     res.querySelectorAll('.sr[data-idx]').forEach(item => item.addEventListener('click', () => {
       const f = feats[parseInt(item.dataset.idx)];
       if (!f) return;
@@ -2018,13 +2592,11 @@ async function geocodeSearch(term) {
       if (ctrlVisible) $('orbital').classList.remove('hidden');
       // Ahora sí crear la tarjeta de confirmación (ya no se borra)
       showSearchConfirmMarker(lng, lat, f.place_name || f.text || '');
-    }));
-  } catch (e) {
+} ) ) ;
+} catch (e) {
     if (e?.name === 'AbortError') return;
     res.innerHTML = '<div class="sr-empty">Error de búsqueda. Intenta de nuevo.</div>';
-  }
-}
-
+} }
 async function reverseGeocode(lng, lat) {
   try {
     const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${mapboxgl.accessToken}&language=es&limit=1`;
@@ -2032,9 +2604,8 @@ async function reverseGeocode(lng, lat) {
     if (!r.ok) return '';
     const data = await r.json();
     return data?.features?.[0]?.place_name || '';
-  } catch (e) { return ''; }
+} catch (e) { return ''; }
 }
-
 // ─── SEARCH CONFIRM MARKER ─────────────────────────────────────
 function clearSearchConfirmMarker() {
   if (searchConfirmMarker) { searchConfirmMarker.remove(); searchConfirmMarker = null; }
@@ -2043,7 +2614,6 @@ function clearSearchConfirmMarker() {
   const row = document.getElementById('sr-confirm');
   if (row) row.remove();
 }
-
 function showSearchConfirmMarker(lng, lat, address = '', placeId = null) {
   clearSearchConfirmMarker();
   searchConfirmPoint = { lng, lat };
@@ -2066,9 +2636,7 @@ function showSearchConfirmMarker(lng, lat, address = '', placeId = null) {
     res.appendChild(wrap);
     res.classList.add('open');
     wrap.addEventListener('click', () => { openPhotoModal(lng, lat, address, placeId); });
-  }
-}
-
+} }
 // ─── LOCAL SEARCH ──────────────────────────────────────────────
 function searchPlacesByTerm(term) {
   const q = (term || '').toLowerCase().trim();
@@ -2079,9 +2647,8 @@ function searchPlacesByTerm(term) {
     const label = (place.label || '').toLowerCase();
     const hashtag = (place.hashtag || '').toLowerCase();
     return title.includes(q) || notes.includes(q) || label.includes(q) || hashtag.includes(q);
-  });
+} ) ;
 }
-
 function localSearch(term) {
   const results = searchPlacesByTerm(term);
   const res = $('search-results');
@@ -2095,9 +2662,8 @@ function localSearch(term) {
     map.flyTo({ center: [p.lng, p.lat], zoom: 17, pitch: BASE.pitch, bearing: BASE.bearing, duration: 900, essential: true });
     setExplore(false);
     showSearchConfirmMarker(p.lng, p.lat, p.notes || p.title || '', p.id);
-  }));
+} ) ) ;
 }
-
 // ─── INIT SEARCH ───────────────────────────────────────────────
 function initSearch() {
   const si1 = $('si1'),
@@ -2109,11 +2675,10 @@ function initSearch() {
     clearTimeout(st1);
     if (searchMode === 'saved') {
       st1 = setTimeout(() => localSearch(si1.value), 250);
-    } else {
+} else {
       if (si1.value.trim().length < 3) { res.classList.remove('open'); res.innerHTML = ''; return; }
       st1 = setTimeout(() => geocodeSearch(si1.value.trim()), 450);
-    }
-  });
+} } ) ;
   si1.addEventListener('focus', clearSearchIdle);
   si1.addEventListener('blur', armSearchIdle);
   sc1.addEventListener('click', () => { si1.value = ''; $('sb1').classList.remove('has-text'); res.classList.remove('open'); res.innerHTML = ''; si1.focus(); clearSearchIdle(); });
@@ -2121,18 +2686,16 @@ function initSearch() {
     setSearchMode(searchMode === 'address' ? 'saved' : 'address');
     clearSearchIdle();
     si1.focus();
-  });
+} ) ;
   document.addEventListener('click', e => {
     if (!$('search-wrap').contains(e.target) && e.target !== $('search-explore-btn')) {
       res.classList.remove('open');
       res.innerHTML = '';
       if (exploreMode) armSearchIdle();
-    } else {
+} else {
       clearSearchIdle();
-    }
-  });
+} } ) ;
 }
-
 // ─── PICK MODAL ────────────────────────────────────────────────
 function renderPickFlags() {
   const el = $('pick-flags');
@@ -2185,44 +2748,65 @@ function pickToSave(classification) {
   closePickModal();
   openSaveModal(lng, lat, addr);
 }
-
-// ─── PHOTO MODAL HUD (tarjeta compacta) ─────────────────────────
+// ─── PHOTO MODAL HUD ───────────────────────────────────────────
 function findPlaceNear(lng, lat, tol = 0.0003) {
   return places.find(p => Math.abs(p.lng - lng) < tol && Math.abs(p.lat - lat) < tol) || null;
 }
-
 function hexToRgb(hex) {
   const v = (hex || '#4a4d51').replace('#', '');
   const n = parseInt(v.length === 6 ? v : '4a4d51', 16);
   if (Number.isNaN(n)) return [74, 77, 81];
   return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
 }
-
 let pmCurrentClass = null;
-let pmEditable = false;
-let pmPrivate = false;
-let pmPendingMedia = [];
-
+let pmTagColor = null;
+function renderPhotoFlags() {
+  const el = $('photo-flags');
+  if (!el) return;
+  el.innerHTML = COLORS.map(c => {
+    const isActive = pmTagColor === c.v;
+    return `<div class="pm-tag${isActive ? ' active' : ''}" data-color="${c.v}" style="background:${c.v};--pm-glow:${c.v}"></div>`;
+} ) .join('') ;
+  el.querySelectorAll('.pm-tag[data-color]').forEach(t => t.addEventListener('click', () => photoSetTagColor(t.dataset.color)));
+}
+function photoSetTagColor(color) {
+  if (!photoPoint) return;
+  pmTagColor = pmTagColor === color ? null : color;
+  if (photoExistingId) {
+    const p = places.find(x => x.id === photoExistingId);
+    if (p) { p.tagColor = pmTagColor; saveAll(); renderAll(); }
+} else {
+    pendingTagColor = pmTagColor;
+}
+  renderPhotoFlags() ;
+}
 function syncPhotoModalState() {
+  const dot = $('pm-active-dot');
+  const text = $('pm-active-text');
+  const cta = $('pm-save-cta');
   const saveBtn = $('photo-save-btn');
   const vipBtn = $('photo-vip-btn');
-  if (!saveBtn || !vipBtn) return;
-
+  if (!dot || !text || !cta || !saveBtn || !vipBtn) return;
   if (pmCurrentClass === 'save') {
     const m = CLASS_META.save;
     const [r,g,b] = hexToRgb(m.c);
     saveBtn.style.cssText = `background:rgba(${r},${g},${b},.1)!important;border:1.5px solid ${m.c}!important;color:${m.c}!important;box-shadow:0 0 10px rgba(${r},${g},${b},.4)!important`;
-  } else {
-    saveBtn.style.cssText = 'background:transparent!important;border:1.5px solid rgba(255,255,255,.09)!important;color:#888!important;box-shadow:none!important';
-  }
-  vipBtn.classList.toggle('active', pmCurrentClass === 'flag');
-
-  $('pm-edit-btn')?.classList.toggle('active', pmEditable);
-  $('pm-field-title').readOnly = !pmEditable;
-  $('pm-field-notes').readOnly = !pmEditable;
-  $('pm-lock-btn')?.classList.toggle('on', pmPrivate);
+} else {
+    saveBtn.style.cssText = 'background:transparent!important;border:1.5px solid rgba(255,255,255,.07)!important;color:#555!important;box-shadow:none!important';
 }
-
+  vipBtn.classList.toggle('active', pmCurrentClass === 'flag');
+  if (pmCurrentClass) {
+    const m = CLASS_META[pmCurrentClass];
+    dot.style.background = m.c;
+    text.style.color = m.c;
+    text.textContent = m.l.toUpperCase();
+} else {
+    dot.style.background = '#4a4d51';
+    text.style.color = '#4a4d51';
+    text.textContent = 'SIN ETIQUETA · OFF';
+}
+  cta.classList.toggle('disabled', !pmCurrentClass);
+}
 function openPhotoModal(lng, lat, address = '', placeId = null) {
   photoPoint = { lng, lat };
   photoAddress = address || '';
@@ -2231,22 +2815,17 @@ function openPhotoModal(lng, lat, address = '', placeId = null) {
   const name = existing?.title || (address ? address.split(',')[0].trim() : 'Lugar sin nombre');
   $('photo-name').textContent = name;
   $('photo-cat').textContent = address || 'Ubicación sin dirección';
-  $('pm-field-title').value = existing?.title || name || '';
-  $('pm-field-notes').value = existing?.notes || '';
+  $('photo-meta').textContent = existing?.notes || '';
   pmCurrentClass = existing?.classification || null;
-  pmEditable = false;
-  pmPrivate = existing?.private || false;
-  pmPendingMedia = [];
+  pmTagColor = existing?.tagColor || null;
+  renderPhotoFlags();
   syncPhotoModalState();
   $('photo-modal').classList.add('open');
 }
-
 function closePhotoModal() {
   $('photo-modal').classList.remove('open');
-  photoPoint = null; photoExistingId = null; pmCurrentClass = null;
-  pmEditable = false; pmPrivate = false; pmPendingMedia = [];
+  photoPoint = null; photoExistingId = null; pmCurrentClass = null; pmTagColor = null;
 }
-
 function initPhotoDragHandle() {
   const handle = $('pm-drag-handle');
   const box = $('pm-box');
@@ -2259,24 +2838,22 @@ function initPhotoDragHandle() {
     dy = Math.max(0, clientY - startY);
     box.style.transform = `translateY(${dy}px)`;
     box.style.opacity = String(1 - Math.min(dy / 220, .6));
-  };
+} ;
   const onUp = () => {
     if (!dragging) return;
     dragging = false;
     box.style.transition = 'transform .2s ease, opacity .2s ease';
     if (dy > 70) {
       closePhotoModal();
-    }
+}
     box.style.transform = '';
     box.style.opacity = '';
-  };
-
+} ;
   handle.addEventListener('pointerdown', (e) => { e.preventDefault(); onDown(e.clientY); handle.setPointerCapture(e.pointerId); });
   handle.addEventListener('pointermove', (e) => onMove(e.clientY));
   handle.addEventListener('pointerup', () => { const wasTap = dy < 6; onUp(); if (wasTap) closePhotoModal(); });
   handle.addEventListener('pointercancel', onUp);
 }
-
 function photoSelectType(type) {
   if (!photoPoint) return;
   const next = pmCurrentClass === type ? null : type;
@@ -2289,186 +2866,162 @@ function photoSelectType(type) {
       p.vip = next === 'flag';
       saveAll(); renderAll();
       toast(next ? `✓ ${CLASS_META[next].l}` : 'Etiqueta quitada');
-    }
-  } else {
+} } else {
     pendingClass = next || 'save';
     pendingColor = next ? CLASS_META[next].c : '';
     pendingVip = next === 'flag';
-  }
+}
   syncPhotoModalState();
 }
-
-// Guarda cambios de la tarjeta compacta (título/notas/privado/medios)
-function pmSaveCard() {
-  if (!photoPoint) { closePhotoModal(); return; }
-  const title = ($('pm-field-title').value || '').trim() || (photoAddress.split(',')[0] || '').trim() || 'Lugar sin título';
-  const notes = ($('pm-field-notes').value || '').trim();
-
-  if (photoExistingId) {
-    const p = places.find(x => x.id === photoExistingId);
-    if (p) {
-      p.title = title;
-      p.notes = notes;
-      p.private = pmPrivate;
-      if (pmPendingMedia.length) p.media = [...(p.media || []), ...pmPendingMedia];
-      saveAll();
-      renderAll();
-      toast('✓ Cambios guardados');
-    }
-  } else {
-    const now = new Date().toISOString();
-    const item = {
-      id: crypto.randomUUID(),
-      title, notes,
-      lat: photoPoint.lat, lng: photoPoint.lng,
-      color: CLASS_META.save.c,
-      media: [...pmPendingMedia],
-      classification: pmCurrentClass || 'save',
-      vip: pmCurrentClass === 'flag',
-      private: pmPrivate,
-      createdAt: now,
-      createdAtLabel: fmtDate(now)
-    };
-    places.unshift(item);
-    saveAll();
-    renderAll();
-    clearSearchConfirmMarker();
-    addNotif(`Nueva ubicación: "${title}"`, CLASS_META[item.classification]?.e || '📍');
-    toast('✓ Lugar guardado');
-  }
-  vibra();
+function photoToSave() {
+  if (!photoPoint) return;
+  if (photoExistingId) { openDetailModal(photoExistingId); closePhotoModal(); return; }
+  const { lng, lat } = photoPoint;
+  const addr = photoAddress;
   closePhotoModal();
+  openSaveModal(lng, lat, addr);
 }
-
-function pmToggleEdit() {
-  pmEditable = !pmEditable;
-  syncPhotoModalState();
-  if (pmEditable) $('pm-field-title').focus();
-}
-
-function pmToggleLock() {
-  pmPrivate = !pmPrivate;
-  syncPhotoModalState();
-}
-
-function pmDeleteCard() {
-  if (photoExistingId) {
-    const id = photoExistingId;
-    closePhotoModal();
-    confirmDel(id);
-  } else {
-    closePhotoModal();
-    clearSearchConfirmMarker();
-    toast('Sin lugar guardado que eliminar');
-  }
-}
-
 // ─── ENCRYPT ────────────────────────────────────────────────────
 function updateEncStatus() {
   const st = $('enc-status');
   if (placesLocked) {
     st.className = 'enc-status locked';
-    st.textContent = '🔒 Datos cifrados — ingresa tu clave para desbloquear';
+    st.textContent = '🔒 Datos locales cifrados — ingresa tu clave';
     $('enc-toggle').textContent = 'Desbloquear';
     $('enc-badge').style.display = 'flex';
-  } else if (encKey) {
+} else if (encKey) {
     st.className = 'enc-status unlocked';
-    st.textContent = '🔓 Datos cifrados activos';
+    st.textContent = '🔓 Cifrado completo activo · cloud pausado';
     $('enc-toggle').textContent = 'Desactivar cifrado';
     $('enc-badge').style.display = 'flex';
-  } else {
+} else {
     st.className = 'enc-status locked';
     st.textContent = '⚿ Datos sin cifrar';
     $('enc-toggle').textContent = 'Activar cifrado';
     $('enc-badge').style.display = 'none';
-  }
-}
-
+} }
 function toggleEncrypt() {
   const key = $('enc-key').value.trim();
   if (!key) { toast('Ingresa una clave'); return; }
-
   if (placesLocked) {
-    // Intentar desbloquear con la clave ingresada
-    const raw = localStorage.getItem('fxmap.enc');
-    const decrypted = raw ? decD(raw, key) : null;
+    const rawV2 = readCiphertext(ENC_STORAGE_KEY);
+    const rawLegacy = readCiphertext(LEGACY_ENC_STORAGE_KEY);
+    const decrypted = decD(rawV2 || rawLegacy, key);
     if (decrypted) {
-      places = decrypted;
+      if (Array.isArray(decrypted)) {
+        places = decrypted;
+        routes = ldl(SK.routes, []);
+        labels = ldl(SK.labels, []);
+        mediaStore = ldl(SK.media, []);
+        notesStore = ldl(SK.notes, []);
+        notifications = ldl(SK.notifs, []);
+        settings = normalizeSettings(ldl(SK.settings, settings));
+      } else {
+        applySnapshot(decrypted);
+      }
       encKey = key;
       placesLocked = false;
+      saveAll();
+      syncCfgUI();
       renderAll();
-      toast('🔓 Datos desbloqueados');
-    } else {
+      toast('🔓 Datos desbloqueados · sincronización pausada');
+} else {
       toast('❌ Clave incorrecta');
       return;
-    }
-  } else if (encKey) {
-    // Desactivar cifrado: descifrar de vuelta a claro y borrar el blob cifrado
-    svl(SK.places, places);
-    localStorage.removeItem('fxmap.enc');
+}
+} else if (encKey) {
+    if (key !== encKey) { toast('❌ Clave incorrecta'); return; }
+    if (!writePlainState()) { toast('⚠ No se pudo restaurar el almacenamiento local'); return; }
+    localStorage.removeItem(ENC_STORAGE_KEY);
+    localStorage.removeItem(LEGACY_ENC_STORAGE_KEY);
     encKey = null;
-    toast('🔓 Cifrado desactivado, datos restaurados');
+    toast('🔓 Cifrado desactivado · cloud disponible con ↺');
   } else {
-    // Activar por primera vez: cifrar y BORRAR el dato en claro real
-    const t = encD(places, key);
-    if (t) {
-      svl('fxmap.enc', t);
-      localStorage.removeItem(SK.places);
-      encKey = key;
-      toast('✓ Datos cifrados AES-256');
-    } else {
+    const encrypted = encD(stateSnapshot(), key);
+    if (encrypted) {
+      try {
+        localStorage.setItem(ENC_STORAGE_KEY, encrypted);
+        localStorage.removeItem(LEGACY_ENC_STORAGE_KEY);
+        clearPlainState();
+        encKey = key;
+        toast('✓ Datos locales cifrados · cloud pausado');
+      } catch {
+        toast('⚠ No hay espacio suficiente para cifrar');
+        return;
+      }
+} else {
       toast('Error al cifrar');
       return;
-    }
-  }
+} }
   updateEncStatus();
   closeEncModal();
 }
-
 function openEncModal() { updateEncStatus(); $('enc-key').value = ''; $('enc-modal').classList.add('open'); }
-function closeEncModal() { $('enc-modal').classList.remove('open'); }
-
+function closeEncModal() { $('enc-modal').classList.remove('open'); 
+}
 // ─── SETTINGS ──────────────────────────────────────────────────
-function syncCfgUI() { $('cfg-name').value = settings.name || ''; $('cfg-phone').value = settings.phone || ''; $('cfg-tg').value = settings.telegram || ''; $('cfg-api').value = settings.apikey || ''; $('cfg-radius').value = settings.radius || 500; }
+function syncCfgUI() { $('cfg-name').value = settings.name || ''; $('cfg-phone').value = settings.phone || ''; $('cfg-tg').value = settings.telegram || ''; $('cfg-radius').value = settings.radius || 500; }
 
 function saveSettings() {
+  if (placesLocked) { openEncModal(); toast('🔒 Desbloquea tus datos primero'); return; }
+  const previous = { ...settings };
   const p = $('cfg-privpass').value.trim();
-  settings = { ...settings, name: $('cfg-name').value.trim(), phone: $('cfg-phone').value.trim(), telegram: $('cfg-tg').value.trim(), apikey: $('cfg-api').value.trim(), radius: parseInt($('cfg-radius').value) || 500 };
+  settings = normalizeSettings({ ...settings, name: $('cfg-name').value.trim(), phone: $('cfg-phone').value.trim(), telegram: $('cfg-tg').value.trim(), radius: parseInt($('cfg-radius').value) || 500 });
   if (p) settings.privPass = p;
-  svl(SK.settings, settings);
+  if (!saveAll()) { settings = previous; syncCfgUI(); return; }
   toast('✓ Configuración guardada');
 }
 
 // ─── SOS ────────────────────────────────────────────────────────
-function openSOS() {
-  const c = map.getCenter();
+function configureSOS(c, sourceLabel = 'GPS') {
   const msg = `🆘 Estoy en peligro, por favor búscame.\nUbicación: https://maps.google.com/?q=${c.lat.toFixed(6)},${c.lng.toFixed(6)}\nCoordenadas: ${c.lat.toFixed(6)}, ${c.lng.toFixed(6)}\n— FX MAP CYBER`;
-  $('sos-loc').textContent = `⚐ ${c.lat.toFixed(6)}, ${c.lng.toFixed(6)}`;
-  $('sos-modal').classList.add('open');
+  $('sos-loc').textContent = `⚐ ${c.lat.toFixed(6)}, ${c.lng.toFixed(6)} · ${sourceLabel}`;
   const enc = encodeURIComponent(msg);
   const ph = (settings.phone || '').replace(/\D/g, '');
   const tg = settings.telegram || '';
+  ['sos-wa', 'sos-tg', 'sos-sms'].forEach(id => { $(id).disabled = false; });
   $('sos-wa').onclick = () => { window.open(ph ? `https://wa.me/${ph}?text=${enc}` : `https://wa.me/?text=${enc}`, '_blank', 'noopener'); addNotif('🆘 SOS enviado vía WhatsApp', '🆘'); };
   $('sos-tg').onclick = () => { window.open(tg ? `https://t.me/${tg.replace('@','')}?text=${enc}` : `https://t.me/share/url?url=${encodeURIComponent(c.lat.toFixed(6)+','+c.lng.toFixed(6))}&text=${enc}`, '_blank', 'noopener'); addNotif('🆘 SOS enviado vía Telegram', '🆘'); };
   $('sos-sms').onclick = () => { location.href = `sms:${ph}?body=${enc}`; addNotif('🆘 SOS enviado vía SMS', '🆘'); };
+}
+function openSOS() {
+  $('sos-modal').classList.add('open');
+  $('sos-loc').textContent = 'Obteniendo ubicación GPS...';
+  ['sos-wa', 'sos-tg', 'sos-sms'].forEach(id => { $(id).disabled = true; });
+  const fallback = () => {
+    const center = map.getCenter();
+    configureSOS({ lat: center.lat, lng: center.lng }, 'centro del mapa');
+    toast('⚠ GPS no disponible; verifica la ubicación antes de enviar');
+  };
+  if (!navigator.geolocation) { fallback(); return; }
+  navigator.geolocation.getCurrentPosition(pos => {
+    userLocation = [pos.coords.longitude, pos.coords.latitude];
+    configureSOS({ lat: pos.coords.latitude, lng: pos.coords.longitude }, 'GPS');
+  }, fallback, { enableHighAccuracy: true, timeout: 6000, maximumAge: 15000 });
 }
 
 function closeSOS() { $('sos-modal').classList.remove('open'); }
 
 // ─── REFRESH ────────────────────────────────────────────────────
-function doRefresh() {
+async function doRefresh() {
   vibra();
+  if (placesLocked) { openEncModal(); toast('🔒 Desbloquea tus datos primero'); return; }
   renderAll();
   renderConnList();
+  if (fxUser && !encKey) {
+    toast('☁ Sincronizando...');
+    await flushQueue();
+    const synced = await syncFromCloud();
+    toast(synced ? '✓ Datos y nube actualizados' : '⚠ No se pudo completar la sincronización');
+  } else if (encKey) {
+    toast('↺ Datos locales actualizados · cloud pausado por cifrado');
+  }
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(pos => {
       userLocation = [pos.coords.longitude, pos.coords.latitude];
       renderConnList();
-      toast('↺ Ubicación actualizada');
-    }, () => { toast('↺ Datos recargados'); }, { enableHighAccuracy: true, timeout: 4000 });
-  } else {
-    toast('↺ Datos recargados');
-  }
+    }, () => {}, { enableHighAccuracy: true, timeout: 4000 });
+  } else if (!fxUser && !encKey) toast('↺ Datos locales actualizados');
 }
 
 // ─── PANELS ────────────────────────────────────────────────────
@@ -2486,7 +3039,19 @@ function closeMenuModal() { $('menu-panel').classList.remove('open'); $('overlay
 
 // ─── EXPORT / IMPORT ──────────────────────────────────────────
 function exportJson() {
-  const b = new Blob([JSON.stringify({ places, routes, labels, meta: { exportedAt: new Date().toISOString(), v: 'X11' } }, null, 2)], { type: 'application/json' });
+  if (placesLocked) { openEncModal(); toast('🔒 Desbloquea tus datos para exportar'); return; }
+  const payload = {
+    version: 2,
+    places,
+    routes,
+    labels,
+    media: mediaStore,
+    notes: notesStore,
+    notifications,
+    settings: normalizeSettings(settings),
+    meta: { exportedAt: new Date().toISOString(), app: 'FX MAP X11' }
+  };
+  const b = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(b);
   a.download = `fxmap-x11-${Date.now()}.json`;
@@ -2496,16 +3061,24 @@ function exportJson() {
 
 function importJson(file) {
   if (!file) return;
+  if (placesLocked) { openEncModal(); toast('🔒 Desbloquea tus datos para importar'); return; }
   const r = new FileReader();
   r.onload = () => {
     try {
       const p = JSON.parse(r.result);
       if (p.places && Array.isArray(p.places)) places = p.places;
       else if (Array.isArray(p)) places = p;
-      if (p.routes) routes = p.routes;
+      if (Array.isArray(p.routes)) routes = p.routes;
+      if (Array.isArray(p.labels)) labels = p.labels;
+      if (Array.isArray(p.media)) mediaStore = p.media;
+      if (Array.isArray(p.notes)) notesStore = p.notes;
+      if (Array.isArray(p.notifications)) notifications = p.notifications;
+      if (p.settings && typeof p.settings === 'object') settings = normalizeSettings(p.settings);
       saveAll();
+      syncCfgUI();
       renderAll();
-      toast(`✓ ${places.length} lugares importados`);
+      renderNotesFolder();
+      toast(`✓ Respaldo importado: ${places.length} lugares y ${notesStore.length} notas`);
     } catch { toast('Archivo inválido'); }
   };
   r.readAsText(file);
@@ -2570,17 +3143,14 @@ function bindAll() {
       const pane = document.getElementById(`pp-${target}`);
       if (pane) pane.classList.add('active');
       if (target === 'vip') renderVipList();
-    });
   });
-
+  });
   // ─── NOTIFY CLEAR ───
-  $('notif-clear').addEventListener('click', () => { notifications.forEach(n => n.read = true); svl(SK.notifs, notifications); renderNotifBadge(); renderNotifList(); toast('Notificaciones limpiadas'); });
-
+  $('notif-clear').addEventListener('click', () => { notifications.forEach(n => n.read = true); saveAll(); renderNotifBadge(); renderNotifList(); toast('Notificaciones limpiadas'); });
   // ─── ENCRYPT ───
   $('enc-toggle').addEventListener('click', toggleEncrypt);
   $('enc-cancel').addEventListener('click', closeEncModal);
   $('enc-modal').addEventListener('click', e => { if (e.target.id === 'enc-modal') closeEncModal(); });
-
   // ─── SAVE MODAL ───
   $('q-save-act').addEventListener('click', () => { if ($('q-save-act').classList.contains('disabled')) return; savePlace(); });
   $('q-cancel').addEventListener('click', () => { closeSaveModal(); resetSaveForm(); clearSearchConfirmMarker(); });
@@ -2642,31 +3212,28 @@ function bindAll() {
   // ─── DETAIL MODAL ───
   $('dm-close').addEventListener('click', closeDetailModal);
   $('detail-modal').addEventListener('click', e => { if (e.target.id === 'detail-modal') closeDetailModal(); });
-  $('dm-save').addEventListener('click', saveDetailModal);
-  $('dm-flyto').addEventListener('click', () => { if (detailPlaceId) { flyTo(detailPlaceId); closeDetailModal(); } });
   $('dm-delete').addEventListener('click', () => { if (detailPlaceId) { closeDetailModal(); confirmDel(detailPlaceId); } });
-  $('dm-vip-btn').addEventListener('click', () => {
+  $('dm-coords-btn').addEventListener('click', dmCopyCoords);
+  $('dm-coords-line').addEventListener('click', dmCopyCoords);
+  $('dm-prev').addEventListener('click', () => dmNavigate('prev'));
+  $('dm-next').addEventListener('click', () => dmNavigate('next'));
+  document.querySelectorAll('.dm-tab').forEach(t => t.addEventListener('click', () => dmSetTab(t.dataset.tab)));
+  $('dm-title').addEventListener('change', () => {
     const p = places.find(x => x.id === detailPlaceId);
-    if (!p) return;
-    p.vip = !p.vip;
-    saveAll(); renderAll();
-    $('dm-vip-btn').classList.toggle('active', !!p.vip);
-    toast(p.vip ? '𖣿 Agregado a VIP' : 'Quitado de VIP');
+    if (p) { p.title = $('dm-title').value.trim() || p.title; saveAll(); renderAll(); }
   });
-  $('dm-flag-btn').addEventListener('click', (e) => {
-    e.stopPropagation();
-    const p = places.find(x => x.id === detailPlaceId);
-    if (!p) return;
-    document.querySelectorAll('.flag-pop').forEach(el => el.remove());
-    const pop = buildFlagPopover();
-    pop.style.top = '38px';
-    pop.style.left = '0';
-    $('dm-flag-btn').appendChild(pop);
-    wireFlagPopover(pop,
-      (cls) => { p.classification = cls; if (cls) p.color = CLASS_META[cls].c; p.vip = cls === 'flag' ? p.vip : p.vip; saveAll(); renderAll(); updateDetailFlagBtn(p); },
-      (color, label) => { p.color = color; p.customFlag = { color, label }; saveAll(); renderAll(); updateDetailFlagBtn(p); }
-    );
-  });
+  $('dm-tag-add').addEventListener('click', dmAddTag);
+  $('dm-tag-input').addEventListener('keydown', e => { if (e.key === 'Enter') dmAddTag(); });
+  $('dm-comment-add').addEventListener('click', dmAddComment);
+  $('dm-comment-input').addEventListener('keydown', e => { if (e.key === 'Enter') dmAddComment(); });
+  $('dm-dropzone').addEventListener('click', () => $('dm-file-input').click());
+  $('dm-file-input').addEventListener('change', e => dmHandleFiles(e.target.files));
+  $('dm-dropzone').addEventListener('dragover', e => { e.preventDefault(); $('dm-dropzone').classList.add('drag-active'); });
+  $('dm-dropzone').addEventListener('dragleave', () => $('dm-dropzone').classList.remove('drag-active'));
+  $('dm-dropzone').addEventListener('drop', e => { e.preventDefault(); $('dm-dropzone').classList.remove('drag-active'); dmHandleFiles(e.dataTransfer.files); });
+  $('dm-ai-analyze').addEventListener('click', dmAnalyze);
+  $('dm-ai-clear').addEventListener('click', () => { $('dm-ai-result').style.display = 'none'; $('dm-ai-empty').style.display = 'block'; });
+  dmInitDrag();
 
   // ─── LIGHTBOX ───
   $('lightbox').addEventListener('click', () => $('lightbox').classList.remove('open'));
@@ -2682,12 +3249,17 @@ function bindAll() {
 
   // ─── NEW ROUTE ───
   $('btn-new-route').addEventListener('click', () => {
+    if (places.length < 2) { toast('Guarda al menos 2 lugares antes de crear una ruta'); return; }
     const name = prompt('Nombre de la nueva ruta:');
     if (!name) return;
-    const si = prompt('Paradas (separadas por coma):');
-    const stops = si ? si.split(',').map(s => s.trim()).filter(Boolean) : [];
-    routes.unshift({ id: crypto.randomUUID(), name, stops, createdAt: new Date().toISOString() });
-    saveAll();
+    const options = places.map((p, i) => `${i + 1}. ${p.title}`).join('\n');
+    const si = prompt(`Selecciona las paradas por número, separadas por coma:\n\n${options}`);
+    const indexes = String(si || '').split(',').map(value => parseInt(value.trim(), 10) - 1).filter(index => Number.isInteger(index) && places[index]);
+    const stops = [...new Set(indexes)].map(index => ({ placeId: places[index].id, title: places[index].title, lng: places[index].lng, lat: places[index].lat }));
+    if (stops.length < 2) { toast('Selecciona al menos 2 paradas válidas'); return; }
+    const route = { id: crypto.randomUUID(), name, stops, createdAt: new Date().toISOString() };
+    routes.unshift(route);
+    if (!saveAll()) { routes.shift(); return; }
     renderAll();
     toast('✓ Ruta creada');
   });
@@ -2710,19 +3282,16 @@ function bindAll() {
     $('priv-content').classList.remove('unlocked');
     $('priv-pass').value = '';
     toast('🔒 Cajón bloqueado');
-  });
-
+} ) ;
   // ─── MEDIA UPLOAD ───
   $('media-upload-input').addEventListener('change', e => handleFiles(e.target.files, true));
-
   // ─── MEDIA CATS ───
   document.querySelectorAll('.mcat').forEach(c => c.addEventListener('click', function() {
     document.querySelectorAll('.mcat').forEach(x => x.classList.remove('active'));
     this.classList.add('active');
     mediaFilter = this.dataset.mc || 'all';
     renderMediaGrid();
-  }));
-
+} ) ) ;
   // ─── MEDIA SECTIONS (Multimedia / Notas) ───
   document.querySelectorAll('.msec').forEach(s => s.addEventListener('click', function() {
     document.querySelectorAll('.msec').forEach(x => x.classList.remove('active'));
@@ -2730,23 +3299,21 @@ function bindAll() {
     document.querySelectorAll('.media-section-pane').forEach(p => p.classList.remove('active'));
     $('sec-' + this.dataset.sec).classList.add('active');
     if (this.dataset.sec === 'notas') renderNotesFolder();
-  }));
-
+} ) ) ;
   $('notes-folder-open').addEventListener('click', () => {
     $('notes-folder-view').style.display = 'none';
     $('notes-list-view').style.display = 'flex';
     renderNotesList();
-  });
+} ) ;
   $('notes-back-btn').addEventListener('click', () => {
     $('notes-list-view').style.display = 'none';
     $('notes-folder-view').style.display = 'block';
     renderNotesFolder();
-  });
+} ) ;
   $('btn-new-note').addEventListener('click', () => openNoteEditor(null));
   $('note-edit-cancel').addEventListener('click', closeNoteEditor);
   $('note-edit-save').addEventListener('click', saveNoteEditor);
   $('note-editor-modal').addEventListener('click', (e) => { if (e.target.id === 'note-editor-modal') closeNoteEditor(); });
-
   // ─── LONG PRESS ───
   const mapElement = $('map');
   let lastTouchTime = 0;
@@ -2757,7 +3324,6 @@ function bindAll() {
   mapElement.addEventListener('mousedown', (e) => { if (Date.now() - lastTouchTime < 800) return; onPressStart(e); });
   mapElement.addEventListener('mousemove', onPressMove);
   mapElement.addEventListener('mouseup', onPressEnd);
-
   // ─── MAP DBLCLICK — abre pick modal en modo exploración ───
   map.on('dblclick', function(e) {
     if (!exploreMode) return;
@@ -2765,42 +3331,22 @@ function bindAll() {
     const lng = e.lngLat.lng;
     const lat = e.lngLat.lat;
     openPickModal(lng, lat);
-  });
-
+} ) ;
   // ─── PICK MODAL ───
   $('pick-x').addEventListener('click', closePickModal);
   $('pick-modal').addEventListener('click', function(e) {
     if (e.target === this || e.target.id === 'pick-modal') {
       closePickModal();
-    }
-  });
-
-  // ─── PHOTO MODAL (tarjeta compacta) ───
+} } ) ;
+  // ─── PHOTO MODAL ───
   initPhotoDragHandle();
   $('photo-save-btn').addEventListener('click', () => photoSelectType('save'));
   $('photo-vip-btn').addEventListener('click', () => photoSelectType('flag'));
-  $('pm-edit-btn').addEventListener('click', pmToggleEdit);
-  $('pm-lock-btn').addEventListener('click', pmToggleLock);
-  $('pm-del-btn').addEventListener('click', pmDeleteCard);
-  $('pm-img-btn').addEventListener('click', () => $('pm-img-input').click());
-  $('pm-img-input').addEventListener('change', (e) => {
-    Array.from(e.target.files || []).forEach(file => {
-      if (!isSafeMediaFile(file)) { toast('⚠ Imagen no admitida o muy pesada (máx. 10MB)'); return; }
-      const r = new FileReader();
-      r.onload = () => { pmPendingMedia.push({ id: crypto.randomUUID(), name: file.name, type: file.type, url: r.result, createdAt: new Date().toISOString() }); toast('✓ Imagen añadida'); };
-      r.onerror = () => toast('⚠ No se pudo leer la imagen');
-      r.readAsDataURL(file);
-    });
-    e.target.value = '';
-  });
-  $('pm-cancel-btn').addEventListener('click', closePhotoModal);
-  $('pm-save-cta').addEventListener('click', pmSaveCard);
+  $('pm-save-cta').addEventListener('click', photoToSave);
   $('photo-modal').addEventListener('click', function(e) {
     if (e.target === this || e.target.id === 'photo-modal') {
       closePhotoModal();
-    }
-  });
-
+} } ) ;
   // ─── DRAWER TABS ───
   document.querySelectorAll('.dtab').forEach(btn => {
     btn.addEventListener('click', function(e) {
@@ -2812,9 +3358,8 @@ function bindAll() {
       const pane = document.getElementById(`dp-${target}`);
       if (pane) pane.classList.add('active');
       if (target === 'board') renderBoard();
-    });
-  });
-
+} ) ;
+} ) ;
   // ─── ESC ───
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
@@ -2823,29 +3368,26 @@ function bindAll() {
         const el = $(id);
         if (el) el.classList.remove('open');
       });
-      if ($('detail-modal')?.style.display === 'flex') closeDetailModal();
+      if ($('detail-modal')?.classList.contains('open')) closeDetailModal();
       if ($('save-modal')?.classList.contains('open')) {
         closeSaveModal();
         resetSaveForm();
         clearSearchConfirmMarker();
-      }
+}
       if ($('menu-panel')?.classList.contains('open')) closeMenuModal();
       closeAll();
-    }
-  });
-
+}
+} ) ;
   // ─── Cierra palette pop al hacer clic fuera ───
   document.addEventListener('click', function(e) {
     if (!e.target.closest('#act-color')) {
       const palette = $('palette');
       if (palette) palette.classList.remove('open');
-    }
-  });
-
+}
+} ) ;
   setSearchMode('address');
-
   // ─── FIX: teclado iOS tapa inputs en modales position:fixed ───
-  const keyboardSafeInputs = ['q-title', 'q-notes', 'q-label', 'q-hashtag', 'note-edit-title', 'note-edit-body', 'dm-title', 'dm-notes', 'fx-auth-pass', 'enc-key', 'pm-field-title', 'pm-field-notes'];
+  const keyboardSafeInputs = ['q-title', 'q-notes', 'q-label', 'q-hashtag', 'note-edit-title', 'note-edit-body', 'dm-title', 'dm-tag-input', 'dm-comment-input', 'fx-auth-pass', 'enc-key'];
   keyboardSafeInputs.forEach(id => {
     const el = $(id);
     if (!el) return;
@@ -2855,16 +3397,15 @@ function bindAll() {
       modal.style.alignItems = 'flex-start';
       modal.style.paddingTop = '32px';
       modal.style.overflowY = 'auto';
-    });
+} ) ;
     el.addEventListener('blur', () => {
       if (!modal) return;
       modal.style.alignItems = '';
       modal.style.paddingTop = '';
       modal.style.overflowY = '';
-    });
-  });
+} ) ;
+} ) ;
 }
-
 // ─── MAP EVENTS ──────────────────────────────────────────────────
 map.on('style.load', () => {
   try {
@@ -2874,13 +3415,11 @@ map.on('style.load', () => {
       'horizon-blend': 0.07,
       'space-color': 'rgb(4,6,10)',
       'star-intensity': 0
-    });
-  } catch (e) {}
-});
-
+} ) ;
+} catch (e) {}
+} ) ;
 map.on('load', () => {
   map.easeTo({ center: BASE.center, zoom: BASE.zoom, pitch: BASE.pitch, bearing: BASE.bearing, duration: 0, essential: true });
-
   try {
     map.setConfigProperty('basemap', 'lightPreset', 'night');
     map.setConfigProperty('basemap', 'show3dObjects', true);
@@ -2889,21 +3428,19 @@ map.on('load', () => {
     map.setConfigProperty('basemap', 'showRoadLabels', false);
     map.setConfigProperty('basemap', 'showTransitLabels', false);
   } catch (e) {}
-
   // Geolocate control (oculto)
   const geo = new mapboxgl.GeolocateControl({
     positionOptions: { enableHighAccuracy: true },
     trackUserLocation: true,
     showUserHeading: true,
     showAccuracyCircle: false
-  });
+} ) ;
   map.addControl(geo, 'bottom-right');
   geo.on('geolocate', e => { userLocation = [e.coords.longitude, e.coords.latitude]; });
   setTimeout(() => {
     const gc = document.querySelector('.mapboxgl-ctrl-geolocate');
     if (gc) gc.style.display = 'none';
-  }, 600);
-
+}, 600);
   ensureBuildingHighlightLayers();
   loadAll();
   renderAll();
@@ -2912,15 +3449,261 @@ map.on('load', () => {
   initSearch();
   bindAll();
   updateEncStatus();
+  initFxAuth();
   if (placesLocked) {
-    setTimeout(() => { openEncModal(); toast('🔒 Tus lugares están cifrados — ingresa tu clave'); }, 400);
-  }
-
+    setTimeout(() => { openEncModal(); toast('🔒 Tus datos están cifrados — ingresa tu clave'); }, 400);
+}
   map.on('moveend', () => { if (buildingHighlightReady) renderMarkers(); });
   map.on('zoomend', () => { if (buildingHighlightReady) renderMarkers(); });
-});
-
+} ) ;
 // ─── INICIALIZACIÓN ──────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+// SUPABASE SYNC LAYER — vanilla, offline-first, single-file
+// ═══════════════════════════════════════════════════════════════
+const SB_URL  = 'https://fovyxpzkwyhdwkmxmdco.supabase.co';
+const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZvdnl4cHprd3loZHdrbXhtZGNvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5OTg2OTYsImV4cCI6MjA3NDU3NDY5Nn0.bRBwhQsEncToukGInHswb51w98Yo6x_3rOuIA8zTxr0';
+const sb = window.supabase.createClient(SB_URL, SB_ANON, {
+  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'pkce' }
+} ) ;
+let fxUser = null;
+let syncQueue = ldl('fxmap.syncq', [] ) ;
+let syncing = false;
+const PLACE_META_PREFIX = '__FXMAP_META__:';
+function packPlaceTags(place) {
+  const regular = (place.tags || []).filter(tag => typeof tag === 'string' && !tag.startsWith(PLACE_META_PREFIX));
+  const meta = { comments: place.comments || [], city: place.city || '' };
+  return [...regular, PLACE_META_PREFIX + JSON.stringify(meta)];
+}
+function unpackPlaceTags(tags) {
+  const list = Array.isArray(tags) ? tags : [];
+  const raw = list.find(tag => typeof tag === 'string' && tag.startsWith(PLACE_META_PREFIX));
+  let meta = { comments: [], city: '' };
+  if (raw) {
+    try { meta = { ...meta, ...JSON.parse(raw.slice(PLACE_META_PREFIX.length)) }; } catch {}
+  }
+  return { tags: list.filter(tag => typeof tag === 'string' && !tag.startsWith(PLACE_META_PREFIX)), meta };
+}
+// ─── Mappers local ↔ DB ──
+const toDbPlace = p => ({
+  id: p.id, title: p.title||'', notes: p.notes||'', label: p.label||null, hashtag: p.hashtag||null,
+  tags: packPlaceTags(p), lat: p.lat, lng: p.lng, color: p.color||null, tag_color: p.tagColor||null,
+  classification: p.classification||'save', vip: !!p.vip, media: p.media||[],
+  created_at: p.createdAt || new Date().toISOString(), updated_at: new Date().toISOString()
+} ) ;
+const fromDbPlace = r => {
+  const decoded = unpackPlaceTags(r.tags);
+  return {
+    id: r.id, title: r.title||'', notes: r.notes||'', label: r.label||'', hashtag: r.hashtag||'',
+    tags: decoded.tags, comments: Array.isArray(decoded.meta.comments) ? decoded.meta.comments : [], city: decoded.meta.city || '',
+    lat: r.lat, lng: r.lng, color: r.color||'', tagColor: r.tag_color||null,
+    classification: r.classification||'save', vip: !!r.vip, media: r.media||[],
+    createdAt: r.created_at, createdAtLabel: fmtDate(r.created_at)
+  };
+} ;
+const toDbRoute = r => ({ id:r.id, name:r.name, stops:r.stops||[], created_at:r.createdAt||new Date().toISOString() });
+const fromDbRoute = r => ({ id:r.id, name:r.name, stops:r.stops||[], createdAt:r.created_at });
+const toDbNote = n => ({
+  id:n.id, title:n.title||'', body:n.body||'', classification:n.classification||'save',
+  custom_flag_color: n.customFlag?.color || null, custom_flag_label: n.customFlag?.label || null,
+  tags:n.tags||[], linked_place_ids:n.linkedPlaceIds||[], vip:!!n.vip, hidden:!!n.hidden,
+  created_at:n.createdAt||new Date().toISOString(), updated_at:new Date().toISOString()
+} ) ;
+const fromDbNote = r => ({
+  id:r.id, title:r.title||'', body:r.body||'', classification:r.classification||'save',
+  customFlag: r.custom_flag_color ? { color: r.custom_flag_color, label: r.custom_flag_label || '' } : null,
+  tags:r.tags||[], linkedPlaceIds:r.linked_place_ids||[], vip:!!r.vip, hidden:!!r.hidden,
+  createdAt:r.created_at, updatedAt:r.updated_at
+} ) ;
+const toDbNotification = n => ({ id:n.id, text:n.text||'', icon:n.icon||'✉', read:!!n.read, created_at:n.time||new Date().toISOString() });
+// ─── Auth UI ──────────────────────────────────────────────
+function updateAuthUI() {
+  const el = document.getElementById('fx-auth-chip');
+  if (!el) return;
+  if (fxUser) {
+    const initial = (fxUser.user_metadata?.full_name || fxUser.email || '?').charAt(0).toUpperCase();
+    el.innerHTML = `<span style="width:22px;height:22px;border-radius:50%;background:var(--neon-green);color:#060606;font-weight:900;display:grid;place-items:center;font-size:11px">${initial}</span><span style="font-size:9px">☁ SYNC</span>`;
+    el.title = fxUser.email || 'Cuenta conectada';
+  } else {
+    el.innerHTML = `<span style="font-size:12px">☁</span><span style="font-size:9px">LOGIN</span>`;
+    el.title = 'Iniciar sesión con Google';
+} }
+async function signInGoogle() {
+  const { error } = await sb.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin + window.location.pathname }
+} ) ;
+  if (error) toast('❌ Error de login: ' + error.message);
+}
+async function signOutUser() {
+  await sb.auth.signOut();
+  fxUser = null;
+  updateAuthUI();
+  toast('👋 Sesión cerrada');
+}
+function showAuthMenu() {
+  if (fxUser) {
+    if (confirm(`Sesión: ${fxUser.email}\n\n¿Cerrar sesión?`)) signOutUser();
+  } else {
+    signInGoogle();
+} }
+// ─── Push (upsert) ────────────────────────────────────────
+function syncItemKey(item) {
+  return `${item.table}:${item.id || item.row?.id || 'singleton'}`;
+}
+function enqueueSync(item) {
+  const normalized = { ...item, op: item.op || 'upsert', userId: item.userId || fxUser?.id || null };
+  const key = syncItemKey(normalized);
+  syncQueue = syncQueue.filter(existing => syncItemKey(existing) !== key);
+  syncQueue.push(normalized);
+  svl('fxmap.syncq', syncQueue);
+}
+async function pushRow(table, row) {
+  if (encKey || placesLocked) return false;
+  if (!fxUser || !navigator.onLine) { enqueueSync({ op:'upsert', table, row }); return false; }
+  try {
+    const { error } = await sb.from(table).upsert({ ...row, user_id: fxUser.id });
+    if (error) throw error;
+    return true;
+  } catch (e) {
+    console.warn('push failed, queued', e);
+    enqueueSync({ op:'upsert', table, row });
+    return false;
+} }
+async function deleteRow(table, id) {
+  if (encKey || placesLocked) return false;
+  if (!fxUser || !navigator.onLine) { enqueueSync({ op:'delete', table, id }); return false; }
+  try {
+    const { error } = await sb.from(table).delete().eq('id', id).eq('user_id', fxUser.id);
+    if (error) throw error;
+    return true;
+  } catch (e) {
+    console.warn('delete failed, queued', e);
+    enqueueSync({ op:'delete', table, id });
+    return false;
+  }
+}
+async function flushQueue() {
+  if (!fxUser || !navigator.onLine || syncing || !syncQueue.length || encKey || placesLocked) return false;
+  syncing = true;
+  const q = [...syncQueue];
+  syncQueue = [];
+  for (const item of q) {
+    if (item.userId && item.userId !== fxUser.id) { syncQueue.push(item); continue; }
+    try {
+      const op = item.op || 'upsert';
+      const result = op === 'delete'
+        ? await sb.from(item.table).delete().eq('id', item.id).eq('user_id', fxUser.id)
+        : await sb.from(item.table).upsert({ ...item.row, user_id: fxUser.id });
+      if (result.error) throw result.error;
+    } catch (e) {
+      console.warn('queue item failed', e);
+      syncQueue.push(item);
+    }
+}
+  svl('fxmap.syncq', syncQueue);
+  syncing = false;
+  return syncQueue.length === 0;
+}
+// ─── Pull (sync from cloud) ───────────────────────────────
+async function syncFromCloud() {
+  if (!fxUser || encKey || placesLocked) return false;
+  try {
+    const [pl, rt, nt, no, us] = await Promise.all([
+      sb.from('places').select('*').eq('user_id', fxUser.id),
+      sb.from('routes').select('*').eq('user_id', fxUser.id),
+      sb.from('notes').select('*').eq('user_id', fxUser.id),
+      sb.from('notifications').select('*').eq('user_id', fxUser.id).order('created_at', {ascending:false}).limit(50),
+      sb.from('user_settings').select('*').eq('user_id', fxUser.id).maybeSingle()
+] ) ;
+    if (pl.data && !pl.error) places = pl.data.map(fromDbPlace);
+    if (rt.data && !rt.error) routes = rt.data.map(fromDbRoute);
+    if (nt.data && !nt.error) notesStore = nt.data.map(fromDbNote);
+    if (no.data && !no.error) {
+      notifications = no.data.map(n => ({id:n.id,text:n.text,icon:n.icon,read:n.read,time:n.created_at}));
+}
+    if (us.data && !us.error) {
+      settings = normalizeSettings({ ...settings, name:us.data.name||'', phone:us.data.phone||'', telegram:us.data.telegram||'', radius:us.data.radius||500 });
+      syncCfgUI();
+}
+    writePlainState();
+    renderAll();
+    const errors = [pl.error, rt.error, nt.error, no.error, us.error].filter(Boolean);
+    if (errors.length) console.warn('partial sync errors', errors);
+    return errors.length === 0;
+  } catch (e) { console.warn('sync error', e); return false; }
+}
+// ─── Migración: subir datos locales a la cuenta al 1er login ──
+async function migrateLocalToCloud() {
+  if (!fxUser || encKey || placesLocked) return false;
+  const key = 'fxmap.migrated.' + fxUser.id;
+  if (localStorage.getItem(key)) return true;
+  toast('☁ Migrando tus datos...');
+  try {
+    const results = [];
+    if (places.length) results.push(await sb.from('places').upsert(places.map(p => ({...toDbPlace(p), user_id:fxUser.id}))));
+    if (routes.length) results.push(await sb.from('routes').upsert(routes.map(r => ({...toDbRoute(r), user_id:fxUser.id}))));
+    if (notesStore.length) results.push(await sb.from('notes').upsert(notesStore.map(n => ({...toDbNote(n), user_id:fxUser.id}))));
+    if (notifications.length) results.push(await sb.from('notifications').upsert(notifications.map(n => ({...toDbNotification(n), user_id:fxUser.id}))));
+    if (settings.name || settings.phone) {
+      results.push(await sb.from('user_settings').upsert({ user_id:fxUser.id, name:settings.name, phone:settings.phone, telegram:settings.telegram, radius:settings.radius }));
+}
+    const failed = results.find(result => result.error);
+    if (failed) throw failed.error;
+    localStorage.setItem(key, '1');
+    toast('✓ Datos en la nube');
+    return true;
+} catch (e) {
+    console.warn('migration', e);
+    toast('⚠ Migración parcial — reintentar con ↺');
+    return false;
+} }
+// ─── Hook: interceptar saveAll para replicar a la nube ────
+const _saveAllOrig = saveAll;
+saveAll = function() {
+  const saved = _saveAllOrig();
+  if (!saved || encKey || placesLocked) return saved;
+  clearTimeout(saveAll._t);
+  saveAll._t = setTimeout(async () => {
+    if (places.length)      places.forEach(p => pushRow('places', toDbPlace(p)));
+    if (routes.length)      routes.forEach(r => pushRow('routes', toDbRoute(r)));
+    if (notesStore.length)  notesStore.forEach(n => pushRow('notes', toDbNote(n)));
+    if (notifications.length) notifications.forEach(n => pushRow('notifications', toDbNotification(n)));
+    if (settings.name || settings.phone || settings.telegram) {
+      pushRow('user_settings', { name:settings.name, phone:settings.phone, telegram:settings.telegram, radius:settings.radius });
+} } , 600) ;
+  return saved;
+} ;
+// ─── Init ─────────────────────────────────────────────────
+let authInitialized = false;
+async function initFxAuth() {
+  if (authInitialized) return;
+  authInitialized = true;
+  const { data: { session } } = await sb.auth.getSession();
+  fxUser = session?.user || null;
+  updateAuthUI();
+  if (fxUser && !encKey && !placesLocked) {
+    await migrateLocalToCloud();
+    await flushQueue();
+    await syncFromCloud();
+  }
+  sb.auth.onAuthStateChange(async (event, session) => {
+    fxUser = session?.user || null;
+    updateAuthUI();
+    if (event === 'SIGNED_IN' && fxUser) {
+      if (encKey || placesLocked) {
+        toast('✓ Sesión iniciada · cloud pausado por cifrado');
+      } else {
+        await migrateLocalToCloud();
+        await flushQueue();
+        await syncFromCloud();
+        toast('✓ Sesión iniciada y sincronizada');
+      }
+}
+    if (event === 'SIGNED_OUT') toast('Sesión cerrada');
+} ) ;
+  window.addEventListener('online', flushQueue);
+  setInterval(flushQueue, 30000);
+}
 console.log('FX MAP X11 — CYBERPUNK NEON — Cargado correctamente 🚀');
 </script>
 </body>
