@@ -664,9 +664,15 @@ button{cursor:pointer}
 #enc-modal .enc-status.unlocked{color:var(--j-green);border-color:rgba(74,222,128,.22)}
 
 #save-modal>.jewel-panel{width:min(440px,94vw);max-height:calc(100dvh - 48px)}
-#save-modal :is(.save-hero,.publish-status,.pchip){background:rgba(255,255,255,.04);border-color:var(--j-border)}
+#save-modal .save-title{font-size:17px;letter-spacing:-.01em;text-transform:none}
+#save-modal .save-hd{margin-bottom:16px}
+#save-modal .save-hero{padding:0 0 16px;margin-bottom:16px;border:0;border-bottom:1px solid var(--j-border);border-radius:0;background:transparent!important}
+#save-modal :is(.publish-status,.pchip){background:rgba(255,255,255,.04);border-color:var(--j-border)}
 #save-modal .save-hero-title{color:var(--j-text)}
 #save-modal .save-hero-note{color:var(--j-muted)}
+#save-modal .field{margin-bottom:16px}
+#save-modal :is(.save-act,.save-mini,.csbtn){border-color:var(--j-border)!important;background:rgba(255,255,255,.05)!important;color:var(--j-muted)!important;box-shadow:none!important}
+#save-modal :is(.save-act,.save-mini,.csbtn):hover{background:rgba(255,255,255,.1)!important;color:var(--j-text)!important}
 
 #sos-modal>.jewel-panel{width:min(384px,92vw)!important;max-width:384px!important}
 #sos-modal .sos-title{font-family:'Chivo',var(--font-display,sans-serif);color:var(--j-red);text-shadow:none}
@@ -1277,6 +1283,7 @@ let selectedId = null,
 let pressTimer = null,
     locPopupCoords = null;
 let buildingHighlightReady = false,
+    buildingHighlightHandlersReady = false,
     routeLayerReady = false,
     activeRouteId = null;
 let searchConfirmMarker = null,
@@ -1628,6 +1635,17 @@ function ensureBuildingHighlightLayers() {
         'line-opacity': 0.95
 } } ) ;
 }
+  if (!buildingHighlightHandlersReady) {
+    map.on('mouseenter', 'fx-building-highlight-fill', () => { map.getCanvas().style.cursor = 'pointer'; });
+    map.on('mouseleave', 'fx-building-highlight-fill', () => { map.getCanvas().style.cursor = ''; });
+    map.on('click', 'fx-building-highlight-fill', e => {
+      const id = e.features?.[0]?.properties?.id;
+      if (id == null) return;
+      const place = places.find(p => String(p.id) === String(id));
+      if (place) openDetailModal(place.id);
+    });
+    buildingHighlightHandlersReady = true;
+  }
   buildingHighlightReady = true;
 }
 function squarePolygonAround(lng, lat, size = 0.000055) {
@@ -2212,7 +2230,7 @@ function dmSortedPlaces() {
   return places;
 }
 function openDetailModal(id) {
-  const p = places.find(x => x.id === id);
+  const p = places.find(x => String(x.id) === String(id));
   if (!p) { toast('❌ Lugar no encontrado'); return; }
   detailPlaceId = id;
   p.tags = p.tags || [];
