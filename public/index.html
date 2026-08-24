@@ -345,9 +345,54 @@ button{cursor:pointer}
 .cfm-box h3{font-size:14px;font-weight:900;color:var(--text-primary);margin-bottom:8px}
 .cfm-box p{font-size:11px;color:var(--text-secondary);line-height:1.6;margin-bottom:16px}
 #confirm-del{background:linear-gradient(180deg,#ff3b3b,#ff3b3b);color:#fff;box-shadow:0 6px 20px rgba(255,59,59,.25)}
-#lightbox{position:fixed;inset:0;z-index:250;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.92);backdrop-filter:blur(12px)}
-#lightbox.open{display:flex}
-#lightbox img{max-width:90vw;max-height:90vh;border-radius:14px;border:1px solid rgba(212,255,0,.12);box-shadow:var(--shadow-neon-strong)}
+/* ─── PHOTO VIEWER (upgraded #lightbox) ─── */
+#lightbox{position:fixed;inset:0;z-index:9000;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.86);backdrop-filter:blur(18px) saturate(120%);-webkit-backdrop-filter:blur(18px) saturate(120%);opacity:0;transition:opacity .24s ease;padding:calc(14px + var(--safe-top)) 14px calc(14px + var(--safe-bottom));overscroll-behavior:contain}
+#lightbox.open{display:flex;opacity:1}
+#lightbox .lb-stage{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+#lightbox .lb-img-wrap{position:relative;max-width:92vw;max-height:88vh;display:flex;align-items:center;justify-content:center;transform:scale(.96);opacity:0;transition:transform .28s cubic-bezier(.22,1,.36,1),opacity .22s ease;pointer-events:none}
+#lightbox.open .lb-img-wrap{transform:scale(1);opacity:1;pointer-events:auto}
+#lightbox.is-switching .lb-img-wrap{opacity:0;transform:scale(.985)}
+#lightbox img.lb-img{display:block;max-width:92vw;max-height:88vh;width:auto;height:auto;object-fit:contain;background:transparent;border:none;border-radius:2px;box-shadow:none;user-select:none;-webkit-user-drag:none}
+#lightbox .lb-topbar{position:absolute;top:calc(12px + var(--safe-top));left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:0 18px;pointer-events:none;z-index:2}
+#lightbox .lb-counter{pointer-events:auto;font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;font-weight:600;letter-spacing:.22em;color:rgba(255,255,255,.72);text-shadow:0 1px 8px rgba(0,0,0,.55);user-select:none;margin:0 auto;padding:6px 14px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+#lightbox .lb-counter.single{visibility:hidden}
+#lightbox .lb-close{pointer-events:auto;position:absolute;top:0;right:0;width:44px;height:44px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:#fff;display:grid;place-items:center;cursor:pointer;transition:background .18s ease,border-color .18s ease,color .18s ease,transform .12s ease;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+#lightbox .lb-close:focus-visible{outline:2px solid var(--neon-green);outline-offset:3px}
+#lightbox .lb-close:active{transform:scale(.92)}
+#lightbox .lb-close svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+#lightbox .lb-nav{pointer-events:auto;position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:#fff;display:grid;place-items:center;cursor:pointer;transition:background .18s ease,border-color .18s ease,color .18s ease,transform .12s ease,opacity .2s ease;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:3}
+#lightbox .lb-nav.prev{left:18px}
+#lightbox .lb-nav.next{right:18px}
+#lightbox .lb-nav:focus-visible{outline:2px solid var(--neon-green);outline-offset:3px}
+#lightbox .lb-nav:active{transform:translateY(-50%) scale(.92)}
+#lightbox .lb-nav svg{width:18px;height:18px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+#lightbox.single-image .lb-nav{display:none}
+#lightbox .lb-loading,#lightbox .lb-error{position:absolute;inset:0;display:none;align-items:center;justify-content:center;pointer-events:none;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.65)}
+#lightbox.is-loading .lb-loading{display:flex}
+#lightbox.is-error .lb-error{display:flex;color:rgba(255,80,80,.78)}
+#lightbox.is-error .lb-img{opacity:0}
+#lightbox .lb-spinner{width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,.14);border-top-color:rgba(255,255,255,.7);animation:lb-spin .8s linear infinite}
+@keyframes lb-spin{to{transform:rotate(360deg)}}
+body.lb-locked{overflow:hidden!important}
+@media (max-width:640px){
+  #lightbox{padding:calc(10px + var(--safe-top)) 8px calc(10px + var(--safe-bottom))}
+  #lightbox .lb-img-wrap{max-width:96vw;max-height:82vh}
+  #lightbox img.lb-img{max-width:96vw;max-height:82vh}
+  #lightbox .lb-topbar{padding:0 12px}
+  #lightbox .lb-close{width:40px;height:40px}
+  #lightbox .lb-nav{width:42px;height:42px}
+  #lightbox .lb-nav.prev{left:8px}
+  #lightbox .lb-nav.next{right:8px}
+  #lightbox .lb-counter{font-size:11px;padding:5px 12px}
+}
+@media (hover: hover) and (pointer: fine){
+  #lightbox .lb-close:hover{background:rgba(212,255,0,.12);border-color:rgba(212,255,0,.45);color:var(--neon-green)}
+  #lightbox .lb-nav:hover{background:rgba(212,255,0,.12);border-color:rgba(212,255,0,.45);color:var(--neon-green)}
+}
+@media (prefers-reduced-motion: reduce){
+  #lightbox,#lightbox .lb-img-wrap{transition:opacity .12s ease}
+  #lightbox .lb-img-wrap{transform:none!important}
+}
 #toast{position:fixed;left:50%;bottom:calc(78px + var(--safe-bottom));transform:translateX(-50%) translateY(10px);z-index:500;min-height:40px;padding:0 18px;border-radius:12px;border:1px solid rgba(212,255,0,.1);background:rgba(9,9,9,.96);color:var(--neon-green);box-shadow:var(--shadow-neon);display:inline-flex;align-items:center;font-size:11px;font-weight:700;opacity:0;transition:all .3s ease;white-space:nowrap;pointer-events:none;text-shadow:0 0 20px rgba(212,255,0,.1)}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 #overlay{position:fixed;inset:0;z-index:105;background:rgba(0,0,0,0);pointer-events:none;transition:background .3s}
@@ -1120,8 +1165,28 @@ button{cursor:pointer}
   </div>
 </div>
 
-<!-- ─── LIGHTBOX ─── -->
-<div id="lightbox"><img id="lightbox-img" src="" alt=""/></div>
+<!-- ─── PHOTO VIEWER (premium) ─── -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Visor de foto" aria-hidden="true">
+  <div class="lb-stage">
+    <div class="lb-topbar">
+      <div class="lb-counter" id="lightbox-counter" aria-live="polite">01 / 01</div>
+      <button type="button" class="lb-close" id="lightbox-close" aria-label="Cerrar visor de foto">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <button type="button" class="lb-nav prev" id="lightbox-prev" aria-label="Foto anterior">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+    </button>
+    <div class="lb-img-wrap" id="lightbox-imgwrap">
+      <img id="lightbox-img" class="lb-img" src="" alt=""/>
+      <div class="lb-loading" aria-hidden="true"><div class="lb-spinner"></div></div>
+      <div class="lb-error" aria-hidden="true">Imagen no disponible</div>
+    </div>
+    <button type="button" class="lb-nav next" id="lightbox-next" aria-label="Foto siguiente">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+  </div>
+</div>
 
 <!-- ─── TOAST ─── -->
 <div id="toast"></div>
@@ -1966,7 +2031,10 @@ function renderMediaGrid() {
     t.addEventListener('click', (e) => {
       if (e.target.closest('.mthumb-actions') || e.target.closest('.flag-pop')) return;
       const m = mediaStore[idx];
-      if (m?.url) { $('lightbox-img').src = m.url; $('lightbox').classList.add('open'); }
+      if (!m?.url) return;
+      const imgs = visibleIdx.map(vi => ({ url: mediaStore[vi].url, name: mediaStore[vi].name || '' })).filter(x => x.url);
+      const start = imgs.findIndex(x => x.url === m.url);
+      openLightbox(imgs, start < 0 ? 0 : start);
 } ) ;
     t.querySelector('[data-act="vip"]').addEventListener('click', (e) => {
       e.stopPropagation();
@@ -2346,8 +2414,12 @@ function renderDmImages(p) {
   if (!p.media.length) { el.innerHTML = `<div class="dm-empty-msg" style="grid-column:1/-1">No hay imágenes aún</div>`; return; }
   el.innerHTML = p.media.map((m, i) => `<div class="dm-image-item" data-i="${i}"><img src="${esc(m.url)}" alt=""/></div>`).join('');
   el.querySelectorAll('.dm-image-item').forEach(item => item.addEventListener('click', () => {
-    const m = p.media[parseInt(item.dataset.i)];
-    if (m?.url) { $('lightbox-img').src = m.url; $('lightbox').classList.add('open'); }
+    const i = parseInt(item.dataset.i);
+    const m = p.media[i];
+    if (!m?.url) return;
+    const imgs = p.media.filter(x => x?.url).map(x => ({ url: x.url, name: x.name || '' }));
+    const start = imgs.findIndex(x => x.url === m.url);
+    openLightbox(imgs, start < 0 ? 0 : start);
 } ) ) ; 
 }
 function dmHandleFiles(files) {
@@ -2502,7 +2574,12 @@ function renderClassBtns() {
 function renderSaveMedia() {
   $('save-mprev').innerHTML = pendingMedia.map(m => `<div class="mitem" data-id="${m.id}"><img src="${m.url}" alt=""/><button class="mdel" type="button">✕</button></div>`).join('');
   $('save-mprev').querySelectorAll('.mitem').forEach(card => {
-    card.querySelector('img')?.addEventListener('click', () => { $('lightbox-img').src = pendingMedia.find(x => x.id === card.dataset.id)?.url || ''; $('lightbox').classList.add('open'); });
+    card.querySelector('img')?.addEventListener('click', () => {
+      const id = card.dataset.id;
+      const imgs = pendingMedia.filter(x => x?.url).map(x => ({ url: x.url, name: x.name || '', id: x.id }));
+      const start = imgs.findIndex(x => x.id === id);
+      openLightbox(imgs, start < 0 ? 0 : start);
+    });
     card.querySelector('.mdel')?.addEventListener('click', () => { pendingMedia = pendingMedia.filter(x => x.id !== card.dataset.id); renderSaveMedia(); });
 } ) ;
 }
@@ -2852,6 +2929,127 @@ function closePhotoModal() {
   $('photo-modal').classList.remove('open');
   photoPoint = null; photoExistingId = null; pmCurrentClass = null; pmTagColor = null;
 }
+
+// ─── PHOTO VIEWER (LIGHTBOX) ────────────────────────────────
+const lbState = { images: [], index: 0, open: false, touchStartX: 0, touchStartY: 0, touchActive: false, lastFocus: null, switchTimer: null };
+function openLightbox(images, index = 0) {
+  const list = (Array.isArray(images) ? images : [])
+    .map(x => (typeof x === 'string' ? { url: x } : x))
+    .filter(x => x && x.url);
+  if (!list.length) return;
+  lbState.images = list;
+  lbState.index = Math.max(0, Math.min(index | 0, list.length - 1));
+  lbState.lastFocus = document.activeElement;
+  const box = $('lightbox');
+  box.setAttribute('aria-hidden', 'false');
+  box.classList.toggle('single-image', list.length <= 1);
+  document.body.classList.add('lb-locked');
+  // Show synchronously, then flip class next frame for CSS transition
+  box.style.display = 'flex';
+  requestAnimationFrame(() => { box.classList.add('open'); });
+  lbState.open = true;
+  lbRenderCurrent();
+  setTimeout(() => { $('lightbox-close')?.focus({ preventScroll: true }); }, 60);
+}
+function closeLightbox() {
+  const box = $('lightbox');
+  if (!box.classList.contains('open')) return;
+  box.classList.remove('open');
+  box.setAttribute('aria-hidden', 'true');
+  lbState.open = false;
+  // Wait for fade transition before hiding
+  setTimeout(() => {
+    if (!lbState.open) {
+      box.style.display = '';
+      box.classList.remove('is-loading', 'is-error', 'is-switching', 'single-image');
+      $('lightbox-img').src = '';
+      document.body.classList.remove('lb-locked');
+    }
+  }, 260);
+  try { lbState.lastFocus?.focus?.({ preventScroll: true }); } catch (e) {}
+}
+function lbRenderCurrent() {
+  const box = $('lightbox');
+  const img = $('lightbox-img');
+  const counter = $('lightbox-counter');
+  const { images, index } = lbState;
+  if (!images.length) return;
+  const cur = images[index];
+  const total = images.length;
+  counter.textContent = `${String(index + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+  counter.classList.toggle('single', total <= 1);
+  box.classList.remove('is-error');
+  box.classList.add('is-loading');
+  // Reset img handlers each time
+  img.onload = () => { box.classList.remove('is-loading'); box.classList.remove('is-switching'); };
+  img.onerror = () => { box.classList.remove('is-loading'); box.classList.remove('is-switching'); box.classList.add('is-error'); };
+  img.alt = cur.name || `Foto ${index + 1} de ${total}`;
+  // Trigger load
+  if (img.src !== cur.url) {
+    img.src = cur.url;
+    // If cached, onload fires synchronously; complete check safety
+    if (img.complete && img.naturalWidth > 0) {
+      box.classList.remove('is-loading', 'is-switching');
+    }
+  } else if (img.complete && img.naturalWidth > 0) {
+    box.classList.remove('is-loading', 'is-switching');
+  }
+}
+function lbGo(delta) {
+  const total = lbState.images.length;
+  if (total <= 1) return;
+  const next = (lbState.index + delta + total) % total;
+  if (next === lbState.index) return;
+  const box = $('lightbox');
+  box.classList.add('is-switching');
+  lbState.index = next;
+  clearTimeout(lbState.switchTimer);
+  // Slight delay so fade-out is perceivable
+  lbState.switchTimer = setTimeout(() => { lbRenderCurrent(); }, 120);
+}
+function lbNext() { lbGo(1); }
+function lbPrev() { lbGo(-1); }
+function initLightbox() {
+  const box = $('lightbox');
+  const img = $('lightbox-img');
+  if (!box) return;
+  $('lightbox-close').addEventListener('click', (e) => { e.stopPropagation(); closeLightbox(); });
+  $('lightbox-prev').addEventListener('click', (e) => { e.stopPropagation(); lbPrev(); });
+  $('lightbox-next').addEventListener('click', (e) => { e.stopPropagation(); lbNext(); });
+  // Click outside image closes
+  box.addEventListener('click', (e) => {
+    if (e.target.closest('.lb-img-wrap') || e.target.closest('.lb-nav') || e.target.closest('.lb-close') || e.target.closest('.lb-counter')) return;
+    closeLightbox();
+  });
+  img.addEventListener('click', (e) => e.stopPropagation());
+  img.addEventListener('dragstart', (e) => e.preventDefault());
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (!lbState.open) return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); lbNext(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); lbPrev(); }
+    // ESC handled by the global ESC listener already
+  });
+  // Touch swipe (mobile)
+  const stage = box.querySelector('.lb-stage');
+  stage.addEventListener('touchstart', (e) => {
+    if (!lbState.open || e.touches.length !== 1) return;
+    lbState.touchStartX = e.touches[0].clientX;
+    lbState.touchStartY = e.touches[0].clientY;
+    lbState.touchActive = true;
+  }, { passive: true });
+  stage.addEventListener('touchend', (e) => {
+    if (!lbState.touchActive) return;
+    lbState.touchActive = false;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - lbState.touchStartX;
+    const dy = t.clientY - lbState.touchStartY;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+      if (dx < 0) lbNext(); else lbPrev();
+    }
+  }, { passive: true });
+}
+
 function initPhotoDragHandle() {
   const handle = $('pm-drag-handle');
   const box = $('pm-box');
@@ -3261,8 +3459,8 @@ function bindAll() {
   $('dm-ai-clear').addEventListener('click', () => { $('dm-ai-result').style.display = 'none'; $('dm-ai-empty').style.display = 'block'; });
   dmInitDrag();
 
-  // ─── LIGHTBOX ───
-  $('lightbox').addEventListener('click', () => $('lightbox').classList.remove('open'));
+  // ─── LIGHTBOX / PHOTO VIEWER ───
+  initLightbox();
 
   // ─── AI ───
   $('btn-ai').addEventListener('click', runAI);
@@ -3390,10 +3588,11 @@ function bindAll() {
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
       // Cerrar modales
-      ['enc-modal', 'lightbox', 'confirm-modal', 'sos-modal', 'pick-modal', 'photo-modal'].forEach(id => {
+      ['enc-modal', 'confirm-modal', 'sos-modal', 'pick-modal', 'photo-modal'].forEach(id => {
         const el = $(id);
         if (el) el.classList.remove('open');
       });
+      if ($('lightbox')?.classList.contains('open')) closeLightbox();
       if ($('detail-modal')?.classList.contains('open')) closeDetailModal();
       if ($('save-modal')?.classList.contains('open')) {
         closeSaveModal();
