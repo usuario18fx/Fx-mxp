@@ -759,6 +759,151 @@ body.lb-locked{overflow:hidden!important}
   }
 }
 @media (prefers-reduced-motion:reduce){.jewel-modal>.jewel-panel{animation:none}}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   FX-MXP DESIGN SYSTEM — refinement layer (Enero 2026)
+   Solo CSS. No cambia HTML ni JS. Unifica botones, paneles y micro-anims.
+   ═══════════════════════════════════════════════════════════════════════ */
+:root{
+  --fx-r-sm:8px; --fx-r-md:12px; --fx-r-lg:16px; --fx-r-pill:999px;
+  --fx-h-btn:44px; --fx-h-btn-sm:36px; --fx-h-btn-xs:28px;
+  --fx-line:rgba(255,255,255,.07);
+  --fx-line-strong:rgba(212,255,0,.16);
+  --fx-surface-1:rgba(255,255,255,.03);
+  --fx-surface-2:rgba(255,255,255,.055);
+  --fx-ink:#f0f0f0; --fx-ink-2:#a0a0a0; --fx-ink-3:#6a6a6a;
+  --fx-accent:#d4ff00;
+  --fx-ease:cubic-bezier(.22,1,.36,1);
+  --fx-dur-1:120ms; --fx-dur-2:200ms; --fx-dur-3:280ms;
+  --fx-focus:0 0 0 2px rgba(212,255,0,.55),0 0 0 4px rgba(212,255,0,.14);
+}
+
+/* Universal focus ring */
+button:focus-visible,[role=button]:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{
+  outline:none;box-shadow:var(--fx-focus)
+}
+button:focus:not(:focus-visible){outline:none;box-shadow:none}
+
+/* Press feedback consistente */
+button{will-change:transform}
+button:active:not(:disabled):not(.no-press){transform:scale(.965)}
+.dp-lr:active,#dp-home:active,.pm-drag-handle:active,#lightbox .lb-nav:active,#lightbox .lb-close:active{transform:none}
+.rc-btn:active{transform:scale(.94)}
+.dp-lr:active,#dp-home:active{transform:scale(.94)!important;transition:transform .08s ease}
+
+/* Panel headers unificados */
+.ph, .media-ph, .nh, .save-hd, .priv-hdr{padding-block:14px 12px}
+.ph-title, .media-ph-title, .nh-title, .save-title, .enc-title, .auth-title{
+  font-size:10.5px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--neon-green);text-shadow:none
+}
+.ph, .media-ph, .nh, .dtabs, .ptabs, .media-cats, .priv-hdr{border-color:var(--fx-line)!important}
+
+/* Close buttons unificados */
+.pclose, .drawer-close, .pick-close, .pm-close-btn, .dm-close-btn{
+  width:36px!important;height:36px!important;border-radius:var(--fx-r-pill)!important;
+  background:rgba(255,255,255,.04)!important;
+  border:1px solid var(--fx-line)!important;
+  color:var(--fx-ink-2)!important;
+  display:grid!important;place-items:center!important;font-size:14px!important;
+  transition:background var(--fx-dur-2) var(--fx-ease),border-color var(--fx-dur-2) var(--fx-ease),color var(--fx-dur-2) var(--fx-ease),transform var(--fx-dur-1) var(--fx-ease)!important;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+}
+.pclose:hover, .drawer-close:hover, .pick-close:hover, .pm-close-btn:hover, .dm-close-btn:hover{
+  background:rgba(212,255,0,.08)!important;border-color:rgba(212,255,0,.38)!important;color:var(--neon-green)!important
+}
+.pclose:active, .drawer-close:active, .pick-close:active, .pm-close-btn:active, .dm-close-btn:active{transform:scale(.92)!important}
+
+/* Primary buttons */
+.btn-p, .btn-full, .btn-dim, .btn-g, .save-act, .sos-pbtn, .sr-confirm-btn, .rcard-badge, .nclear, .conn-item{
+  transition:background var(--fx-dur-2) var(--fx-ease),border-color var(--fx-dur-2) var(--fx-ease),color var(--fx-dur-2) var(--fx-ease),transform var(--fx-dur-1) var(--fx-ease),box-shadow var(--fx-dur-2) var(--fx-ease)!important
+}
+.btn-p{letter-spacing:.14em;min-height:46px;border-radius:12px}
+.btn-p:active{transform:translateY(1px) scale(.985)}
+.btn-full,.btn-dim{min-height:44px;border-radius:12px;letter-spacing:.13em}
+.btn-p[disabled],.btn-full[disabled],.btn-dim[disabled],button.disabled{opacity:.4;pointer-events:none;filter:saturate(.4)}
+
+/* Loading state helper */
+button.is-loading{position:relative;color:transparent!important;pointer-events:none}
+button.is-loading::after{content:'';position:absolute;inset:0;margin:auto;width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.18);border-top-color:var(--neon-green);animation:fx-spin .7s linear infinite}
+@keyframes fx-spin{to{transform:rotate(360deg)}}
+
+/* Right-column icon buttons */
+.rc-btn{border-radius:12px;transition:background var(--fx-dur-2) var(--fx-ease),border-color var(--fx-dur-2) var(--fx-ease),color var(--fx-dur-2) var(--fx-ease),transform var(--fx-dur-1) var(--fx-ease)!important}
+.rc-btn.active{box-shadow:inset 0 0 0 1px rgba(212,255,0,.28), 0 0 24px rgba(212,255,0,.08)}
+
+/* Chips y tags */
+.lchip, .ai-chip, .ctag, .sr-tag, .rcard-badge{border-radius:8px;letter-spacing:.11em;font-weight:800}
+
+/* Panels: bordes y radios homogéneos */
+#menu-panel,#notif-panel,#media-panel,#settings-drawer{border-radius:20px 20px 0 0}
+#menu-panel{border-radius:22px}
+#media-panel{border-left:1px solid var(--fx-line)}
+
+/* Cards uniformes */
+.bcard, .rcard, .conn-item, .qi, .pli, .ni, .save-hero, .rstop, .note-item{
+  border-color:var(--fx-line)!important;
+  transition:background var(--fx-dur-2) var(--fx-ease),border-color var(--fx-dur-2) var(--fx-ease),transform var(--fx-dur-1) var(--fx-ease),box-shadow var(--fx-dur-2) var(--fx-ease)!important
+}
+.bcard:hover{transform:none!important;box-shadow:0 0 0 1px rgba(212,255,0,.14),0 8px 24px rgba(0,0,0,.35)!important}
+.mthumb:hover{transform:scale(1.02)!important;box-shadow:0 0 0 1px rgba(212,255,0,.18)!important}
+.qi:hover,.conn-item:hover,.pli:hover,.ni:hover,.note-item:hover{transform:none!important}
+
+/* Inputs cohesivos */
+.cinput,.priv-input,.qinput,.field input,.field textarea,.ai-wrap textarea,.dm-input{
+  border-radius:12px;transition:border-color var(--fx-dur-2) var(--fx-ease),box-shadow var(--fx-dur-2) var(--fx-ease),background var(--fx-dur-2) var(--fx-ease)!important
+}
+.cinput:focus,.priv-input:focus,.qinput:focus,.field input:focus,.field textarea:focus,.ai-wrap textarea:focus,.dm-input:focus{
+  border-color:rgba(212,255,0,.45)!important;box-shadow:0 0 0 3px rgba(212,255,0,.1)!important
+}
+
+/* Search box refinado */
+.sbox{border-radius:14px;transition:border-color var(--fx-dur-2) var(--fx-ease),background var(--fx-dur-2) var(--fx-ease)!important}
+.sbox:focus-within{border-color:rgba(212,255,0,.35);background:rgba(9,9,9,.98)}
+
+/* Tabs con subrayado consistente */
+.dtab,.ptab{transition:color var(--fx-dur-2) var(--fx-ease),border-color var(--fx-dur-2) var(--fx-ease)!important}
+.dtab.active,.ptab.active{border-bottom-width:2px}
+
+/* Toast premium */
+#toast{border-radius:12px;letter-spacing:.06em;font-weight:800;padding:0 20px;min-height:42px}
+
+/* Confirm modal radius */
+.cfm-box{border-radius:18px}
+
+/* Media grid transition suave */
+.mthumb{transition:transform var(--fx-dur-2) var(--fx-ease),border-color var(--fx-dur-2) var(--fx-ease),box-shadow var(--fx-dur-2) var(--fx-ease)!important}
+
+/* Entrada suave para paneles */
+@keyframes fx-panel-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+#menu-panel.open,#notif-panel.open,#settings-drawer.open,#media-panel.open{animation:fx-panel-in var(--fx-dur-3) var(--fx-ease)}
+
+/* Selection color acorde */
+::selection{background:rgba(212,255,0,.28);color:#0a0a0a}
+
+/* Scrollbars discretos */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(212,255,0,.28)}
+
+/* Mobile-first refinements */
+@media (max-width:640px){
+  .btn-p,.btn-full,.btn-dim{min-height:46px;font-size:11px}
+  .rc-btn{width:42px;height:42px;border-radius:12px}
+  #right-col{gap:8px}
+  .sbox{height:48px}
+  .pclose,.drawer-close,.pick-close,.pm-close-btn,.dm-close-btn{width:38px!important;height:38px!important;font-size:15px!important}
+  #toast{min-height:44px;font-size:12px}
+  .loc-act,.mini-btn,.pli-del{min-width:40px;min-height:40px}
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.08ms!important}
+  #menu-panel.open,#notif-panel.open,#settings-drawer.open,#media-panel.open{animation:none}
+}
+
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 </head>
