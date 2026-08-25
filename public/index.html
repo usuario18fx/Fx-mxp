@@ -2145,6 +2145,55 @@ input::placeholder,textarea::placeholder{color:#6d6d72!important}
 #orbital .map-direction:active,#orbital #dp-home:active{background:rgba(120,120,128,.36)!important;color:#0a84ff!important}
 #orbital #dp-home span{color:#0a84ff}
 
+/* ═══════════════════════════════════════════════════════════════════════
+   3D ANALOG THUMBSTICK — replaces the orbital d-pad on the map.
+   Faithful to the provided design (green ring + metallic cap that
+   tilts in 3D toward the pressed direction), adapted to map size.
+   The four `.t` hit-zones keep the IDs the pan logic expects
+   (#dp-up/rt/lt/dn -> startHold) and the centre cap is #dp-home
+   (click -> recenter). CSS only; JS/HTML behaviour unchanged.
+   ═══════════════════════════════════════════════════════════════════════ */
+#orbital{display:block;width:auto;height:auto;gap:0;right:18px;bottom:calc(92px + var(--safe-bottom))}
+#orbital.hidden{opacity:1!important;transform:none!important;pointer-events:auto!important}
+#orbital .row{position:relative;width:188px;height:188px;display:flex;align-items:center;justify-content:center}
+#orbital .container{position:relative;width:188px;height:188px;display:flex;align-items:center;justify-content:center;z-index:1;pointer-events:none}
+#orbital .around{width:130px;height:130px;display:flex;align-items:center;justify-content:center;border-radius:50%;background-image:linear-gradient(0deg,#bcd758,#a1bd32);box-shadow:0 10px 24px rgba(0,0,0,.45)}
+#orbital .handle{width:100px;height:100px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#c5d1da;box-shadow:0 0 8px rgba(0,0,0,.5),0 8px 8px rgba(0,0,0,.2),inset 0 0 14px rgba(0,0,0,.85),inset 0 0 20px rgba(0,0,0,.75),inset 0 0 40px rgba(0,0,0,.2);perspective:300px}
+#orbital .button-wrapper{width:66px;height:66px;display:flex;align-items:center;justify-content:center;border-radius:50%;background-image:linear-gradient(0deg,#869c88,#eff1f1);box-shadow:0 7px 11px rgba(0,0,0,.5),0 15px 7px -2px rgba(0,0,0,.2),0 26px 7px rgba(0,0,0,.4),0 -10px 8px rgba(255,255,255,.5),inset 0 3px 3px rgba(255,255,255,.6),inset 0 -3px 3px rgba(89,91,92,.6);transition:transform .18s ease-out,box-shadow .18s ease-out}
+#orbital .inside{position:relative;width:54px;height:54px;border-radius:50%;background-image:linear-gradient(180deg,#adb9bf,#d4dbdd);box-shadow:inset 0 3px 6px rgba(152,160,163,.4),inset 0 -3px 6px rgba(238,244,246,.4)}
+#orbital .dot{position:absolute;transform:translate(-50%,-50%);width:6px;height:6px;border-radius:50%;background:#e7ecef;box-shadow:0 2px 2px rgba(0,0,0,.3),inset 0 -2px 2px rgba(0,0,0,.2)}
+#orbital .dot:nth-child(1){left:50%;top:12%}
+#orbital .dot:nth-child(2){left:88%;top:50%}
+#orbital .dot:nth-child(3){left:50%;top:88%}
+#orbital .dot:nth-child(4){left:12%;top:50%}
+#orbital .container .icon{position:absolute;transform:translate(-50%,-50%);width:22px;height:22px;fill:#b4b9bd;filter:drop-shadow(1px 1px 1px #f4f4f4)}
+#orbital .container .icon:nth-child(2){top:7%;left:50%}
+#orbital .container .icon:nth-child(3){top:50%;left:93%}
+#orbital .container .icon:nth-child(4){top:93%;left:50%}
+#orbital .container .icon:nth-child(5){top:50%;left:7%}
+/* directional hit-zones (above the visuals, transparent) */
+#orbital .touch{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(45deg);display:flex;flex-wrap:wrap;width:188px;height:188px;z-index:2}
+#orbital .touch .t{width:94px;height:94px;cursor:pointer;background:transparent}
+#orbital #dp-up,#orbital #dp-rt,#orbital #dp-lt,#orbital #dp-dn{background:transparent;border:0}
+#orbital #dp-up::before,#orbital #dp-dn::before,#orbital #dp-lt::before,#orbital #dp-rt::before{content:none!important}
+/* centre recenter button (on top of the quadrants) */
+#orbital #dp-home{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;background:transparent;border:0;cursor:pointer;z-index:3;padding:0;margin:0}
+#orbital #dp-home::before{content:none!important}
+#orbital #dp-home span{display:none}
+/* 3D tilt toward the active direction (hover or press) */
+#orbital .row:has(.t1:hover) .button-wrapper,#orbital .row:has(.t1:active) .button-wrapper{transform-style:preserve-3d;transform:translate(0,-5px) rotateX(8deg);box-shadow:0 5px 11px rgba(0,0,0,.5),0 12px 7px -5px rgba(0,0,0,.3),0 20px 7px rgba(0,0,0,.4),0 -6px 8px rgba(255,255,255,.5),inset 0 3px 3px rgba(255,255,255,.6),inset 0 -3px 3px rgba(89,91,92,.6)}
+#orbital .row:has(.t2:hover) .button-wrapper,#orbital .row:has(.t2:active) .button-wrapper{transform-style:preserve-3d;transform:translate(5px,0) rotateY(8deg);box-shadow:2px 7px 11px rgba(0,0,0,.4),2px 15px 7px -2px rgba(0,0,0,.2),2px 24px 7px rgba(0,0,0,.3),-6px -12px 8px rgba(255,255,255,.5),inset 0 3px 3px rgba(255,255,255,.6),inset 0 -3px 3px rgba(89,91,92,.6)}
+#orbital .row:has(.t3:hover) .button-wrapper,#orbital .row:has(.t3:active) .button-wrapper{transform-style:preserve-3d;transform:translate(-5px,0) rotateY(-8deg);box-shadow:-2px 7px 11px rgba(0,0,0,.4),-2px 15px 7px -2px rgba(0,0,0,.2),-2px 24px 7px rgba(0,0,0,.3),6px -12px 8px rgba(255,255,255,.5),inset 0 3px 3px rgba(255,255,255,.6),inset 0 -3px 3px rgba(89,91,92,.6)}
+#orbital .row:has(.t4:hover) .button-wrapper,#orbital .row:has(.t4:active) .button-wrapper{transform-style:preserve-3d;transform:translate(0,5px) rotateX(-8deg);box-shadow:0 4px 11px rgba(0,0,0,.6),0 15px 7px -2px rgba(0,0,0,.3),0 28px 7px rgba(0,0,0,.4),0 -12px 8px rgba(255,255,255,.65),inset 0 3px 3px rgba(255,255,255,.6),inset 0 -3px 3px rgba(89,91,92,.6)}
+/* light up the matching chevron */
+#orbital .row:has(.t1:hover) .container .icon:nth-child(2),#orbital .row:has(.t1:active) .container .icon:nth-child(2),
+#orbital .row:has(.t2:hover) .container .icon:nth-child(3),#orbital .row:has(.t2:active) .container .icon:nth-child(3),
+#orbital .row:has(.t3:hover) .container .icon:nth-child(5),#orbital .row:has(.t3:active) .container .icon:nth-child(5),
+#orbital .row:has(.t4:hover) .container .icon:nth-child(4),#orbital .row:has(.t4:active) .container .icon:nth-child(4){fill:#e3a560;filter:brightness(.9) drop-shadow(0 0 2px #e3a15b) drop-shadow(0 0 1px #fff)}
+/* keep legacy orbital buttons hidden (still wired in JS) */
+#orbital .orb-ab,#orbital .orb-extra{display:none!important}
+@media(max-width:760px){#orbital{right:12px;bottom:calc(90px + var(--safe-bottom));transform:scale(.9);transform-origin:bottom right}}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 </head>
@@ -2200,20 +2249,23 @@ input::placeholder,textarea::placeholder{color:#6d6d72!important}
 <button class="brand-pill-bl" id="btn-brand"><div class="brand-dot"></div><span>UserFx</span></button>
 
 <div id="orbital" aria-label="Navegación del mapa">
-  <div class="dpad" role="group" aria-label="Mover el mapa">
-    <button class="dp-ud map-direction" id="dp-up" aria-label="Mover mapa hacia arriba" title="Arriba">
+  <div class="thumbstick row" role="group" aria-label="Mover el mapa">
+    <div class="container">
+      <div class="around"><div class="handle"><div class="button-wrapper"><div class="inside">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      </div></div></div></div>
       <svg class="icon" viewBox="0 0 1024 1024" aria-hidden="true"><path d="M512 330.666667c14.933333 0 29.866667 4.266667 40.533333 14.933333l277.33333399 234.666667c27.733333 23.466667 29.866667 64 8.53333301 89.6-23.466667 27.733333-64 29.866667-89.6 8.53333299L512 477.866667l-236.8 200.53333299c-27.733333 23.466667-68.266667 19.19999999-89.6-8.53333299-23.466667-27.733333-19.19999999-68.266667 8.53333301-89.6l277.33333399-234.666667c10.666667-10.666667 25.6-14.933333 40.533333-14.933333z"/></svg>
-    </button>
-    <button class="dp-lr map-direction" id="dp-lt" aria-label="Mover mapa hacia la izquierda" title="Izquierda">
-      <svg class="icon" viewBox="0 0 200 200" aria-hidden="true"><path d="M64.5833 100C64.5833 97.0833 65.4167 94.1667 67.5 92.0833L113.333 37.9167C117.917 32.5 125.833 32.0833 130.833 36.25C136.25 40.8333 136.667 48.75 132.5 53.75L93.3333 100L132.5 146.25C137.083 151.667 136.25 159.583 130.833 163.75C125.417 168.333 117.5 167.5 113.333 162.083L67.5 107.917C65.4167 105.833 64.5833 102.917 64.5833 100Z"/></svg>
-    </button>
-    <button id="dp-home" aria-label="Centrar en mi ubicación" title="Mi ubicación"><span aria-hidden="true">◎</span></button>
-    <button class="dp-lr map-direction" id="dp-rt" aria-label="Mover mapa hacia la derecha" title="Derecha">
       <svg class="icon" viewBox="0 0 200 200" aria-hidden="true"><path d="M135.417 100C135.417 102.917 134.583 105.833 132.5 107.917L86.6667 162.083C82.0833 167.5 74.1667 167.917 69.1667 163.75C63.75 159.167 63.3333 151.25 67.5 146.25L106.667 100L67.5 53.75C62.9167 48.3333 63.75 40.4167 69.1667 36.25C74.5833 31.6667 82.5 32.5 86.6667 37.9167L132.5 92.0833C134.583 94.1667 135.417 97.0833 135.417 100Z"/></svg>
-    </button>
-    <button class="dp-ud map-direction" id="dp-dn" aria-label="Mover mapa hacia abajo" title="Abajo">
       <svg class="icon" viewBox="0 0 200 200" aria-hidden="true"><path d="M100 135.417C97.0833 135.417 94.1667 134.583 92.0833 132.5L37.9167 86.6667C32.5 82.0833 32.0833 74.1667 36.25 69.1667C40.8333 63.75 48.75 63.3333 53.75 67.5L100 106.667L146.25 67.5C151.667 62.9167 159.583 63.75 163.75 69.1667C168.333 74.5833 167.5 82.5 162.083 86.6667L107.917 132.5C105.833 134.583 102.917 135.417 100 135.417Z"/></svg>
-    </button>
+      <svg class="icon" viewBox="0 0 200 200" aria-hidden="true"><path d="M64.5833 100C64.5833 97.0833 65.4167 94.1667 67.5 92.0833L113.333 37.9167C117.917 32.5 125.833 32.0833 130.833 36.25C136.25 40.8333 136.667 48.75 132.5 53.75L93.3333 100L132.5 146.25C137.083 151.667 136.25 159.583 130.833 163.75C125.417 168.333 117.5 167.5 113.333 162.083L67.5 107.917C65.4167 105.833 64.5833 102.917 64.5833 100Z"/></svg>
+    </div>
+    <div class="touch">
+      <div class="t t1" id="dp-up" tabindex="0" role="button" aria-label="Mover mapa hacia arriba" title="Arriba"></div>
+      <div class="t t2" id="dp-rt" tabindex="0" role="button" aria-label="Mover mapa hacia la derecha" title="Derecha"></div>
+      <div class="t t3" id="dp-lt" tabindex="0" role="button" aria-label="Mover mapa hacia la izquierda" title="Izquierda"></div>
+      <div class="t t4" id="dp-dn" tabindex="0" role="button" aria-label="Mover mapa hacia abajo" title="Abajo"></div>
+    </div>
+    <button id="dp-home" aria-label="Centrar en mi ubicación" title="Mi ubicación"></button>
   </div>
   <div class="orb-ab" aria-hidden="true">
     <button class="orb-ab-btn on" id="ctrl-a" data-mode="zoom" tabindex="-1">A</button>
