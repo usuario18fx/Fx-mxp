@@ -1541,6 +1541,42 @@ body .jewel-modal :is(input:not([type=file]),textarea,select):focus{border-color
   body #pick-modal.jewel-modal,body #route-modal.jewel-modal,body #link-modal.jewel-modal{align-items:flex-end!important;padding:0!important}
 }
 
+
+/* Directional map controller supplied for the map surface. */
+#orbital{width:116px;filter:drop-shadow(0 14px 28px rgba(0,0,0,.34))}
+#orbital .dpad{
+  width:116px;height:116px;padding:6px;display:grid!important;
+  grid-template-columns:repeat(3,32px);grid-template-rows:repeat(3,32px);
+  grid-template-areas:". up ." "left home right" ". down .";
+  place-content:center;gap:2px;border:1px solid var(--fx-line);border-radius:30px;
+  background:rgba(9,18,16,.88);box-shadow:inset 0 1px 0 rgba(255,255,255,.055),var(--fx-shadow-soft);
+  backdrop-filter:blur(22px) saturate(125%);-webkit-backdrop-filter:blur(22px) saturate(125%);
+}
+#orbital .map-direction,#orbital #dp-home{
+  width:32px!important;height:32px!important;min-width:32px;border:0!important;border-radius:11px!important;
+  display:grid!important;place-items:center!important;padding:0!important;margin:0!important;
+  color:var(--text-secondary)!important;background:transparent!important;box-shadow:none!important;
+  transition:color var(--fx-dur-1),background var(--fx-dur-1),transform var(--fx-dur-1)!important;
+}
+#orbital #dp-up{grid-area:up}
+#orbital #dp-lt{grid-area:left}
+#orbital #dp-home{grid-area:home;font-size:19px!important}
+#orbital #dp-rt{grid-area:right}
+#orbital #dp-dn{grid-area:down}
+#orbital .map-direction::before,#orbital #dp-home::before{content:none!important;display:none!important}
+#orbital .map-direction .icon{display:block;width:17px;height:17px;fill:currentColor;pointer-events:none}
+#orbital #dp-home span{display:block;font-size:19px;line-height:1;color:var(--fx-accent)}
+#orbital .map-direction:hover,#orbital #dp-home:hover{
+  color:var(--text)!important;background:rgba(255,255,255,.075)!important;transform:none!important;
+}
+#orbital .map-direction:active,#orbital #dp-home:active{
+  color:var(--fx-accent)!important;background:rgba(117,214,177,.12)!important;transform:scale(.9)!important;
+}
+#orbital .map-direction:focus-visible,#orbital #dp-home:focus-visible{box-shadow:var(--fx-focus)!important}
+@media(max-width:760px){
+  #orbital{right:10px;bottom:calc(88px + var(--safe-bottom));transform:scale(.9);transform-origin:bottom right}
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 </head>
@@ -1595,21 +1631,29 @@ body .jewel-modal :is(input:not([type=file]),textarea,select):focus{border-color
 
 <button class="brand-pill-bl" id="btn-brand"><div class="brand-dot"></div><span>UserFx</span></button>
 
-<div id="orbital" aria-label="Controles del mapa">
-  <div class="dpad">
-    <button class="dp-ud" id="dp-up" aria-label="Acercar mapa">+</button>
-    <button class="dp-lr" id="dp-lt" aria-label="Girar a la izquierda">◀</button>
-    <button id="dp-home" aria-label="Centrar en mi ubicación">◎</button>
-    <button class="dp-lr" id="dp-rt" aria-label="Girar a la derecha">▶</button>
-    <button class="dp-ud" id="dp-dn" aria-label="Alejar mapa">−</button>
+<div id="orbital" aria-label="Navegación del mapa">
+  <div class="dpad" role="group" aria-label="Mover el mapa">
+    <button class="dp-ud map-direction" id="dp-up" aria-label="Mover mapa hacia arriba" title="Arriba">
+      <svg class="icon" viewBox="0 0 1024 1024" aria-hidden="true"><path d="M512 330.666667c14.933333 0 29.866667 4.266667 40.533333 14.933333l277.33333399 234.666667c27.733333 23.466667 29.866667 64 8.53333301 89.6-23.466667 27.733333-64 29.866667-89.6 8.53333299L512 477.866667l-236.8 200.53333299c-27.733333 23.466667-68.266667 19.19999999-89.6-8.53333299-23.466667-27.733333-19.19999999-68.266667 8.53333301-89.6l277.33333399-234.666667c10.666667-10.666667 25.6-14.933333 40.533333-14.933333z"/></svg>
+    </button>
+    <button class="dp-lr map-direction" id="dp-lt" aria-label="Mover mapa hacia la izquierda" title="Izquierda">
+      <svg class="icon" viewBox="0 0 200 200" aria-hidden="true"><path d="M64.5833 100C64.5833 97.0833 65.4167 94.1667 67.5 92.0833L113.333 37.9167C117.917 32.5 125.833 32.0833 130.833 36.25C136.25 40.8333 136.667 48.75 132.5 53.75L93.3333 100L132.5 146.25C137.083 151.667 136.25 159.583 130.833 163.75C125.417 168.333 117.5 167.5 113.333 162.083L67.5 107.917C65.4167 105.833 64.5833 102.917 64.5833 100Z"/></svg>
+    </button>
+    <button id="dp-home" aria-label="Centrar en mi ubicación" title="Mi ubicación"><span aria-hidden="true">◎</span></button>
+    <button class="dp-lr map-direction" id="dp-rt" aria-label="Mover mapa hacia la derecha" title="Derecha">
+      <svg class="icon" viewBox="0 0 200 200" aria-hidden="true"><path d="M135.417 100C135.417 102.917 134.583 105.833 132.5 107.917L86.6667 162.083C82.0833 167.5 74.1667 167.917 69.1667 163.75C63.75 159.167 63.3333 151.25 67.5 146.25L106.667 100L67.5 53.75C62.9167 48.3333 63.75 40.4167 69.1667 36.25C74.5833 31.6667 82.5 32.5 86.6667 37.9167L132.5 92.0833C134.583 94.1667 135.417 97.0833 135.417 100Z"/></svg>
+    </button>
+    <button class="dp-ud map-direction" id="dp-dn" aria-label="Mover mapa hacia abajo" title="Abajo">
+      <svg class="icon" viewBox="0 0 200 200" aria-hidden="true"><path d="M100 135.417C97.0833 135.417 94.1667 134.583 92.0833 132.5L37.9167 86.6667C32.5 82.0833 32.0833 74.1667 36.25 69.1667C40.8333 63.75 48.75 63.3333 53.75 67.5L100 106.667L146.25 67.5C151.667 62.9167 159.583 63.75 163.75 69.1667C168.333 74.5833 167.5 82.5 162.083 86.6667L107.917 132.5C105.833 134.583 102.917 135.417 100 135.417Z"/></svg>
+    </button>
   </div>
-  <div class="orb-ab">
-    <button class="orb-ab-btn on" id="ctrl-a" data-mode="zoom" title="Zoom">A</button>
-    <button class="orb-ab-btn" id="ctrl-b" data-mode="tilt" title="Inclinación">B</button>
+  <div class="orb-ab" aria-hidden="true">
+    <button class="orb-ab-btn on" id="ctrl-a" data-mode="zoom" tabindex="-1">A</button>
+    <button class="orb-ab-btn" id="ctrl-b" data-mode="tilt" tabindex="-1">B</button>
   </div>
-  <div class="orb-extra">
-    <button id="sos-btn">SOS</button>
-    <button id="settings-btn">Lugares</button>
+  <div class="orb-extra" aria-hidden="true">
+    <button id="sos-btn" tabindex="-1">SOS</button>
+    <button id="settings-btn" tabindex="-1">Lugares</button>
   </div>
 </div>
 
@@ -2528,16 +2572,17 @@ function saveAll() {
 // ─── D-PAD CONTROLS ────────────────────────────────────────────
 function dpadAction(dir) {
   vibra();
-  const ease = opts => map.easeTo({ ...opts, duration: 220, essential: true });
-  if (dir === 'up') {
-    ctrlMode === 'zoom' ? ease({ zoom: Math.min(18, map.getZoom() + .35) }) : ease({ pitch: Math.min(80, map.getPitch() + 5) });
-  } else if (dir === 'dn') {
-    ctrlMode === 'zoom' ? ease({ zoom: Math.max(10, map.getZoom() - .35) }) : ease({ pitch: Math.max(0, map.getPitch() - 5) });
-  } else if (dir === 'lt') {
-    ease({ bearing: map.getBearing() - 12 });
-  } else if (dir === 'rt') {
-    ease({ bearing: map.getBearing() + 12 });
-}}
+  const offset = {
+    up: [0, -96],
+    rt: [96, 0],
+    dn: [0, 96],
+    lt: [-96, 0]
+  }[dir];
+  if (!offset) return;
+  const center = map.project(map.getCenter());
+  const destination = map.unproject([center.x + offset[0], center.y + offset[1]]);
+  map.easeTo({ center: [destination.lng, destination.lat], duration: 190, essential: true });
+}
 function startHold(dir) {
   dpadAction(dir);
   const iv = setInterval(() => dpadAction(dir), 180);
@@ -4877,6 +4922,9 @@ function bindAll() {
   [['dp-up','up'],['dp-dn','dn'],['dp-lt','lt'],['dp-rt','rt']].forEach(([id, dir]) => {
     $(id).addEventListener('mousedown', () => startHold(dir));
     $(id).addEventListener('touchstart', event => { event.preventDefault(); startHold(dir); }, { passive: false });
+    $(id).addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); dpadAction(dir); }
+    });
   });
   $('ctrl-a').addEventListener('click', () => setCtrlMode('zoom'));
   $('ctrl-b').addEventListener('click', () => setCtrlMode('tilt'));
