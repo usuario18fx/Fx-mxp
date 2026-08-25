@@ -2931,7 +2931,7 @@ function closePhotoModal() {
 }
 
 // ─── PHOTO VIEWER (LIGHTBOX) ────────────────────────────────
-const lbState = { images: [], index: 0, open: false, touchStartX: 0, touchStartY: 0, touchActive: false, lastFocus: null, switchTimer: null };
+const lbState = { images: [], index: 0, open: false, openedAt: 0, touchStartX: 0, touchStartY: 0, touchActive: false, lastFocus: null, switchTimer: null };
 function openLightbox(images, index = 0) {
   const list = (Array.isArray(images) ? images : [])
     .map(x => (typeof x === 'string' ? { url: x } : x))
@@ -2948,6 +2948,7 @@ function openLightbox(images, index = 0) {
   box.style.display = 'flex';
   requestAnimationFrame(() => { box.classList.add('open'); });
   lbState.open = true;
+  lbState.openedAt = Date.now();
   lbRenderCurrent();
   setTimeout(() => { $('lightbox-close')?.focus({ preventScroll: true }); }, 60);
 }
@@ -3016,8 +3017,9 @@ function initLightbox() {
   $('lightbox-close').addEventListener('click', (e) => { e.stopPropagation(); closeLightbox(); });
   $('lightbox-prev').addEventListener('click', (e) => { e.stopPropagation(); lbPrev(); });
   $('lightbox-next').addEventListener('click', (e) => { e.stopPropagation(); lbNext(); });
-  // Click outside image closes
+  // Click outside image closes (guard against the opening click bubbling in)
   box.addEventListener('click', (e) => {
+    if (Date.now() - lbState.openedAt < 300) return;
     if (e.target.closest('.lb-img-wrap') || e.target.closest('.lb-nav') || e.target.closest('.lb-close') || e.target.closest('.lb-counter')) return;
     closeLightbox();
   });
@@ -3049,6 +3051,13 @@ function initLightbox() {
     }
   }, { passive: true });
 }
+// Auto-init lightbox independientemente del bootstrap principal
+(function bootLightbox(){
+  const run = () => { try { if (!window.__lbInit) { window.__lbInit = true; initLightbox(); } } catch(e){ console.error('[lightbox init]', e); } };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run, { once: true });
+  else run();
+})();
+
 
 function initPhotoDragHandle() {
   const handle = $('pm-drag-handle');
@@ -3459,8 +3468,7 @@ function bindAll() {
   $('dm-ai-clear').addEventListener('click', () => { $('dm-ai-result').style.display = 'none'; $('dm-ai-empty').style.display = 'block'; });
   dmInitDrag();
 
-  // ─── LIGHTBOX / PHOTO VIEWER ───
-  initLightbox();
+  // ─── LIGHTBOX / PHOTO VIEWER (self-inits above, kept idempotent) ───
 
   // ─── AI ───
   $('btn-ai').addEventListener('click', runAI);
