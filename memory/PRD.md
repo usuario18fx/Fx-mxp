@@ -47,3 +47,29 @@ node scripts/validate-map.mjs
 python3 -m py_compile src/*.py
 git diff --check
 ```
+
+## Nova restyle (Agosto 2026)
+
+### Scope
+- New **Nova** design layer appended as the final CSS block in `public/index.html`. CSS only — no HTML markup or JavaScript is changed, so every flow, the offline-first persistence, the Supabase sync and the AES encryption keep working unchanged.
+- Quiet **violet-on-void** palette replaces the Atlas mint: accent `#8b80f7`, info cyan `#5cc8ff`, coral danger `#ff6b81`, near-black canvas `#090a12`, violet-tinted hairlines and glass surfaces.
+- Restyles every surface in scope: app header, search entry and results, the compact utility rail, the five-destination dock, the organizer menu (`#menu-panel`), the places drawer, the notifications panel, the UserFx warehouse, all composer/flow modals (save, encryption, SOS emergency, auth gate, note editor, pick, route editor, asset/link picker), the place detail panel, the thumbnail/note overflow menus, the toast and the mode popup. Primary buttons use a violet gradient; secondary buttons are quiet glass; modal cards gain a violet→cyan top accent line.
+
+### Explicitly preserved
+- **All existing logic** — no `<script>` edits.
+- **The compact modal** — `#confirm-modal`. Its design tokens are re-pinned to the previous Atlas values inside its scope so it renders exactly as before.
+- **The circular map joystick** — `#orbital` (`.dpad`, `.map-direction` arrows, `#dp-home`). Its tokens are re-pinned to the Atlas values inside `#orbital`, leaving its layout and appearance untouched.
+
+## iOS / HIG restyle (Agosto 2026)
+
+### Scope
+- New **iOS / HIG** layer appended as the final CSS block in `public/index.html`, sitting on top of Nova. Again **CSS only** — no HTML markup or JavaScript changes — so all flows, persistence, sync and encryption are untouched.
+- Moves the chrome from the Material/Android feel to a native **iOS (dark mode)** experience:
+  - **Bottom tab bar** — `#main-dock` becomes an edge-to-edge frosted tab bar (system-blue tint when selected, gray when not, hairline on top).
+  - **Segmented controls** — the menu/drawer/media tabs (`.ptab`, `.dtab`, `.msec`) render as iOS segmented controls; category filters become pill chips.
+  - **Grouped inset lists** — places, connections, notifications, vault rows and pickers render as flat `#1c1c1e` rows separated by `.5px` hairlines (Ajustes-style).
+  - **Sheets** — composer/flow modals become frosted cards with a centered grabber handle, rounded corners and no accent lines.
+  - **iOS palette** — pure-black canvas, `#1c1c1e`/`#2c2c2e` surfaces, system-blue `#0a84ff` tint, system red/green/orange for status, `.5px` separators.
+  - **Typography** — Inter (SF-equivalent) with `-apple-system` fallback for true native rendering on Apple devices.
+  - **Buttons & fields** — filled tinted primary, gray secondary, red destructive, rounded-rect inputs.
+- **Preserved**: the circular map joystick keeps its form/behaviour and adopts the system tint; the compact confirm modal stays compact and renders as an iOS alert. Validation counts (273 IDs / 469 refs / 202 functions) are identical to baseline, confirming no logic change.
