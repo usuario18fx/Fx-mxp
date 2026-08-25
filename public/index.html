@@ -310,10 +310,28 @@ button{cursor:pointer}
 .msec.active{background:rgba(212,255,0,.08);border-color:rgba(212,255,0,.14);color:var(--neon-green)}
 .media-section-pane{display:none;flex-direction:column;flex:1;min-height:0;overflow:hidden}
 .media-section-pane.active{display:flex}
-.mthumb-actions{position:absolute;top:4px;left:4px;display:flex;gap:3px;z-index:2}
-.mact-btn{width:18px;height:18px;border-radius:5px;background:rgba(0,0,0,.65);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text-muted);cursor:pointer;transition:all .2s}
+.mthumb-actions{position:absolute;top:6px;left:6px;display:flex;gap:3px;z-index:2}
+.mact-btn{width:24px;height:24px;border-radius:8px;background:rgba(0,0,0,.72);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:12px;color:rgba(255,255,255,.82);cursor:pointer;transition:background var(--fx-dur-2,.2s) var(--fx-ease,ease),border-color var(--fx-dur-2,.2s) var(--fx-ease,ease),color var(--fx-dur-2,.2s) var(--fx-ease,ease),transform var(--fx-dur-1,.12s) var(--fx-ease,ease);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.mact-btn.overflow{letter-spacing:.06em;font-weight:900;line-height:1;padding-bottom:2px}
+.mact-btn.overflow:active{transform:scale(.9)}
 .mact-btn.on{color:var(--neon-green);border-color:rgba(212,255,0,.4)}
-.mact-btn.on.vip{color:#ffd700;border-color:rgba(255,200,0,.4)}
+.mact-btn.on.vip{color:#ffd700;border-color:rgba(255,200,0,.45)}
+/* Overflow menu popover */
+.thumb-menu{position:absolute;top:34px;left:6px;min-width:150px;padding:6px;border-radius:12px;background:rgba(9,9,9,.98);border:1px solid rgba(255,255,255,.09);box-shadow:0 12px 32px rgba(0,0,0,.55),0 0 0 1px rgba(212,255,0,.06);z-index:20;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);display:flex;flex-direction:column;gap:2px;animation:thumb-menu-in .2s var(--fx-ease,cubic-bezier(.22,1,.36,1))}
+@keyframes thumb-menu-in{from{opacity:0;transform:translateY(-4px) scale(.97)}to{opacity:1;transform:none}}
+.thumb-menu button{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;border-radius:8px;color:var(--text-primary);font-size:11.5px;font-weight:600;letter-spacing:.02em;cursor:pointer;transition:background var(--fx-dur-2,.2s) ease,color var(--fx-dur-2,.2s) ease}
+.thumb-menu button:hover,.thumb-menu button:focus-visible{background:rgba(212,255,0,.08);color:var(--neon-green);outline:none}
+.thumb-menu button:active{transform:scale(.98)}
+.thumb-menu button.danger{color:rgba(255,120,120,.9)}
+.thumb-menu button.danger:hover{background:rgba(255,59,59,.1);color:#ff5b5b}
+.thumb-menu .ico{width:16px;text-align:center;font-size:13px;flex:0 0 auto}
+.thumb-menu .lbl{flex:1;min-width:0;text-align:left}
+.thumb-menu button.active .ico{color:var(--neon-green)}
+.thumb-menu button.active.vip .ico{color:#ffd700}
+.thumb-menu button.active::after{content:'●';color:var(--neon-green);font-size:8px;margin-left:auto}
+.thumb-menu button.active.vip::after{color:#ffd700}
+/* Small VIP indicator dot when VIP is set (replaces the old always-on button) */
+.mthumb-vipdot,.note-item .note-vipdot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:#ffd700;box-shadow:0 0 8px rgba(255,215,0,.55),0 0 0 2px rgba(0,0,0,.35);z-index:2}
 .mthumb.hidden-item{opacity:.35}
 .mthumb-flagdot{position:absolute;bottom:20px;right:4px;width:8px;height:8px;border-radius:50%;border:1px solid rgba(0,0,0,.5);z-index:2}
 .flag-pop{position:absolute;top:24px;left:4px;background:rgba(9,9,9,.98);border:1px solid rgba(212,255,0,.15);border-radius:8px;padding:5px;display:flex;flex-wrap:wrap;gap:4px;z-index:5;box-shadow:0 4px 14px rgba(0,0,0,.5);width:140px}
@@ -2140,6 +2158,39 @@ function wireFlagPopover(pop, onPreset, onCustom) {
   setTimeout(() => document.addEventListener('click', function onc(ev) { if (!pop.contains(ev.target)) { pop.remove(); document.removeEventListener('click', onc); } }), 0);
 }
 let mediaFilter = 'all';
+// ─── Overflow menu para thumbnails / notas ────────────────────
+function openThumbMenu(anchor, actions, opts = {}) {
+  // Cerrar cualquier menú abierto y flag-pop previo
+  document.querySelectorAll('.thumb-menu').forEach(m => m.remove());
+  document.querySelectorAll('.flag-pop').forEach(p => p.remove());
+  const menu = document.createElement('div');
+  menu.className = 'thumb-menu';
+  menu.setAttribute('role', 'menu');
+  if (opts.anchor === 'top-right') { menu.style.left = 'auto'; menu.style.right = '6px'; }
+  menu.innerHTML = actions.map((a, i) => {
+    const cls = [a.active ? 'active' : '', a.cls || '', a.danger ? 'danger' : ''].filter(Boolean).join(' ');
+    return `<button type="button" role="menuitem" data-i="${i}" class="${cls}"><span class="ico">${a.icon}</span><span class="lbl">${a.label}</span></button>`;
+  }).join('');
+  anchor.style.position = getComputedStyle(anchor).position === 'static' ? 'relative' : getComputedStyle(anchor).position;
+  anchor.appendChild(menu);
+  // Focus first item
+  setTimeout(() => menu.querySelector('button')?.focus({ preventScroll: true }), 10);
+  const close = () => { menu.remove(); document.removeEventListener('click', onDoc, true); document.removeEventListener('keydown', onKey, true); };
+  const onDoc = (ev) => { if (!menu.contains(ev.target)) close(); };
+  const onKey = (ev) => { if (ev.key === 'Escape') { ev.stopPropagation(); close(); } };
+  // Diferir para no capturar el mismo click que lo abrió
+  setTimeout(() => { document.addEventListener('click', onDoc, true); document.addEventListener('keydown', onKey, true); }, 0);
+  menu.addEventListener('click', (ev) => {
+    const btn = ev.target.closest('button[data-i]');
+    if (!btn) return;
+    ev.stopPropagation();
+    const i = parseInt(btn.dataset.i);
+    close();
+    try { actions[i]?.onClick?.(); } catch (e) { console.error('[thumb-menu action]', e); }
+  });
+}
+
+
 function renderMediaGrid() {
   const el = $('media-grid');
   const notHidden = mediaStore.filter(m => !m.hidden);
@@ -2160,11 +2211,9 @@ function renderMediaGrid() {
     const hasFlag = !!(m.customFlag || m.classification);
     return `<div class="mthumb" data-idx="${i}">
       <div class="mthumb-actions">
-        <button class="mact-btn${m.vip ? ' on vip' : ''}" data-act="vip" title="Favorito">★</button>
-        <button class="mact-btn${hasFlag ? ' on' : ''}" data-act="flag" title="${m.customFlag ? m.customFlag.label : 'Bandera'}">◆</button>
-        <button class="mact-btn" data-act="hide" title="Ocultar">👁</button>
-        <button class="mact-btn" data-act="del" title="Eliminar">🗑</button>
+        <button class="mact-btn overflow" data-act="menu" title="Acciones" aria-label="Abrir menú de acciones">⋯</button>
       </div>
+      ${m.vip ? '<div class="mthumb-vipdot" title="Favorito"></div>' : ''}
       ${m.url ? `<img src="${esc(m.url)}" alt=""/>` : `<div class="mthumb-icon">📄</div>`}
       <div class="mthumb-lbl">${esc(m.name || 'archivo')}</div>
       <div class="mthumb-lock">🔒</div>
@@ -2174,43 +2223,34 @@ function renderMediaGrid() {
   el.querySelectorAll('.mthumb').forEach(t => {
     const idx = parseInt(t.dataset.idx);
     t.addEventListener('click', (e) => {
-      if (e.target.closest('.mthumb-actions') || e.target.closest('.flag-pop')) return;
+      if (e.target.closest('.mthumb-actions') || e.target.closest('.flag-pop') || e.target.closest('.thumb-menu')) return;
       const m = mediaStore[idx];
       if (!m?.url) return;
       const imgs = visibleIdx.map(vi => ({ url: mediaStore[vi].url, name: mediaStore[vi].name || '' })).filter(x => x.url);
       const start = imgs.findIndex(x => x.url === m.url);
       openLightbox(imgs, start < 0 ? 0 : start);
-} ) ;
-    t.querySelector('[data-act="vip"]').addEventListener('click', (e) => {
+    });
+    t.querySelector('[data-act="menu"]').addEventListener('click', (e) => {
       e.stopPropagation();
-      mediaStore[idx].vip = !mediaStore[idx].vip;
-      saveAll(); renderMediaGrid();
-} ) ;
-    t.querySelector('[data-act="hide"]').addEventListener('click', (e) => {
-      e.stopPropagation();
-      mediaStore[idx].hidden = true;
-      saveAll(); renderMediaGrid();
-      toast('👁 Archivo ocultado');
-} ) ;
-    t.querySelector('[data-act="del"]').addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (!confirm('¿Eliminar este archivo? Esta acción no se puede deshacer.')) return;
-      mediaStore.splice(idx, 1);
-      saveAll(); renderMediaGrid();
-      toast('🗑 Archivo eliminado');
-} ) ;
-    t.querySelector('[data-act="flag"]').addEventListener('click', (e) => {
-      e.stopPropagation();
-      document.querySelectorAll('.flag-pop').forEach(p => p.remove());
-      const cf = mediaStore[idx].customFlag;
-      const pop = buildFlagPopover(cf?.color, cf?.label);
-      t.appendChild(pop);
-      wireFlagPopover(pop,
-        (cls) => { mediaStore[idx].classification = cls; mediaStore[idx].customFlag = null; saveAll(); renderMediaGrid(); },
-        (color, label) => { mediaStore[idx].customFlag = { color, label }; mediaStore[idx].classification = null; saveAll(); renderMediaGrid(); }
-) ;
-} ) ;
-} ) ;
+      const m = mediaStore[idx];
+      const hasFlag = !!(m.customFlag || m.classification);
+      openThumbMenu(t, [
+        { icon: '★', label: 'Favorito', active: !!m.vip, cls: 'vip', onClick: () => { mediaStore[idx].vip = !mediaStore[idx].vip; saveAll(); renderMediaGrid(); } },
+        { icon: '◆', label: 'Bandera', active: hasFlag, onClick: () => {
+            document.querySelectorAll('.flag-pop').forEach(p => p.remove());
+            const cf = mediaStore[idx].customFlag;
+            const pop = buildFlagPopover(cf?.color, cf?.label);
+            t.appendChild(pop);
+            wireFlagPopover(pop,
+              (cls) => { mediaStore[idx].classification = cls; mediaStore[idx].customFlag = null; saveAll(); renderMediaGrid(); },
+              (color, label) => { mediaStore[idx].customFlag = { color, label }; mediaStore[idx].classification = null; saveAll(); renderMediaGrid(); }
+            );
+          } },
+        { icon: '👁', label: 'Ocultar', onClick: () => { mediaStore[idx].hidden = true; saveAll(); renderMediaGrid(); toast('👁 Archivo ocultado'); } },
+        { icon: '🗑', label: 'Eliminar', danger: true, onClick: () => { if (!confirm('¿Eliminar este archivo? Esta acción no se puede deshacer.')) return; mediaStore.splice(idx, 1); saveAll(); renderMediaGrid(); toast('🗑 Archivo eliminado'); } },
+      ]);
+    });
+  });
 }
 // ─── FX AUTH GATE ───────────────────────────────────────────────
 let fxUnlocked = false;
@@ -2286,54 +2326,48 @@ function renderNotesList() {
     const d = n.createdAt ? new Date(n.createdAt).toLocaleDateString() : '';
     return `<div class="note-item" data-idx="${i}">
       ${flagColor ? `<div class="note-flagdot" style="background:${flagColor}"></div>` : ''}
+      ${n.vip ? '<div class="note-vipdot" title="Favorito"></div>' : ''}
       <div class="note-title" data-act="open">${esc(n.title || 'Sin título')}</div>
       <div class="note-body-preview">${esc((n.body || '').slice(0, 80))}</div>
       <div class="note-date">${d}${n.customFlag ? ' · ' + esc(n.customFlag.label) : ''}</div>
       <div class="note-actions">
-        <button class="mact-btn${n.vip ? ' on vip' : ''}" data-act="vip" title="Favorito">★</button>
-        <button class="mact-btn${hasFlag ? ' on' : ''}" data-act="flag" title="${n.customFlag ? n.customFlag.label : 'Bandera'}">◆</button>
-        <button class="mact-btn" data-act="hide" title="Ocultar">👁</button>
-        <button class="mact-btn" data-act="del" title="Eliminar">🗑</button>
+        <button class="mact-btn overflow" data-act="menu" title="Acciones" aria-label="Abrir menú de acciones">⋯</button>
       </div>
     </div>`;
 } ) .join('') ;
   el.querySelectorAll('.note-item').forEach(card => {
     const idx = parseInt(card.dataset.idx);
     card.querySelector('[data-act="open"]').addEventListener('click', () => openNoteEditor(idx));
-    card.querySelector('[data-act="vip"]').addEventListener('click', (e) => {
+    card.querySelector('[data-act="menu"]').addEventListener('click', (e) => {
       e.stopPropagation();
-      notesStore[idx].vip = !notesStore[idx].vip;
-      saveAll(); renderNotesList();
-} ) ;
-    card.querySelector('[data-act="hide"]').addEventListener('click', (e) => {
-      e.stopPropagation();
-      notesStore[idx].hidden = true;
-      saveAll(); renderNotesList(); renderNotesFolder();
-      toast('👁 Nota ocultada');
-} ) ;
-    card.querySelector('[data-act="del"]').addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (!confirm('¿Eliminar esta nota? Esta acción no se puede deshacer.')) return;
-      const deletedId = notesStore[idx]?.id;
-      const [deletedNote] = notesStore.splice(idx, 1);
-      if (!saveAll()) { notesStore.splice(idx, 0, deletedNote); return; }
-      renderNotesList(); renderNotesFolder();
-      if (deletedId && !encKey && !placesLocked) deleteRow('notes', deletedId);
-      toast('🗑 Nota eliminada');
-} ) ;
-     card.querySelector('[data-act="flag"]').addEventListener('click', (e) => {
-      e.stopPropagation();
-      document.querySelectorAll('.flag-pop').forEach(p => p.remove());
-      const cf = notesStore[idx].customFlag;
-      const pop = buildFlagPopover(cf?.color, cf?.label);
-      pop.style.top = 'auto';
-      card.style.position = 'relative';
-      card.appendChild(pop);
-      wireFlagPopover(pop,
-        (cls) => { notesStore[idx].classification = cls; notesStore[idx].customFlag = null; saveAll(); renderNotesList(); },
-        (color, label) => { notesStore[idx].customFlag = { color, label }; notesStore[idx].classification = null; saveAll(); renderNotesList(); }
-) ;
-} ) ;
+      const n = notesStore[idx];
+      const hasFlag = !!(n.customFlag || n.classification);
+      openThumbMenu(card, [
+        { icon: '★', label: 'Favorito', active: !!n.vip, cls: 'vip', onClick: () => { notesStore[idx].vip = !notesStore[idx].vip; saveAll(); renderNotesList(); } },
+        { icon: '◆', label: 'Bandera', active: hasFlag, onClick: () => {
+            document.querySelectorAll('.flag-pop').forEach(p => p.remove());
+            const cf = notesStore[idx].customFlag;
+            const pop = buildFlagPopover(cf?.color, cf?.label);
+            pop.style.top = 'auto';
+            card.style.position = 'relative';
+            card.appendChild(pop);
+            wireFlagPopover(pop,
+              (cls) => { notesStore[idx].classification = cls; notesStore[idx].customFlag = null; saveAll(); renderNotesList(); },
+              (color, label) => { notesStore[idx].customFlag = { color, label }; notesStore[idx].classification = null; saveAll(); renderNotesList(); }
+            );
+          } },
+        { icon: '👁', label: 'Ocultar', onClick: () => { notesStore[idx].hidden = true; saveAll(); renderNotesList(); renderNotesFolder(); toast('👁 Nota ocultada'); } },
+        { icon: '🗑', label: 'Eliminar', danger: true, onClick: () => {
+            if (!confirm('¿Eliminar esta nota? Esta acción no se puede deshacer.')) return;
+            const deletedId = notesStore[idx]?.id;
+            const [deletedNote] = notesStore.splice(idx, 1);
+            if (!saveAll()) { notesStore.splice(idx, 0, deletedNote); return; }
+            renderNotesList(); renderNotesFolder();
+            if (deletedId && !encKey && !placesLocked) deleteRow('notes', deletedId);
+            toast('🗑 Nota eliminada');
+          } },
+      ], { anchor: 'top-right' });
+    });
 } ) ;
 }
 function openNoteEditor(idx = null) {

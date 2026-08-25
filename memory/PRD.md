@@ -1,63 +1,44 @@
 # FX-MXP — PRD
 
 ## Problem statement
-Upgrade the FX-MXP experience to feel like a coherent premium product:
-1) Full-screen premium Photo Modal on the existing `#lightbox` (no duplicate modal).
-2) Cross-cutting design-system refinement pass over buttons, panels, modals, controls and micro-interactions — without breaking existing functionality, routes, data, gallery, auth, API calls or backend logic.
+Iterative premium UI/UX upgrade of the existing FX-MXP experience while preserving all functionality (map, auth, encryption, gallery, save, notes, routes, API calls).
 
 ## Architecture
-- Static single-page HTML at `/app/public/index.html` (deployed via Vercel; `outputDirectory: public`).
-- Design system layered as an overlay CSS block at the end of `<style>` (tokens + refinement rules using existing class selectors). No HTML/JS restructuring; only additive CSS.
+- Static single-page HTML at `/app/public/index.html` (Vercel `outputDirectory: public`).
+- Design system layered as an overlay CSS block at the end of `<style>`; JS additions are targeted helpers, no restructuring.
 
 ## Implemented (Jan 2026)
-
 ### Photo Modal (upgraded #lightbox)
-- Full-viewport dark/glass overlay, `object-fit: contain`, aspect ratio preserved.
-- Desktop 92vw × 88vh · Mobile 96vw × 82vh.
-- Circular close btn top-right, pill counter `NN / NN` top-center, circular prev/next side buttons.
-- Click photo→open, click outside, ESC, ←/→ arrows, mobile swipe L/R.
-- `body.lb-locked` background scroll lock (restored on close).
-- Smooth open (scale 0.96→1 + fade ~240ms) + subtle switch fade.
-- Loading spinner + minimal error state.
-- Accessibility: role dialog, aria-modal, aria-labels, focus move + restore, focus ring.
-- Single-image mode auto-hides nav + counter.
-- Self-bootstrapping `initLightbox` runs independently of main app bootstrap.
-- Opening-click guard (300ms) so the click that opens can't close the modal by bubbling.
-- 3 trigger sites wired to `openLightbox(images, index)`:
-  1. `renderMediaGrid` (`.mthumb`)
-  2. `renderDmImages` (`.dm-image-item`)
-  3. `renderSaveMedia` (`.mitem`)
+- Prev/next, `NN / NN` counter, close, ESC, click-outside, mobile swipe.
+- Desktop 92vw × 88vh · Mobile 96vw × 82vh · `object-fit: contain`.
+- Scroll lock, focus move+restore, focus ring, aria labels, single-image mode hides nav+counter.
+- Self-bootstrapping (`initLightbox` in IIFE), 300ms open-guard to prevent self-close on bubbling click.
+- 3 wired triggers: `renderMediaGrid`, `renderDmImages`, `renderSaveMedia`.
 
 ### Design system refinement layer
-Tokens: radius (`--fx-r-sm/md/lg/pill`), button heights, spacing, ease `(.22,1,.36,1)`, durations (120/200/280ms), focus ring, surface & line colors.
+- Tokens (radius, heights, ease, durations, focus ring, surface/line colors).
+- Unified close buttons (36×36 pill), press feedback (scale .965), primary btns 46px h/12r/.14em.
+- Panel headers, dividers, cards, chips/tags, inputs, search box, tabs, toast normalized.
+- Panel entry animation, brand selection, discrete scrollbars.
+- Mobile ≤640px touch-target sizing + `prefers-reduced-motion` support.
 
-Applied consistency for:
-- **Buttons**: unified press feedback (scale .965), focus-visible ring, disabled/loading (`.is-loading` spinner), primary `.btn-p` at 46px h · 12px r · .14em letter-spacing.
-- **Close buttons**: unified `.pclose/.drawer-close/.pick-close/.pm-close-btn/.dm-close-btn` → 36×36 pill, neutral base, neon-green hover, press scale .92.
-- **Panel headers**: unified padding, uppercase title `.22em` tracking, neon-green.
-- **Dividers**: `rgba(255,255,255,.07)` consistent.
-- **Cards** (`bcard/rcard/conn-item/qi/pli/ni`): softer borders, no hover-jumps; `mthumb` scales gently.
-- **Chips/tags**: 8px radius, `.11em` tracking, 800 weight.
-- **Inputs**: 12px radius, neon-green focus (2px border + 3px halo).
-- **Search box**: focus-within tightens border, deepens background.
-- **Toast**: 12px r, 800 weight, 42px min-h.
-- **Panel entry animation**: subtle `translateY(8px)→0` fade for `menu/notif/settings/media`.
-- **Selection color**, **scrollbars** on-brand.
-- **Mobile ≤640px**: taller touch targets (46-48px), 40px min for loc-act/mini-btn/pli-del, larger close buttons.
-- **prefers-reduced-motion**: all transitions/animations dampened to .08ms.
+### Thumbnail Overflow Menu (Jan 2026)
+- 4 actions (VIP ★, Bandera ◆, Ocultar 👁, Eliminar 🗑) consolidated into a single `⋯` overflow button per thumbnail.
+- Applies to media grid (`.mthumb`) and notes list (`.note-item`).
+- Popover menu: 150px min-width, glass background, entry animation, keyboard/ESC/click-outside dismiss, active state indicators (VIP gold, others neon-green), danger styling for delete.
+- VIP indicator dot on the card corner when active (replaces always-on button state).
+- Reused existing `buildFlagPopover` / `wireFlagPopover` logic — no duplicate flag system.
+- Helper: `openThumbMenu(anchor, actions, opts)` — reusable for future cards.
 
 ## Files touched
 - `/app/public/index.html`
-  - CSS: new `#lightbox` premium styles (replaced old lightbox rules).
-  - CSS: new design-system refinement layer at end of `<style>`.
-  - HTML: replaced `#lightbox` markup with full premium viewer structure.
-  - JS: added `openLightbox / closeLightbox / lbNext / lbPrev / lbGo / lbRenderCurrent / initLightbox` + self-boot IIFE.
-  - JS: wired 3 gallery triggers to pass image collections.
-  - JS: ESC handler now calls `closeLightbox()` (restores scroll).
+  - CSS: `#lightbox` premium block, design-system layer, `.mact-btn/.thumb-menu/.mthumb-vipdot/.note-vipdot` refinement.
+  - HTML: `#lightbox` markup with viewer; `.mthumb-actions` and `.note-actions` reduced to single `⋯` button.
+  - JS: `openLightbox/closeLightbox/lbNext/lbPrev/lbGo/lbRenderCurrent/initLightbox` + self-boot IIFE; `openThumbMenu`; rewired media/notes handlers to use the menu.
 
 ## Backlog / Next
 - P1 Pinch-zoom and double-tap zoom in photo modal (mobile).
 - P2 Preload adjacent images for zero-flash navigation.
-- P2 Optional photo caption line under the image.
+- P2 Photo caption line under the image.
 - P2 One-tap download from viewer.
-- P2 Consolidate `mthumb-actions` (vip/flag/hide/del) into a single overflow menu to reduce visual noise per thumbnail.
+- P2 Extend `openThumbMenu` to other cards (`.pli`, `.bcard`, `.ni`) once product decides which actions to consolidate there.
