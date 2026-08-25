@@ -10,3 +10,8 @@ tags_data.json
 _check.js
 mis-cambios-web.patch
 push_error.txt
+*.env
+credentials.json
+*.pem
+*.key
+.credentials
