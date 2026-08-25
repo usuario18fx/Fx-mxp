@@ -1,44 +1,49 @@
-# FX-MXP — PRD
+# FX Map — Product brief
 
-## Problem statement
-Iterative premium UI/UX upgrade of the existing FX-MXP experience while preserving all functionality (map, auth, encryption, gallery, save, notes, routes, API calls).
+## Purpose
+FX Map is a private, offline-first map for recording meaningful or frequently visited places with context and evidence. A place can contain notes, hashtags, images, video, audio, documents, a frequency level, one of five colors, and one of two clear classifications: **Guardado** or **Etiqueta**.
 
 ## Architecture
-- Static single-page HTML at `/app/public/index.html` (Vercel `outputDirectory: public`).
-- Design system layered as an overlay CSS block at the end of `<style>`; JS additions are targeted helpers, no restructuring.
+- Static single-page application in `public/index.html` (Vercel `outputDirectory: public`).
+- Mapbox GL map, local-first persistence, optional Supabase account sync, optional full-state AES encryption.
+- No build step. `scripts/validate-map.mjs` checks JavaScript syntax, duplicate IDs, missing DOM references, duplicate functions, and inline handlers.
 
-## Implemented (Jan 2026)
-### Photo Modal (upgraded #lightbox)
-- Prev/next, `NN / NN` counter, close, ESC, click-outside, mobile swipe.
-- Desktop 92vw × 88vh · Mobile 96vw × 82vh · `object-fit: contain`.
-- Scroll lock, focus move+restore, focus ring, aria labels, single-image mode hides nav+counter.
-- Self-bootstrapping (`initLightbox` in IIFE), 300ms open-guard to prevent self-close on bubbling click.
-- 3 wired triggers: `renderMediaGrid`, `renderDmImages`, `renderSaveMedia`.
+## Atlas redesign (August 2026)
 
-### Design system refinement layer
-- Tokens (radius, heights, ease, durations, focus ring, surface/line colors).
-- Unified close buttons (36×36 pill), press feedback (scale .965), primary btns 46px h/12r/.14em.
-- Panel headers, dividers, cards, chips/tags, inputs, search box, tabs, toast normalized.
-- Panel entry animation, brand selection, discrete scrollbars.
-- Mobile ≤640px touch-target sizing + `prefers-reduced-motion` support.
+### Navigation and visual system
+- Replaced the mixed cyberpunk/HUD language with the cohesive **Atlas** system: quiet dark surfaces, mint primary accent, consistent spacing/radii, readable typography, and accessible focus states.
+- Added a persistent five-destination dock: **Mapa, Lugares, Rutas, UserFx, Emergencia**.
+- Reworked search, utility controls, drawers, menus, sheets, cards, empty states, buttons, forms, notifications, and all primary modals.
+- Desktop uses side panels; mobile uses touch-friendly bottom sheets.
 
-### Thumbnail Overflow Menu (Jan 2026)
-- 4 actions (VIP ★, Bandera ◆, Ocultar 👁, Eliminar 🗑) consolidated into a single `⋯` overflow button per thumbnail.
-- Applies to media grid (`.mthumb`) and notes list (`.note-item`).
-- Popover menu: 150px min-width, glass background, entry animation, keyboard/ESC/click-outside dismiss, active state indicators (VIP gold, others neon-green), danger styling for delete.
-- VIP indicator dot on the card corner when active (replaces always-on button state).
-- Reused existing `buildFlagPopover` / `wireFlagPopover` logic — no duplicate flag system.
-- Helper: `openThumbMenu(anchor, actions, opts)` — reusable for future cards.
+### Places and discovery
+- Place composer supports title, note, multiple normalized `#hashtags`, optional label, frequency, evidence, two classifications, and exactly five map colors.
+- Evidence accepts images, video, audio, PDF/text/JSON/Word documents, plus in-browser audio recording.
+- Place detail shows all evidence types and finds hashtag/proximity coincidences locally.
+- Hashtag index groups matching places and opens a local search for a selected hashtag.
 
-## Files touched
-- `/app/public/index.html`
-  - CSS: `#lightbox` premium block, design-system layer, `.mact-btn/.thumb-menu/.mthumb-vipdot/.note-vipdot` refinement.
-  - HTML: `#lightbox` markup with viewer; `.mthumb-actions` and `.note-actions` reduced to single `⋯` button.
-  - JS: `openLightbox/closeLightbox/lbNext/lbPrev/lbGo/lbRenderCurrent/initLightbox` + self-boot IIFE; `openThumbMenu`; rewired media/notes handlers to use the menu.
+### Routes
+- Replaced browser prompts with a dedicated route editor.
+- Routes can be created, edited, reordered, have stops added/substituted/removed, displayed on the map, hidden, or deleted with a custom confirmation dialog.
 
-## Backlog / Next
-- P1 Pinch-zoom and double-tap zoom in photo modal (mobile).
-- P2 Preload adjacent images for zero-flash navigation.
-- P2 Photo caption line under the image.
-- P2 One-tap download from viewer.
-- P2 Extend `openThumbMenu` to other cards (`.pli`, `.bcard`, `.ni`) once product decides which actions to consolidate there.
+### UserFx
+- UserFx is a code-gated local warehouse for multimedia and private notes.
+- Supports file upload, audio recording, filtering by media type, previews/playback, favorites, and explicit locking.
+- Every stored asset can be linked to an existing place or note; composers can also select evidence from UserFx.
+- UserFx automatically relocks after inactivity or when its panel is closed.
+
+### Emergency flow
+- Emergency is protected by a separate 4–8 digit code.
+- Configuration stores a trusted contact's name, iMessage/phone number, and email.
+- After code verification, FX Map collects current GPS (or a clearly identified map fallback), prepares all locations, notes, hashtags, routes, follow-up comments, and evidence inventory, then opens iMessage or email with the report ready for review.
+- A complete JSON emergency archive—including locally stored evidence—is available through the native share sheet or download fallback.
+- The web app never claims to send silently: the user confirms the final send in iMessage, Mail, or the system share sheet.
+
+## Validation
+Run:
+
+```bash
+node scripts/validate-map.mjs
+python3 -m py_compile src/*.py
+git diff --check
+```
