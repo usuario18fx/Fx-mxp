@@ -1996,34 +1996,9 @@ input::placeholder,textarea::placeholder{color:#6d6d72!important}
 .settings-group{border:0;background:#1c1c1e;border-radius:12px}
 .settings-group-title{color:#fff;font-weight:600}
 .settings-group-title span{background:rgba(10,132,255,.16);color:#0a84ff;border-radius:7px}
+
 /* Composer */
-#save-modal .save-hero{
-  border:0;
-  background:#1c1c1e!important;
-  border-radius:12px;
-}
-.save-location-copy{
-  cursor:pointer;
-  user-select:none;
-  -webkit-user-select:none;
-  transition:transform .15s ease,background .15s ease!important;
-}
-.save-location-copy:active{
-  transform:scale(.985);
-  background:#252527!important;
-}
-.save-location-copy:focus-visible{
-  outline:2px solid #0a84ff;
-  outline-offset:2px;
-}
-.save-copy-hint{
-  margin-top:5px;
-  color:#0a84ff;
-  font-size:9px;
-  font-weight:600;
-}
-
-
+#save-modal .save-hero{border:0;background:#1c1c1e!important;border-radius:12px}
 .save-location-pin{background:rgba(10,132,255,.16);color:#0a84ff;border-radius:8px}
 .csbtn{border:.5px solid var(--ios-sep);background:#2c2c2e;color:#fff;border-radius:12px}
 .csbtn.sel{background:rgba(10,132,255,.18);border-color:#0a84ff;color:#fff}
@@ -2474,30 +2449,13 @@ input::placeholder,textarea::placeholder{color:#6d6d72!important}
       <button class="pclose" id="save-close" aria-label="Cerrar">✕</button>
     </div>
     <div class="save-dm-content">
-     
-
-      <div
-  class="save-hero save-location-copy"
-  id="save-location-copy"
-  role="button"
-  tabindex="0"
-  aria-label="Copiar dirección y coordenadas"
->
-  <div class="save-location-line">
-    <div class="save-location-pin">⌖</div>
-
-    <div style="min-width:0">
-      <div id="save-addr-preview">Dirección seleccionada</div>
-      <div id="q-coords-chip"></div>
-      <div class="save-copy-hint">Toca para copiar</div>
-    </div>
-  </div>
-
-  <div class="legacy-controls">
-    <span id="save-hero-title"># Usuario</span>
-    <span id="save-hero-note">Nota</span>
-  </div>
-</div>
+      <div class="save-hero">
+        <div class="save-location-line">
+          <div class="save-location-pin">⌖</div>
+          <div style="min-width:0"><div id="save-addr-preview">Dirección seleccionada</div><div id="q-coords-chip"></div></div>
+        </div>
+        <div class="legacy-controls"><span id="save-hero-title"># Usuario</span><span id="save-hero-note">Nota</span></div>
+      </div>
 
       <div class="field">
         <label for="q-title">Nombre del lugar</label>
@@ -4551,35 +4509,7 @@ function openSaveModal(lng, lat, address = '') {
   $('save-modal').classList.add('open');
   setTimeout(() => $('q-title').focus(), 120);
 }
-function closeSaveModal() {
-  $('save-modal').classList.remove('open');
-}
-async function copySaveLocation() {
-  const address = $('save-addr-preview').textContent.trim();
-  const coords = $('q-coords-chip').textContent.trim();
-  const value = [address, coords].filter(Boolean).join('\n');
-  if (!value) return;
-  try {
-    await navigator.clipboard.writeText(value);
-  } catch (_) {
-    const input = document.createElement('textarea');
-    input.value = value;
-    input.style.position = 'fixed';
-    input.style.opacity = '0';
-    document.body.appendChild(input);
-    input.select();
-    document.execCommand('copy');
-    input.remove();
-  }
-  toast('✓ Dirección y coordenadas copiadas');
-}
-$('save-location-copy').addEventListener('click', copySaveLocation);
-$('save-location-copy').addEventListener('keydown', event => {
-  if (event.key === 'Enter' || event.key === ' ') {
-    event.preventDefault();
-    copySaveLocation();
-  }});
-
+function closeSaveModal() { $('save-modal').classList.remove('open'); }
 function resetSaveForm() {
   $('q-title').value = '';
   $('q-notes').value = '';
