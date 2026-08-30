@@ -564,6 +564,57 @@ body.lb-locked{overflow:hidden!important}
   padding:2px 0 6px;margin-bottom:2px;
 }
 .dm-name-input::placeholder{color:var(--dmtxt2)}
+.dm-location-copy{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  margin:8px 0;
+  padding:12px;
+  border-radius:12px;
+  background:#1c1c1e;
+  cursor:pointer;
+  user-select:none;
+  -webkit-user-select:none;
+  transition:transform .15s ease,background .15s ease;
+}
+.dm-location-copy:active{
+  transform:scale(.985);
+  background:#252527;
+}
+.dm-location-copy:focus-visible{
+  outline:2px solid #0a84ff;
+  outline-offset:2px;
+}
+.dm-location-icon{
+  width:30px;
+  height:30px;
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+  border-radius:9px;
+  background:rgba(10,132,255,.16);
+  color:#0a84ff;
+}
+.dm-location-data{
+  min-width:0;
+  flex:1;
+}
+#dm-address-line{
+  color:var(--dmtxt);
+  font-size:11px;
+  line-height:1.45;
+}
+#dm-coords-line{
+  margin-top:2px;
+  color:var(--dmtxt2);
+  font:10px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+.dm-copy-hint{
+  margin-top:5px;
+  color:#0a84ff;
+  font-size:9px;
+  font-weight:600;
+}
 .dm-coords-line,.dm-city-line{font-size:11px;color:var(--dmtxt2);line-height:1.6}
 .dm-coords-line{cursor:pointer;transition:color .15s}
 .dm-coords-line:hover{color:var(--dmgreen)}
@@ -2686,14 +2737,44 @@ input::placeholder,textarea::placeholder{color:#6d6d72!important}
     <div class="dm-header" id="dm-header">
       <div class="dm-header-top">
         <div style="flex:1;min-width:0">
-          <div class="dm-eyebrow-row no-drag" id="dm-coords-btn" title="Copiar coordenadas">
-            <span class="dm-eyebrow">Lugar guardado</span>
-            <svg class="dm-copy-icon" id="dm-copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
-            <svg class="dm-check-icon" id="dm-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
-          </div>
-          <input type="text" id="dm-title" class="dm-name-input no-drag" placeholder="Nombre del lugar"/>
-          <div class="dm-coords-line no-drag" id="dm-coords-line">Coordenadas: —</div>
-          <div class="dm-city-line no-drag">Ciudad: <span id="dm-city">No especificada</span></div>
+         
+
+
+
+          <div class="dm-eyebrow-row no-drag">
+  <span class="dm-eyebrow">Lugar guardado</span>
+
+  <svg class="dm-check-icon" id="dm-check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+    <path d="M20 6 9 17l-5-5"/>
+  </svg>
+</div>
+
+<input
+  type="text"
+  id="dm-title"
+  class="dm-name-input no-drag"
+  placeholder="Nombre del lugar"
+/>
+
+<div
+  class="dm-location-copy no-drag"
+  id="dm-coords-btn"
+  role="button"
+  tabindex="0"
+  aria-label="Copiar dirección y coordenadas"
+>
+  <div class="dm-location-icon">⌖</div>
+
+  <div class="dm-location-data">
+    <div id="dm-address-line">Dirección no disponible</div>
+    <div id="dm-coords-line">Coordenadas: —</div>
+    <div class="dm-copy-hint">Toca para copiar</div>
+  </div>
+</div>
+
+<div class="dm-city-line no-drag">
+  Ciudad: <span id="dm-city">No especificada</span>
+</div>
         </div>
         <div style="display:flex;gap:6px"><button id="dm-favorite" class="dm-close-btn no-drag" aria-label="Marcar favorito" title="Favorito">☆</button><button id="dm-close" class="dm-close-btn no-drag" aria-label="Cerrar">✕</button></div>
       </div>
@@ -4217,8 +4298,12 @@ function openDetailModal(id) {
   p.comments = p.comments || [];
   p.media = p.media || [];
   $('dm-title').value = p.title || '';
-  $('dm-coords-line').textContent = `${p.lat.toFixed(6)}, ${p.lng.toFixed(6)} · ${frequencyLabel(p.frequency)}`;
-  $('dm-city').textContent = p.city || 'No especificada';
+  $('dm-address-line').textContent =
+  p.address || p.title || 'Dirección no disponible';
+$('dm-coords-line').textContent =
+  `${p.lat.toFixed(6)}, ${p.lng.toFixed(6)} · ${frequencyLabel(p.frequency)}`;
+$('dm-city').textContent =
+  p.city || 'No especificada';
   $('dm-check-icon').classList.remove('show');
   $('dm-favorite').textContent = p.vip ? '★' : '☆';
   $('dm-favorite').classList.toggle('active', !!p.vip);
@@ -4262,14 +4347,32 @@ function dmNavigate(dir) {
   if (newIdx < 0 || newIdx >= list.length) return;
   openDetailModal(list[newIdx].id);
 }
-function dmCopyCoords() {
+async function dmCopyCoords() {
   const p = places.find(x => x.id === detailPlaceId);
   if (!p) return;
-  const coords = `${p.lat.toFixed(6)}, ${p.lng.toFixed(6)}`;
-  navigator.clipboard?.writeText(coords).catch(() => {});
+  const address =
+    p.address || p.title || 'Dirección no disponible';
+  const coords =
+    `${p.lat.toFixed(6)}, ${p.lng.toFixed(6)}`;
+  const value =
+    `${address}\n${coords}`;
+  try {
+    await navigator.clipboard.writeText(value);
+  } catch (_) {
+    const input = document.createElement('textarea');
+    input.value = value;
+    input.style.position = 'fixed';
+    input.style.opacity = '0';
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand('copy');
+    input.remove();
+  }
   $('dm-check-icon').classList.add('show');
-  toast('✓ Coordenadas copiadas');
-  setTimeout(() => $('dm-check-icon').classList.remove('show'), 2000);
+  toast('✓ Dirección y coordenadas copiadas');
+  setTimeout(() => {
+    $('dm-check-icon').classList.remove('show');
+  }, 2000);
 }
 // ── TAGS ──
 function renderDmTags(p) {
@@ -5650,35 +5753,68 @@ function bindAll() {
     const place = places.find(item => item.id === detailPlaceId);
     if (!place) return;
     place.vip = !place.vip;
+
+
+
+
+
     if (!saveAll()) { place.vip = !place.vip; return; }
     $('dm-favorite').textContent = place.vip ? '★' : '☆';
     $('dm-favorite').classList.toggle('active', place.vip);
     $('dm-favorite').setAttribute('aria-label', place.vip ? 'Quitar de favoritos' : 'Marcar favorito');
-    renderVipList(); renderBoard(); toast(place.vip ? 'Añadido a favoritos' : 'Quitado de favoritos');
+     renderVipList(); renderBoard(); toast(place.vip ? 'Añadido a favoritos' : 'Quitado de favoritos');
   });
-  $('detail-modal').addEventListener('click', event => { if (event.target === $('detail-modal')) closeDetailModal(); });
-  $('dm-delete').addEventListener('click', () => { const id = detailPlaceId; if (id) { closeDetailModal(); confirmDel(id); } });
+  $('detail-modal').addEventListener('click', event => {
+    if (event.target === $('detail-modal')) closeDetailModal();
+  });
+  $('dm-delete').addEventListener('click', () => {
+    const id = detailPlaceId;
+    if (id) {closeDetailModal(); confirmDel(id);
+    }});
   $('dm-coords-btn').addEventListener('click', dmCopyCoords);
-  $('dm-coords-line').addEventListener('click', dmCopyCoords);
+  $('dm-coords-btn').addEventListener('keydown', event => {
+    if (event.key === 'Enter' || event.key === ' ') {event.preventDefault();dmCopyCoords();
+    }});
   $('dm-prev').addEventListener('click', () => dmNavigate('prev'));
   $('dm-next').addEventListener('click', () => dmNavigate('next'));
-  document.querySelectorAll('.dm-tab').forEach(tab => tab.addEventListener('click', () => dmSetTab(tab.dataset.tab)));
+  document.querySelectorAll('.dm-tab').forEach(tab =>
+    tab.addEventListener('click', () => dmSetTab(tab.dataset.tab))
+  );
   $('dm-title').addEventListener('change', () => {
     const place = places.find(item => item.id === detailPlaceId);
-    if (place) { place.title = $('dm-title').value.trim() || place.title; saveAll(); renderAll(); }
-  });
+    if (place) {place.title = $('dm-title').value.trim() || place.title;saveAll(); renderAll();
+    }});
   $('dm-tag-add').addEventListener('click', dmAddTag);
-  $('dm-tag-input').addEventListener('keydown', event => { if (event.key === 'Enter') dmAddTag(); });
+  $('dm-tag-input').addEventListener('keydown', event => {
+    if (event.key === 'Enter') dmAddTag();
+  });
   $('dm-comment-add').addEventListener('click', dmAddComment);
-  $('dm-comment-input').addEventListener('keydown', event => { if (event.key === 'Enter') dmAddComment(); });
-  $('dm-dropzone').addEventListener('click', () => $('dm-file-input').click());
-  $('dm-file-input').addEventListener('change', event => { dmHandleFiles(event.target.files); event.target.value = ''; });
-  $('dm-dropzone').addEventListener('dragover', event => { event.preventDefault(); $('dm-dropzone').classList.add('drag-active'); });
-  $('dm-dropzone').addEventListener('dragleave', () => $('dm-dropzone').classList.remove('drag-active'));
-  $('dm-dropzone').addEventListener('drop', event => { event.preventDefault(); $('dm-dropzone').classList.remove('drag-active'); dmHandleFiles(event.dataTransfer.files); });
-  $('dm-vault-attach').addEventListener('click', () => openVaultAssetPicker(item => {
-    const place = places.find(record => record.id === detailPlaceId);
-    if (!place) return;
+  $('dm-comment-input').addEventListener('keydown', event => {
+    if (event.key === 'Enter') dmAddComment();
+  });
+  $('dm-dropzone').addEventListener('click', () =>
+    $('dm-file-input').click()
+  );
+  $('dm-file-input').addEventListener('change', event => {
+    dmHandleFiles(event.target.files);
+    event.target.value = '';
+  });
+  $('dm-dropzone').addEventListener('dragover', event => {
+    event.preventDefault();
+    $('dm-dropzone').classList.add('drag-active');
+  });
+  $('dm-dropzone').addEventListener('dragleave', () =>
+    $('dm-dropzone').classList.remove('drag-active')
+  );
+  $('dm-dropzone').addEventListener('drop', event => {
+    event.preventDefault();
+    $('dm-dropzone').classList.remove('drag-active');
+    dmHandleFiles(event.dataTransfer.files);
+  });
+  $('dm-vault-attach').addEventListener('click', () =>
+    openVaultAssetPicker(item => {
+      const place = places.find(record => record.id === detailPlaceId);
+      if (!place) return;
     place.media = place.media || [];
     if (place.media.some(media => media.vaultId === item.media.id)) { toast('La evidencia ya está vinculada'); return; }
     place.media.push(mediaReference(item.media)); saveAll(); renderDmImages(place); renderAll(); toast('Evidencia vinculada');
