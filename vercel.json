@@ -1,6 +1,21 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "outputDirectory": "public",
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "public/index.html"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/api/index"
+    },
+    {
+      "source": "/index.html",
+      "destination": "/api/index"
+    }
+  ],
   "headers": [
     {
       "source": "/",
@@ -13,6 +28,15 @@
     },
     {
       "source": "/index.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, max-age=0"
+        }
+      ]
+    },
+    {
+      "source": "/fx-gps.js",
       "headers": [
         {
           "key": "Cache-Control",
