@@ -15,11 +15,15 @@ module.exports = function handler(req, res) {
     }
 
     // GPS loads only after the original application script has finished parsing.
-    const loader = '<script src="/fx-gps.js?v=20260831-3"></script>';
+    const loader = '<script src="/fx-gps.js?v=20260901-1"></script>\n<script src="/fx-memoji-fix.js?v=20260901-1"></script>';
     if (!html.includes('/fx-gps.js')) {
       html = html.includes('</body>')
         ? html.replace('</body>', `${loader}\n</body>`)
         : `${html}\n${loader}`;
+    } else if (!html.includes('/fx-memoji-fix.js')) {
+      html = html.includes('</body>')
+        ? html.replace('</body>', `<script src="/fx-memoji-fix.js?v=20260901-1"></script>\n</body>`)
+        : `${html}\n<script src="/fx-memoji-fix.js?v=20260901-1"></script>`;
     }
 
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
