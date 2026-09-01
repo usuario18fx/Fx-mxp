@@ -14,16 +14,23 @@ module.exports = function handler(req, res) {
       html = html.replace(mapNeedle, `${mapBridge}${mapNeedle}`);
     }
 
-    // GPS loads only after the original application script has finished parsing.
-    const loader = '<script src="/fx-gps.js?v=20260901-1"></script>\n<script src="/fx-memoji-fix.js?v=20260901-1"></script>';
+    // GPS/Memoji extensions load only after the original application script.
+    const loader = '<script src="/fx-gps.js?v=20260901-2"></script>\n<script src="/fx-memoji-fix.js?v=20260901-2"></script>\n<script src="/fx-gps-visibility.js?v=20260901-2"></script>';
     if (!html.includes('/fx-gps.js')) {
       html = html.includes('</body>')
         ? html.replace('</body>', `${loader}\n</body>`)
         : `${html}\n${loader}`;
-    } else if (!html.includes('/fx-memoji-fix.js')) {
-      html = html.includes('</body>')
-        ? html.replace('</body>', `<script src="/fx-memoji-fix.js?v=20260901-1"></script>\n</body>`)
-        : `${html}\n<script src="/fx-memoji-fix.js?v=20260901-1"></script>`;
+    } else {
+      if (!html.includes('/fx-memoji-fix.js')) {
+        html = html.includes('</body>')
+          ? html.replace('</body>', '<script src="/fx-memoji-fix.js?v=20260901-2"></script>\n</body>')
+          : `${html}\n<script src="/fx-memoji-fix.js?v=20260901-2"></script>`;
+      }
+      if (!html.includes('/fx-gps-visibility.js')) {
+        html = html.includes('</body>')
+          ? html.replace('</body>', '<script src="/fx-gps-visibility.js?v=20260901-2"></script>\n</body>')
+          : `${html}\n<script src="/fx-gps-visibility.js?v=20260901-2"></script>`;
+      }
     }
 
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
