@@ -6,12 +6,6 @@ module.exports = function handler(req, res) {
     const file = path.join(process.cwd(), 'public', 'index.html');
     let html = fs.readFileSync(file, 'utf8');
 
-    const appScriptNeedle = '<script>\n// FX MAP — private, offline-first place intelligence';
-    const fallbackLoader = '<script src="/fx-map-fallback.js?v=20260902-1"></script>\n';
-    if (!html.includes('/fx-map-fallback.js') && html.includes(appScriptNeedle)) {
-      html = html.replace(appScriptNeedle, `${fallbackLoader}${appScriptNeedle}`);
-    }
-
     const mapNeedle = "// Disable all zoom controls";
     const mapBridge = "window.__fxMapInstance = map;\nwindow.dispatchEvent(new CustomEvent('fx-map-ready', { detail: { map } }));\n";
     if (!html.includes('window.__fxMapInstance = map;') && html.includes(mapNeedle)) {
@@ -52,8 +46,40 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>`;
 
+    const frameUi = `
+<style id="fx-modal-frame-style">
+.fx-defined-frame{border:1px solid rgba(255,255,255,.14)!important;box-shadow:0 22px 70px rgba(0,0,0,.68),inset 0 1px 0 rgba(255,255,255,.055),inset 0 0 0 1px rgba(0,134,223,.035)!important;overflow:hidden}
+.fx-defined-frame:before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.65)}
+.fx-defined-frame [class*="tab"],.fx-defined-frame [class*="seg"],.fx-defined-frame [class*="card"],.fx-defined-frame [class*="item"]{border-color:rgba(255,255,255,.09)}
+.fx-defined-frame [class*="header"]{border-bottom-color:rgba(255,255,255,.10)!important}
+.fx-defined-frame [class*="tabs"],.fx-defined-frame [class*="segmented"]{border:1px solid rgba(255,255,255,.085)!important;border-radius:13px;overflow:hidden}
+</style>
+<script id="fx-modal-frame-script">
+(()=>{'use strict';
+function markFrames(){
+  const vw=innerWidth||document.documentElement.clientWidth,vh=innerHeight||document.documentElement.clientHeight;
+  document.querySelectorAll('body *').forEach(el=>{
+    if(el.id==='map'||el.id==='fx-inline-user'||el.id==='fx-inline-accuracy'||el.classList.contains('fx-defined-frame'))return;
+    const cs=getComputedStyle(el);if(cs.display==='none'||cs.visibility==='hidden'||cs.opacity==='0')return;
+    const r=el.getBoundingClientRect();
+    const fixed=cs.position==='fixed'||cs.position==='absolute';
+    const big=r.width>=vw*.72&&r.height>=vh*.28;
+    const rounded=parseFloat(cs.borderTopLeftRadius||'0')>=12;
+    const dark=/rgba?\((?:0|[0-3]?\d),\s*(?:0|[0-3]?\d),\s*(?:0|[0-3]?\d)/.test(cs.backgroundColor)||cs.backgroundColor==='rgb(0, 0, 0)';
+    const named=/(modal|sheet|drawer|panel|organizer|places|menu)/i.test((el.id||'')+' '+(el.className||''));
+    if((fixed&&big&&rounded&&dark)||(named&&big&&rounded))el.classList.add('fx-defined-frame');
+  });
+}
+let queued=false;function scan(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;markFrames()})}
+new MutationObserver(scan).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['class','style']});
+addEventListener('resize',scan);document.addEventListener('click',()=>setTimeout(scan,30),true);setTimeout(scan,0);setTimeout(scan,400);
+})();
+</script>`;
+
     if (!html.includes('fx-inline-gps-script')) {
-      html = html.includes('</body>') ? html.replace('</body>', `${inlineGps}\n</body>`) : `${html}\n${inlineGps}`;
+      html = html.includes('</body>') ? html.replace('</body>', `${inlineGps}\n${frameUi}\n</body>`) : `${html}\n${inlineGps}\n${frameUi}`;
+    } else if (!html.includes('fx-modal-frame-script')) {
+      html = html.includes('</body>') ? html.replace('</body>', `${frameUi}\n</body>`) : `${html}\n${frameUi}`;
     }
 
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
