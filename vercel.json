@@ -5,14 +5,17 @@
       "includeFiles": "public/index.html"
     }
   },
-  "rewrites": [
+  "routes": [
     {
-      "source": "/",
-      "destination": "/api/index"
+      "src": "^/$",
+      "dest": "/api/index"
     },
     {
-      "source": "/index.html",
-      "destination": "/api/index"
+      "src": "^/index\\.html$",
+      "dest": "/api/index"
+    },
+    {
+      "handle": "filesystem"
     }
   ],
   "headers": [
