@@ -14,8 +14,8 @@ module.exports = function handler(req, res) {
 
     const inlineGps = `
 <style id="fx-inline-gps-style">
-#fx-inline-accuracy{position:fixed;z-index:2147482000;border:2px solid rgba(10,132,255,.5);background:rgba(10,132,255,.10);border-radius:50%;pointer-events:none;display:none;transform:translate(-50%,-50%)}
-#fx-inline-user{position:fixed;z-index:2147483000;display:flex;flex-direction:column;align-items:center;gap:5px;transform:translate(-50%,-50%);cursor:pointer;user-select:none;-webkit-user-select:none}
+#fx-inline-accuracy{position:fixed;z-index:119;border:2px solid rgba(10,132,255,.5);background:rgba(10,132,255,.10);border-radius:50%;pointer-events:none;display:none;transform:translate(-50%,-50%)}
+#fx-inline-user{position:fixed;z-index:120;display:flex;flex-direction:column;align-items:center;gap:5px;transform:translate(-50%,-50%);cursor:pointer;user-select:none;-webkit-user-select:none}
 #fx-inline-user .ring{position:relative;width:66px;height:66px;border-radius:50%;display:grid;place-items:center}
 #fx-inline-user .ring:before,#fx-inline-user .ring:after{content:'';position:absolute;inset:-7px;border:2px solid rgba(10,132,255,.64);border-radius:50%;box-shadow:0 0 22px rgba(10,132,255,.32);animation:fxInlinePulse 2.2s ease-out infinite}
 #fx-inline-user .ring:after{inset:-14px;animation-delay:1.1s;opacity:.5}
@@ -48,7 +48,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
     const frameUi = `
 <style id="fx-modal-frame-style">
-.fx-defined-frame{border:1px solid rgba(255,255,255,.14)!important;box-shadow:0 22px 70px rgba(0,0,0,.68),inset 0 1px 0 rgba(255,255,255,.055),inset 0 0 0 1px rgba(0,134,223,.035)!important;overflow:hidden}
+.fx-defined-frame{border:1px solid rgba(255,255,255,.14)!important;box-shadow:0 22px 70px rgba(0,0,0,.68),inset 0 1px 0 rgba(255,255,255,.055),inset 0 0 0 1px rgba(0,134,223,.035)!important;overflow:hidden;z-index:300!important}
 .fx-defined-frame:before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.65)}
 .fx-defined-frame [class*="tab"],.fx-defined-frame [class*="seg"],.fx-defined-frame [class*="card"],.fx-defined-frame [class*="item"]{border-color:rgba(255,255,255,.09)}
 .fx-defined-frame [class*="header"]{border-bottom-color:rgba(255,255,255,.10)!important}
