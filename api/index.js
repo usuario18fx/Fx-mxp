@@ -16,6 +16,7 @@ module.exports = function handler(req, res) {
 <style id="fx-inline-gps-style">
 #fx-inline-accuracy{position:fixed;z-index:119;border:2px solid rgba(10,132,255,.5);background:rgba(10,132,255,.10);border-radius:50%;pointer-events:none;display:none;transform:translate(-50%,-50%)}
 #fx-inline-user{position:fixed;z-index:120;display:flex;flex-direction:column;align-items:center;gap:5px;transform:translate(-50%,-50%);cursor:pointer;user-select:none;-webkit-user-select:none}
+body.fx-modal-open #fx-inline-user,body.fx-modal-open #fx-inline-accuracy{display:none!important;pointer-events:none!important}
 #fx-inline-user .ring{position:relative;width:66px;height:66px;border-radius:50%;display:grid;place-items:center}
 #fx-inline-user .ring:before,#fx-inline-user .ring:after{content:'';position:absolute;inset:-7px;border:2px solid rgba(10,132,255,.64);border-radius:50%;box-shadow:0 0 22px rgba(10,132,255,.32);animation:fxInlinePulse 2.2s ease-out infinite}
 #fx-inline-user .ring:after{inset:-14px;animation-delay:1.1s;opacity:.5}
@@ -48,27 +49,33 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 
     const frameUi = `
 <style id="fx-modal-frame-style">
-.fx-defined-frame{border:1px solid rgba(255,255,255,.14)!important;box-shadow:0 22px 70px rgba(0,0,0,.68),inset 0 1px 0 rgba(255,255,255,.055),inset 0 0 0 1px rgba(0,134,223,.035)!important;overflow:hidden;z-index:300!important}
-.fx-defined-frame:before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.65)}
-.fx-defined-frame [class*="tab"],.fx-defined-frame [class*="seg"],.fx-defined-frame [class*="card"],.fx-defined-frame [class*="item"]{border-color:rgba(255,255,255,.09)}
-.fx-defined-frame [class*="header"]{border-bottom-color:rgba(255,255,255,.10)!important}
-.fx-defined-frame [class*="tabs"],.fx-defined-frame [class*="segmented"]{border:1px solid rgba(255,255,255,.085)!important;border-radius:13px;overflow:hidden}
+.fx-defined-frame{background:linear-gradient(180deg,rgba(52,58,64,.985),rgba(38,43,49,.985))!important;border:1px solid rgba(211,218,225,.20)!important;box-shadow:0 22px 70px rgba(0,0,0,.72),inset 0 1px 0 rgba(255,255,255,.07),inset 0 0 0 1px rgba(0,0,0,.32)!important;overflow:hidden;z-index:300!important}
+.fx-defined-frame:before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.58)}
+.fx-defined-frame [class*="tab"],.fx-defined-frame [class*="seg"],.fx-defined-frame [class*="card"],.fx-defined-frame [class*="item"]{border-color:rgba(255,255,255,.10)}
+.fx-defined-frame [class*="card"],.fx-defined-frame [class*="item"]{background-color:rgba(25,29,33,.72)}
+.fx-defined-frame [class*="header"]{border-bottom-color:rgba(255,255,255,.12)!important;background-color:rgba(43,48,54,.58)}
+.fx-defined-frame [class*="tabs"],.fx-defined-frame [class*="segmented"]{border:1px solid rgba(255,255,255,.10)!important;border-radius:13px;overflow:hidden;background:rgba(31,35,40,.72)}
 </style>
 <script id="fx-modal-frame-script">
 (()=>{'use strict';
 function markFrames(){
   const vw=innerWidth||document.documentElement.clientWidth,vh=innerHeight||document.documentElement.clientHeight;
+  let modalOpen=false;
   document.querySelectorAll('body *').forEach(el=>{
-    if(el.id==='map'||el.id==='fx-inline-user'||el.id==='fx-inline-accuracy'||el.classList.contains('fx-defined-frame'))return;
-    const cs=getComputedStyle(el);if(cs.display==='none'||cs.visibility==='hidden'||cs.opacity==='0')return;
+    if(el.id==='map'||el.id==='fx-inline-user'||el.id==='fx-inline-accuracy')return;
+    const cs=getComputedStyle(el);
+    const hidden=cs.display==='none'||cs.visibility==='hidden'||cs.opacity==='0';
+    if(hidden)return;
     const r=el.getBoundingClientRect();
     const fixed=cs.position==='fixed'||cs.position==='absolute';
     const big=r.width>=vw*.72&&r.height>=vh*.28;
     const rounded=parseFloat(cs.borderTopLeftRadius||'0')>=12;
-    const dark=/rgba?\((?:0|[0-3]?\d),\s*(?:0|[0-3]?\d),\s*(?:0|[0-3]?\d)/.test(cs.backgroundColor)||cs.backgroundColor==='rgb(0, 0, 0)';
+    const dark=/rgba?\((?:0|[0-5]?\d),\s*(?:0|[0-5]?\d),\s*(?:0|[0-5]?\d)/.test(cs.backgroundColor)||cs.backgroundColor==='rgb(0, 0, 0)';
     const named=/(modal|sheet|drawer|panel|organizer|places|menu)/i.test((el.id||'')+' '+(el.className||''));
-    if((fixed&&big&&rounded&&dark)||(named&&big&&rounded))el.classList.add('fx-defined-frame');
+    const qualifies=(fixed&&big&&rounded&&dark)||(named&&big&&rounded)||el.classList.contains('fx-defined-frame');
+    if(qualifies&&big){el.classList.add('fx-defined-frame');modalOpen=true}
   });
+  document.body.classList.toggle('fx-modal-open',modalOpen);
 }
 let queued=false;function scan(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;markFrames()})}
 new MutationObserver(scan).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['class','style']});
