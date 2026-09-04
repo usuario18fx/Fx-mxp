@@ -174,6 +174,14 @@ body.fx-modal-open #fx-inline-user,body.fx-modal-open #fx-inline-accuracy,body.f
 [class*="places"].fx-defined-frame > *{
   border-color:rgba(0,194,255,.14);
 }
+
+/* Structural fallback for Organizer / Mis lugares */
+.fx-organizer-frame{background:linear-gradient(180deg,#20262D 0%,#1B1F24 15%,#0B0F17 100%)!important;border:1px solid rgba(0,194,255,.34)!important}
+.fx-organizer-frame .fx-org-tabs{background:#11171D!important;border:1px solid rgba(0,194,255,.16)!important;border-radius:13px!important;overflow:hidden!important}
+.fx-organizer-frame .fx-org-tab{background:transparent!important;color:#C8D5E6!important;border-color:transparent!important;box-shadow:none!important}
+.fx-organizer-frame .fx-org-tab-active{background:linear-gradient(180deg,rgba(0,194,255,.24),rgba(0,194,255,.11))!important;color:#E6FBFF!important;border:1px solid rgba(0,194,255,.50)!important;box-shadow:0 0 16px rgba(0,194,255,.08)!important}
+.fx-organizer-frame .fx-primary-action{background:linear-gradient(180deg,#00C2FF,#0099D6)!important;color:#06131A!important;border:1px solid #00C2FF!important;box-shadow:0 10px 28px rgba(0,194,255,.22)!important}
+.fx-organizer-frame .fx-organizer-header{background:linear-gradient(180deg,#252B32,#1B1F24)!important;border-bottom:1px solid rgba(0,194,255,.18)!important}
 </style>
 <script id="fx-runtime-script">
 (()=>{'use strict';
@@ -209,9 +217,53 @@ function pos(p){S.lat=p.coords.latitude;S.lng=p.coords.longitude;S.accuracy=p.co
 function err(e){const b=document.querySelector('#fx-inline-user .acc');if(b)b.textContent=e&&e.code===1?'GPS OFF':'GPS…';placeFallback()}
 function hookMap(){const m=window.__fxMapInstance;if(!m)return;['move','zoom','rotate','pitch','resize'].forEach(ev=>{try{m.on(ev,render)}catch(_){}});render()}
 
+function findTextNodeExact(text){
+  return [...document.querySelectorAll('h1,h2,h3,h4,strong,b,span,div')].find(el=>el.children.length<=2&&(el.textContent||'').trim()===text)||null;
+}
+function findStructuredPanel(label){
+  const vw=innerWidth||document.documentElement.clientWidth,vh=innerHeight||document.documentElement.clientHeight;
+  let n=findTextNodeExact(label);if(!n)return null;
+  for(let i=0;i<8&&n&&n!==document.body;i++,n=n.parentElement){
+    const txt=(n.textContent||'').replace(/\s+/g,' ').trim();
+    const r=n.getBoundingClientRect();
+    const organizer=label==='Organizador'&&txt.includes('Rutas')&&txt.includes('Hashtags')&&txt.includes('Lugares')&&txt.includes('Ajustes');
+    const places=label==='Mis lugares'&&txt.includes('Todos los lugares')&&txt.includes('Vista protegida');
+    const sized=r.width>=Math.min(320,vw*.62)&&r.height>=Math.min(320,vh*.42)&&r.width<=vw*.96;
+    if(sized&&(organizer||places))return n;
+  }
+  return null;
+}
+function decorateStructuredPanel(root,label){
+  if(!root)return false;
+  root.classList.add('fx-defined-frame','fx-organizer-frame');
+  const all=[...root.querySelectorAll('button,[role="tab"],a,div,span')];
+  const labels=label==='Organizador'?['Rutas','Hashtags','Lugares','Favoritos','Resumen','Ajustes']:['Todos los lugares','Vista protegida'];
+  const tabs=all.filter(el=>labels.includes((el.textContent||'').trim())&&el.children.length<=1);
+  if(tabs.length){
+    const parent=tabs.map(t=>t.parentElement).find(p=>p&&tabs.filter(t=>t.parentElement===p).length>=Math.min(2,tabs.length));
+    if(parent)parent.classList.add('fx-org-tabs');
+    let active=tabs.find(t=>t.classList.contains('active')||t.getAttribute('aria-selected')==='true'||t.getAttribute('aria-pressed')==='true');
+    if(!active)active=tabs[0];
+    tabs.forEach(t=>{
+      t.classList.add('fx-org-tab');t.classList.toggle('fx-org-tab-active',t===active);
+      if(t.dataset.fxPaletteBound!=='1'){
+        t.dataset.fxPaletteBound='1';
+        t.addEventListener('click',()=>{tabs.forEach(x=>x.classList.remove('fx-org-tab-active'));t.classList.add('fx-org-tab-active')});
+      }
+    });
+  }
+  const primary=[...root.querySelectorAll('button,a,div')].find(el=>/crear una ruta/i.test((el.textContent||'').trim())&&el.children.length<=2);
+  if(primary)primary.classList.add('fx-primary-action');
+  const title=findTextNodeExact(label);
+  if(title){let h=title.parentElement;for(let i=0;i<3&&h&&h!==root;i++,h=h.parentElement){const r=h.getBoundingClientRect();if(r.width>root.getBoundingClientRect().width*.7){h.classList.add('fx-organizer-header');break}}}
+  return true;
+}
+
 function markFrames(){
   const vw=innerWidth||document.documentElement.clientWidth,vh=innerHeight||document.documentElement.clientHeight;
   let modalOpen=false;
+  const org=findStructuredPanel('Organizador');if(org){decorateStructuredPanel(org,'Organizador');modalOpen=true}
+  const places=findStructuredPanel('Mis lugares');if(places){decorateStructuredPanel(places,'Mis lugares');modalOpen=true}
   document.querySelectorAll('[role="dialog"],dialog[open],[aria-modal="true"],body [class*="modal"],body [class*="sheet"],body [class*="drawer"],body [id*="modal"],body [id*="organizer"],body [id*="places"],body [id*="menu"]').forEach(el=>{
     if(el.id==='fx-gps-card'||el.id==='fx-inline-user'||el.id==='fx-inline-accuracy')return;
     const cs=getComputedStyle(el);if(cs.display==='none'||cs.visibility==='hidden'||Number(cs.opacity)===0)return;
