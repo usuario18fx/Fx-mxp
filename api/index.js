@@ -36,10 +36,13 @@ module.exports = function handler(req, res) {
   --fx-oxford:#1B1F24;
   --fx-oxford-2:#252B32;
   --fx-blue:#00C2FF;
+  --fx-blue-soft:rgba(0,194,255,.14);
+  --fx-blue-border:rgba(0,194,255,.38);
   --fx-error:#800020;
   --fx-warning:#00FF88;
   --fx-text:#E8F1FF;
   --fx-muted:#9CB0D9;
+  --fx-line:#34414D;
 }
 
 #fx-inline-accuracy{position:fixed;z-index:109;border:2px solid rgba(0,194,255,.48);background:rgba(0,194,255,.10);border-radius:50%;pointer-events:none;display:none;transform:translate(-50%,-50%)}
@@ -65,10 +68,112 @@ body.fx-modal-open #fx-inline-user,body.fx-modal-open #fx-inline-accuracy,body.f
 #fx-inline-file{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
 #fx-gps-close{position:absolute;right:8px;top:7px;width:24px;height:24px;border-radius:7px;color:#9CB0D9;display:grid;place-items:center;font-size:15px}
 
-.fx-defined-frame{background:linear-gradient(180deg,rgba(37,43,50,.99),rgba(27,31,36,.99))!important;border:1px solid rgba(156,176,217,.22)!important;box-shadow:0 24px 72px rgba(0,0,0,.72),inset 0 1px 0 rgba(255,255,255,.055)!important;overflow:hidden;z-index:300!important}
-.fx-defined-frame [class*="header"]{background:rgba(27,31,36,.72)!important;border-bottom-color:rgba(156,176,217,.14)!important}
-.fx-defined-frame [class*="tabs"],.fx-defined-frame [class*="segmented"]{background:rgba(11,15,23,.50)!important;border:1px solid rgba(156,176,217,.13)!important;border-radius:13px;overflow:hidden}
-.fx-defined-frame [class*="card"],.fx-defined-frame [class*="item"]{background-color:rgba(27,31,36,.72);border-color:rgba(156,176,217,.11)}
+/* FX palette — all modal/menu surfaces */
+.fx-defined-frame{
+  background:linear-gradient(180deg,#20262D 0%,#1B1F24 18%,#0B0F17 100%)!important;
+  border:1px solid rgba(0,194,255,.30)!important;
+  box-shadow:0 24px 72px rgba(0,0,0,.72),0 0 0 1px rgba(255,255,255,.025) inset,0 0 28px rgba(0,194,255,.055)!important;
+  overflow:hidden;
+  z-index:300!important;
+}
+.fx-defined-frame [class*="header"],
+.fx-defined-frame [class*="head"],
+.fx-defined-frame [class*="top"]{
+  background:linear-gradient(180deg,#252B32,#1B1F24)!important;
+  border-bottom:1px solid rgba(0,194,255,.18)!important;
+}
+.fx-defined-frame [class*="tabs"],
+.fx-defined-frame [class*="segmented"],
+.fx-defined-frame [class*="nav"]{
+  background:#141A20!important;
+  border:1px solid rgba(156,176,217,.14)!important;
+  border-radius:13px!important;
+  overflow:hidden;
+}
+.fx-defined-frame [class*="tab"],
+.fx-defined-frame [role="tab"],
+.fx-defined-frame button{
+  border-color:rgba(156,176,217,.16)!important;
+}
+.fx-defined-frame [class*="tab"].active,
+.fx-defined-frame [class*="tab"][aria-selected="true"],
+.fx-defined-frame [role="tab"][aria-selected="true"],
+.fx-defined-frame button.active,
+.fx-defined-frame button[aria-pressed="true"]{
+  background:linear-gradient(180deg,rgba(0,194,255,.22),rgba(0,194,255,.10))!important;
+  border-color:rgba(0,194,255,.52)!important;
+  color:#DFF8FF!important;
+  box-shadow:inset 0 0 0 1px rgba(0,194,255,.08),0 0 18px rgba(0,194,255,.08)!important;
+}
+.fx-defined-frame [class*="card"],
+.fx-defined-frame [class*="item"],
+.fx-defined-frame [class*="panel"],
+.fx-defined-frame [class*="box"]{
+  background-color:#1B1F24!important;
+  border-color:rgba(156,176,217,.14)!important;
+}
+.fx-defined-frame input,
+.fx-defined-frame textarea,
+.fx-defined-frame select{
+  background:#11171D!important;
+  color:var(--fx-text)!important;
+  border-color:rgba(156,176,217,.20)!important;
+}
+.fx-defined-frame input:focus,
+.fx-defined-frame textarea:focus,
+.fx-defined-frame select:focus{
+  border-color:rgba(0,194,255,.58)!important;
+  box-shadow:0 0 0 3px rgba(0,194,255,.10)!important;
+  outline:none!important;
+}
+.fx-defined-frame [class*="primary"],
+.fx-defined-frame [class*="accent"],
+.fx-defined-frame button[style*="rgb(0, 122, 255)"],
+.fx-defined-frame button[style*="#007aff"],
+.fx-defined-frame button[style*="#0a84ff"]{
+  background:linear-gradient(180deg,#00C2FF,#0099D6)!important;
+  border-color:#00C2FF!important;
+  color:#06131A!important;
+  box-shadow:0 8px 24px rgba(0,194,255,.20)!important;
+}
+.fx-defined-frame [class*="danger"],
+.fx-defined-frame [class*="error"],
+.fx-defined-frame [data-state="error"]{
+  background-color:rgba(128,0,32,.18)!important;
+  border-color:rgba(128,0,32,.62)!important;
+  color:#FFD8E2!important;
+}
+.fx-defined-frame [class*="warning"],
+.fx-defined-frame [class*="success"],
+.fx-defined-frame [data-state="warning"],
+.fx-defined-frame [data-state="success"]{
+  background-color:rgba(0,255,136,.09)!important;
+  border-color:rgba(0,255,136,.42)!important;
+  color:#9BFFD0!important;
+}
+.fx-defined-frame [class*="close"],
+.fx-defined-frame button[aria-label*="Cerrar"],
+.fx-defined-frame button[aria-label*="Close"]{
+  background:transparent!important;
+  color:#9CB0D9!important;
+  box-shadow:none!important;
+}
+.fx-defined-frame hr,
+.fx-defined-frame [class*="divider"]{border-color:rgba(156,176,217,.14)!important;background:rgba(156,176,217,.14)!important}
+
+/* Explicit organizer / places coverage for legacy classes */
+[id*="organizer"].fx-defined-frame,
+[id*="places"].fx-defined-frame,
+[class*="organizer"].fx-defined-frame,
+[class*="places"].fx-defined-frame{
+  background:#0B0F17!important;
+}
+[id*="organizer"].fx-defined-frame > *,
+[id*="places"].fx-defined-frame > *,
+[class*="organizer"].fx-defined-frame > *,
+[class*="places"].fx-defined-frame > *{
+  border-color:rgba(0,194,255,.14);
+}
 </style>
 <script id="fx-runtime-script">
 (()=>{'use strict';
