@@ -1,0 +1,93 @@
+name: Fix FX Map render
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-map-render.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-map:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Patch Mapbox sizing and startup
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          p = Path('public/index.html')
+          s = p.read_text(encoding='utf-8')
+
+          old_css = '#map{position:absolute;inset:0}'
+          new_css = '#map{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;min-height:100vh!important;z-index:0;background:#080a0d}'
+          if old_css in s:
+              s = s.replace(old_css, new_css, 1)
+
+          s = s.replace("style: 'mapbox://styles/mapbox/standard'", "style: 'mapbox://styles/mapbox/dark-v11'", 1)
+
+          marker = '<!-- FXMAP_RENDER_FIX -->'
+          if marker not in s:
+              fix = r'''\n<!-- FXMAP_RENDER_FIX -->
+<script>
+(() => {
+  const resizeFxMap = () => {
+    try {
+      if (typeof map !== 'undefined' && map && typeof map.resize === 'function') map.resize();
+    } catch (_) {}
+  };
+
+  const scheduleResize = () => {
+    resizeFxMap();
+    requestAnimationFrame(() => {
+      resizeFxMap();
+      requestAnimationFrame(resizeFxMap);
+    });
+    setTimeout(resizeFxMap, 120);
+    setTimeout(resizeFxMap, 500);
+    setTimeout(resizeFxMap, 1200);
+  };
+
+  window.addEventListener('load', scheduleResize, { once: true });
+  window.addEventListener('resize', scheduleResize, { passive: true });
+  window.addEventListener('orientationchange', scheduleResize, { passive: true });
+  window.visualViewport?.addEventListener('resize', scheduleResize, { passive: true });
+
+  try {
+    if (typeof map !== 'undefined' && map) {
+      map.on('load', scheduleResize);
+      map.on('style.load', scheduleResize);
+      map.on('error', (e) => {
+        console.error('[FX Map] Mapbox error:', e?.error || e);
+      });
+    }
+  } catch (_) {}
+
+  scheduleResize();
+})();
+</script>
+'''
+              s = s.replace('</body>', fix + '\n</body>', 1)
+
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Commit fix
+        shell: bash
+        run: |
+          if git diff --quiet -- public/index.html; then
+            echo 'No changes needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/index.html
+          git commit -m 'Fix Mapbox render on mobile'
+          git push origin main
