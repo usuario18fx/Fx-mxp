@@ -45,3 +45,5 @@ jobs:
           git add public/index.html
           git commit -m 'Fix Mapbox render on mobile'
           git push origin main
+
+# trigger: 2
