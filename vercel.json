@@ -1,18 +1,18 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
-    "api/index-v3.js": {
+    "api/index-v4.js": {
       "includeFiles": "public/index.html"
     }
   },
   "routes": [
     {
       "src": "^/$",
-      "dest": "/api/index-v3"
+      "dest": "/api/index-v4"
     },
     {
       "src": "^/index\\.html$",
-      "dest": "/api/index-v3"
+      "dest": "/api/index-v4"
     },
     {
       "handle": "filesystem"
