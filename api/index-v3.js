@@ -11,9 +11,9 @@ function patchMapHtml(html) {
     `style: ${rasterStyle}`
   );
 
-  if (!html.includes('FXMAP_RENDER_FIX_V4')) {
+  if (!html.includes('FXMAP_RENDER_FIX_V3_HARD')) {
     const injected = `
-<!-- FXMAP_RENDER_FIX_V4 -->
+<!-- FXMAP_RENDER_FIX_V3_HARD -->
 <style>
 html,body{background:#0b0f17!important}
 #fx-map-fallback{position:fixed;inset:0;z-index:0;width:100vw;height:100dvh;border:0;background:#0b0f17;display:block}
@@ -28,7 +28,6 @@ body:not(.fx-use-fallback) #fx-map-fallback{pointer-events:none}
 (function(){
   var FALLBACK_ID='fx-map-fallback';
   var usingFallback=false;
-  var fallbackTimer=null;
 
   function makeEmbed(lat,lng,zoom){
     lat=Number(lat)||43.25295; lng=Number(lng)||-79.86125; zoom=Number(zoom)||16;
@@ -84,7 +83,7 @@ body:not(.fx-use-fallback) #fx-map-fallback{pointer-events:none}
   }
 
   ensureFallback();
-  fallbackTimer=setTimeout(verify,3500);
+  setTimeout(verify,3500);
   setTimeout(verify,7000);
 
   window.addEventListener('fx-map-ready',function(){resizeBurst();setTimeout(verify,1200)});
