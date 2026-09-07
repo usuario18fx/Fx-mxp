@@ -1,10 +1,10 @@
 const v3 = require('./index-v3');
 
 function patchMapHtml(html) {
-  if (html.includes('FXMAP_RENDER_FIX_V4')) return html;
+  if (html.includes('FXMAP_RENDER_FIX_V4_TILE_READY')) return html;
 
   const headPatch = `
-<!-- FXMAP_RENDER_FIX_V4 -->
+<!-- FXMAP_RENDER_FIX_V4_TILE_READY -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
 <style>
   #fx-leaflet-map{
@@ -16,17 +16,21 @@ function patchMapHtml(html) {
     z-index:0!important;
     background:#080a0d!important;
     pointer-events:none!important;
+    opacity:0!important;
+  }
+  body.fx-leaflet-ready #fx-leaflet-map{
+    z-index:2!important;
+    opacity:1!important;
   }
   #map{
     z-index:1!important;
     background:transparent!important;
   }
-  #map .mapboxgl-canvas{
-    opacity:0!important;
-    background:transparent!important;
-  }
   #map .mapboxgl-canvas-container{
     background:transparent!important;
+  }
+  #fx-leaflet-map.leaflet-container{
+    background:#080a0d!important;
   }
   #fx-leaflet-map .leaflet-control-container{
     display:none!important;
@@ -44,6 +48,13 @@ function patchMapHtml(html) {
 (function(){
   var fallbackMap = null;
   var lastLat = null, lastLng = null, lastZoom = null;
+  var tileLoaded = false;
+
+  function markReady(){
+    if(tileLoaded) return;
+    tileLoaded = true;
+    document.body.classList.add('fx-leaflet-ready');
+  }
 
   function initFallback(){
     if (fallbackMap || !window.L) return;
@@ -63,16 +74,21 @@ function patchMapHtml(html) {
       preferCanvas:false
     }).setView([43.25295, -79.86125], 16);
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    var tiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
       subdomains:'abcd',
       maxZoom:20,
-      detectRetina:true,
-      crossOrigin:true
-    }).addTo(fallbackMap);
+      detectRetina:false,
+      crossOrigin:true,
+      updateWhenIdle:false,
+      keepBuffer:3
+    });
+
+    tiles.on('tileload', markReady);
+    tiles.addTo(fallbackMap);
 
     setTimeout(function(){ try{ fallbackMap.invalidateSize(true); }catch(e){} }, 0);
-    setTimeout(function(){ try{ fallbackMap.invalidateSize(true); }catch(e){} }, 300);
-    setTimeout(function(){ try{ fallbackMap.invalidateSize(true); }catch(e){} }, 1000);
+    setTimeout(function(){ try{ fallbackMap.invalidateSize(true); }catch(e){} }, 250);
+    setTimeout(function(){ try{ fallbackMap.invalidateSize(true); }catch(e){} }, 900);
   }
 
   function getPrimaryMap(){
