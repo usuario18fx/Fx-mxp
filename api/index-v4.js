@@ -74,9 +74,8 @@ function patchMapHtml(html) {
       preferCanvas:false
     }).setView([43.25295, -79.86125], 16);
 
-    var tiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
-      subdomains:'abcd',
-      maxZoom:20,
+    var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom:19,
       detectRetina:false,
       crossOrigin:true,
       updateWhenIdle:false,
@@ -109,7 +108,7 @@ function patchMapHtml(html) {
       var c = m.getCenter();
       var z = m.getZoom();
       if (!c || !isFinite(c.lat) || !isFinite(c.lng) || !isFinite(z)) return;
-      var targetZoom = Math.max(0, Math.min(20, z));
+      var targetZoom = Math.max(0, Math.min(19, z));
       if (lastLat === null || Math.abs(c.lat-lastLat) > 0.000001 || Math.abs(c.lng-lastLng) > 0.000001 || Math.abs(targetZoom-lastZoom) > 0.01) {
         fallbackMap.setView([c.lat, c.lng], targetZoom, {animate:false});
         lastLat = c.lat;
