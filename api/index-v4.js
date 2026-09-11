@@ -74,8 +74,8 @@ function patchMapHtml(html) {
       preferCanvas:false
     }).setView([43.25295, -79.86125], 16);
 
-    var tiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
-      subdomains:'abcd',
+    var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      subdomains:'abc',
       maxZoom:20,
       detectRetina:false,
       crossOrigin:true,
