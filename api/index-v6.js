@@ -90,13 +90,73 @@ function patchPrecisionControls(html) {
   return html.includes('</body>') ? html.replace('</body>', patch + '\n</body>') : html + patch;
 }
 
+
+function patchMapDiagnostics(html) {
+  if (html.includes('FX_MAP_DIAGNOSTICS_V1')) return html;
+  const patch = `
+<!-- FX_MAP_DIAGNOSTICS_V1 -->
+<style>
+#fx-map-status{position:fixed;left:12px;top:calc(12px + env(safe-area-inset-top,0px));z-index:9999;padding:6px 9px;border-radius:999px;background:rgba(7,11,17,.72);border:1px solid rgba(255,255,255,.10);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);font:800 9px/1 -apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;letter-spacing:.08em;color:#9aa7b8;pointer-events:none;opacity:.86}
+#fx-map-status.live{color:#79ffb6;border-color:rgba(0,255,136,.24)}
+#fx-map-status.backup{color:#facc15;border-color:rgba(250,204,21,.28)}
+</style>
+<div id="fx-map-status">MAP · CHECKING</div>
+<script>
+(function(){'use strict';
+  var badge=document.getElementById('fx-map-status');
+  var primaryReady=false;
+  var fallbackReady=false;
+
+  function setState(mode){
+    if(!badge)return;
+    badge.className=mode==='live'?'live':mode==='backup'?'backup':'';
+    badge.textContent=mode==='live'?'MAP · LIVE':mode==='backup'?'MAP · BACKUP':'MAP · CHECKING';
+  }
+
+  function showFallback(){
+    fallbackReady=document.body.classList.contains('fx-leaflet-ready');
+    if(fallbackReady){setState('backup');return true;}
+    return false;
+  }
+
+  function bindPrimary(){
+    var m=null;
+    try{m=window.__fxMapInstance||null}catch(e){}
+    if(!m)return false;
+    try{
+      m.once('load',function(){primaryReady=true;if(!showFallback())setState('live')});
+      m.on('error',function(){setTimeout(showFallback,0)});
+      if(typeof m.loaded==='function'&&m.loaded()){primaryReady=true;if(!showFallback())setState('live')}
+    }catch(e){}
+    return true;
+  }
+
+  var obs=new MutationObserver(function(){
+    if(document.body.classList.contains('fx-leaflet-ready'))showFallback();
+  });
+  obs.observe(document.body,{attributes:true,attributeFilter:['class']});
+
+  var tries=0,t=setInterval(function(){
+    tries++;
+    bindPrimary();
+    if(showFallback()||primaryReady||tries>40)clearInterval(t);
+  },150);
+
+  setTimeout(function(){
+    if(!primaryReady)showFallback();
+  },3500);
+})();
+</script>`;
+  return html.includes('</body>') ? html.replace('</body>', patch + '\n</body>') : html + patch;
+}
+
 module.exports = function handler(req, res) {
   let statusCode = 200;
   const proxy = Object.create(res);
   proxy.setHeader = function(name, value){ res.setHeader(name, value); return proxy; };
   proxy.status = function(code){ statusCode = code; return proxy; };
   proxy.send = function(body){
-    if (statusCode === 200 && typeof body === 'string') body = patchPrecisionControls(body);
+    if (statusCode === 200 && typeof body === 'string') { body = patchPrecisionControls(body); body = patchMapDiagnostics(body); }
     return res.status(statusCode).send(body);
   };
   return v5(req, proxy);
