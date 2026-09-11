@@ -150,13 +150,95 @@ function patchMapDiagnostics(html) {
   return html.includes('</body>') ? html.replace('</body>', patch + '\n</body>') : html + patch;
 }
 
+
+function patchHardMapFallback(html) {
+  if (html.includes('FX_OSM_HARD_FALLBACK_V1')) return html;
+  const patch = `
+<!-- FX_OSM_HARD_FALLBACK_V1 -->
+<style>
+#fx-osm-hard-fallback{position:fixed;inset:0;width:100vw;height:100dvh;min-height:100vh;border:0;z-index:0;background:#0b0f17;display:block;opacity:0;pointer-events:none;transition:opacity .18s ease}
+body.fx-hard-map-fallback #fx-osm-hard-fallback{opacity:1;pointer-events:auto}
+body.fx-hard-map-fallback #map{opacity:0!important;pointer-events:none!important}
+body.fx-hard-map-fallback #fx-leaflet-map{opacity:0!important;pointer-events:none!important}
+</style>
+<iframe id="fx-osm-hard-fallback" title="FX Map backup" loading="eager" referrerpolicy="no-referrer-when-downgrade"></iframe>
+<script>
+(function(){'use strict';
+  var frame=document.getElementById('fx-osm-hard-fallback');
+  var hard=false, mapboxReady=false, leafletReady=false;
+
+  function embed(lat,lng){
+    lat=Number(lat)||43.25295; lng=Number(lng)||-79.86125;
+    var d=.012;
+    return 'https://www.openstreetmap.org/export/embed.html?bbox='+
+      encodeURIComponent((lng-d)+','+(lat-d)+','+(lng+d)+','+(lat+d))+
+      '&layer=mapnik&marker='+encodeURIComponent(lat+','+lng);
+  }
+  function seed(lat,lng){
+    if(!frame)return;
+    frame.src=embed(lat,lng);
+  }
+  function show(){
+    if(mapboxReady||leafletReady)return;
+    hard=true;
+    document.body.classList.add('fx-hard-map-fallback');
+    var b=document.getElementById('fx-map-status');
+    if(b){b.className='backup';b.textContent='MAP · BACKUP';}
+  }
+  function hide(){
+    hard=false;
+    document.body.classList.remove('fx-hard-map-fallback');
+  }
+  function checkPrimary(){
+    try{
+      var m=window.__fxMapInstance;
+      if(m && typeof m.loaded==='function' && m.loaded()){
+        var canvas=m.getCanvas&&m.getCanvas();
+        if(canvas&&canvas.width>50&&canvas.height>50){mapboxReady=true;hide();return true;}
+      }
+    }catch(e){}
+    return false;
+  }
+  function checkLeaflet(){
+    leafletReady=document.body.classList.contains('fx-leaflet-ready');
+    if(leafletReady){hide();return true;}
+    return false;
+  }
+
+  seed(43.25295,-79.86125);
+
+  var tries=0,t=setInterval(function(){
+    tries++;
+    if(checkPrimary()||checkLeaflet()){clearInterval(t);return;}
+    if(tries===18)show();
+    if(tries>80)clearInterval(t);
+  },150);
+
+  window.addEventListener('fx-map-ready',function(){
+    setTimeout(function(){checkPrimary()},250);
+  });
+
+  new MutationObserver(function(){
+    if(checkLeaflet())hide();
+  }).observe(document.body,{attributes:true,attributeFilter:['class']});
+
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(function(p){
+      seed(p.coords.latitude,p.coords.longitude);
+    },function(){},{enableHighAccuracy:true,timeout:7000,maximumAge:15000});
+  }
+})();
+</script>`;
+  return html.includes('</body>') ? html.replace('</body>', patch + '\n</body>') : html + patch;
+}
+
 module.exports = function handler(req, res) {
   let statusCode = 200;
   const proxy = Object.create(res);
   proxy.setHeader = function(name, value){ res.setHeader(name, value); return proxy; };
   proxy.status = function(code){ statusCode = code; return proxy; };
   proxy.send = function(body){
-    if (statusCode === 200 && typeof body === 'string') { body = patchPrecisionControls(body); body = patchMapDiagnostics(body); }
+    if (statusCode === 200 && typeof body === 'string') { body = patchPrecisionControls(body); body = patchMapDiagnostics(body); body = patchHardMapFallback(body); }
     return res.status(statusCode).send(body);
   };
   return v5(req, proxy);
