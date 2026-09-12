@@ -1,35 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "functions": {
-    "api/index-v6.js": {
-      "includeFiles": "public/index.html"
-    }
-  },
-  "routes": [
-    {
-      "src": "^/$",
-      "dest": "/api/index-v6"
-    },
-    {
-      "src": "^/index\\.html$",
-      "dest": "/api/index-v6"
-    },
-    {
-      "handle": "filesystem"
-    }
-  ],
   "headers": [
     {
-      "source": "/",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-store, max-age=0"
-        }
-      ]
-    },
-    {
-      "source": "/index.html",
+      "source": "/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
