@@ -9,6 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="FX Map"/>
 <title>FX Map — Tu mapa privado</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%230a84ff'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-family='Arial,sans-serif' font-size='28' font-weight='700' fill='white'%3EFX%3C/text%3E%3C/svg%3E"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
@@ -2245,10 +2246,14 @@ input::placeholder,textarea::placeholder{color:#6d6d72!important}
 #orbital .orb-ab,#orbital .orb-extra{display:none!important}
 @media(max-width:760px){#orbital{right:12px;bottom:calc(90px + var(--safe-bottom));transform:scale(.9);transform-origin:bottom right}}
 
+
+#map{background:#05070a}
+.maplibregl-canvas{filter:brightness(.86) contrast(1.08)}
+/* FX_MAP_DARK_TUNING_V1 */
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 </head>
-<body>
+<body>\n<form id="fx-password-form" autocomplete="off" style="display:none"></form>
 
 <div id="map"></div>
 <div id="press-ring"></div>
@@ -2384,7 +2389,7 @@ input::placeholder,textarea::placeholder{color:#6d6d72!important}
         <div class="priv-lock-icon">⌾</div>
         <h3>Vista protegida</h3>
         <p>Confirma tu código de UserFx para ver accesos rápidos y etiquetas privadas.</p>
-        <input type="password" class="priv-input" id="priv-pass" placeholder="● ● ● ● ● ●"/>
+        <input type="password" class="priv-input" id="priv-pass" placeholder="● ● ● ● ● ●"/ form="fx-password-form"/>
         <button class="btn-p" id="priv-unlock" style="max-width:200px;margin:0 auto">Desbloquear</button>
 
       </div>
@@ -2455,11 +2460,11 @@ input::placeholder,textarea::placeholder{color:#6d6d72!important}
         <div class="cfield"><div class="clbl">Nombre</div><input type="text" class="cinput" id="cfg-name" placeholder="Nombre del contacto" autocomplete="name"/></div>
         <div class="cfield"><div class="clbl">Teléfono / iMessage</div><input type="tel" class="cinput" id="cfg-phone" placeholder="+1 416 555 0000" autocomplete="tel"/></div>
         <div class="cfield"><div class="clbl">Correo electrónico</div><input type="email" class="cinput" id="cfg-email" placeholder="contacto@correo.com" autocomplete="email"/></div>
-        <div class="cfield" style="margin-bottom:0"><div class="clbl">Código de emergencia</div><input type="password" inputmode="numeric" maxlength="8" class="cinput" id="cfg-soscode" placeholder="4 a 8 dígitos" autocomplete="new-password"/></div>
+        <div class="cfield" style="margin-bottom:0"><div class="clbl">Código de emergencia</div><input type="password" inputmode="numeric" maxlength="8" class="cinput" id="cfg-soscode" placeholder="4 a 8 dígitos" autocomplete="new-password"/ form="fx-password-form"/></div>
       </div>
       <div class="settings-group">
         <div class="settings-group-title"><span>FX</span>UserFx</div>
-        <div class="cfield" style="margin-bottom:0"><div class="clbl">Nuevo código de la bodega</div><input type="password" class="cinput" id="cfg-privpass" placeholder="Deja vacío para conservarlo" autocomplete="new-password"/></div>
+        <div class="cfield" style="margin-bottom:0"><div class="clbl">Nuevo código de la bodega</div><input type="password" class="cinput" id="cfg-privpass" placeholder="Deja vacío para conservarlo" autocomplete="new-password"/ form="fx-password-form"/></div>
       </div>
       <div class="settings-group">
         <div class="settings-group-title"><span>◎</span>Mapa</div>
@@ -2483,7 +2488,7 @@ input::placeholder,textarea::placeholder{color:#6d6d72!important}
     <div class="enc-title">⚿ Cifrado local completo</div>
     <div class="enc-sub">Protege lugares, rutas, notas, multimedia y configuración. La clave nunca sale de tu dispositivo.</div>
     <div class="enc-status locked" id="enc-status">⚿ Datos sin cifrar</div>
-    <div class="cfield"><div class="clbl">Clave de cifrado</div><input type="password" class="cinput" id="enc-key" placeholder="Tu clave secreta..."/></div>
+    <div class="cfield"><div class="clbl">Clave de cifrado</div><input type="password" class="cinput" id="enc-key" placeholder="Tu clave secreta..."/ form="fx-password-form"/></div>
     <div class="arow"><button class="btn-p" id="enc-toggle">Activar cifrado</button><button class="btn-g" id="enc-cancel">Cancelar</button></div>
     <div style="margin-top:12px;padding:10px;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid var(--border2);font-size:9px;color:var(--muted);line-height:1.7"><b style="color:var(--text)">Cifrado local AES</b> — Mientras esté activo, la sincronización cloud queda pausada para no enviar copias sin cifrar.</div>
   </div>
@@ -2595,7 +2600,7 @@ input::placeholder,textarea::placeholder{color:#6d6d72!important}
         </div>
         <label class="clbl" for="sos-code" style="margin-bottom:7px">Código de emergencia</label>
         <div class="sos-code-row">
-          <input type="password" inputmode="numeric" maxlength="8" class="cinput" id="sos-code" placeholder="••••" autocomplete="off"/>
+          <input type="password" inputmode="numeric" maxlength="8" class="cinput" id="sos-code" placeholder="••••" autocomplete="off"/ form="fx-password-form"/>
           <button class="btn-p" id="sos-unlock">Activar</button>
         </div>
         <div class="sos-security-note"><span>⌾</span><span id="sos-code-help">Nada se envía sin tu confirmación. iMessage y correo se abrirán con el expediente listo para revisar.</span></div>
@@ -2668,7 +2673,7 @@ input::placeholder,textarea::placeholder{color:#6d6d72!important}
     <div class="auth-lock-mark">⌾</div>
     <div class="auth-title" id="auth-title-text">Desbloquear UserFx</div>
     <div class="auth-copy" id="fx-auth-copy">Tu bodega contiene archivos y notas privadas. El código se valida solo en este dispositivo.</div>
-    <input type="password" id="fx-auth-pass" class="auth-input" placeholder="••••" autocomplete="off" aria-label="Código UserFx"/>
+    <input type="password" id="fx-auth-pass" class="auth-input" placeholder="••••" autocomplete="off" aria-label="Código UserFx"/ form="fx-password-form"/>
     <button id="fx-auth-submit" class="btn-full" style="width:100%;margin-bottom:8px">Desbloquear bodega</button>
     <button id="fx-auth-bio" class="btn-dim" style="width:100%;display:none">Usar Face ID / huella</button>
     <button id="fx-auth-cancel" class="auth-cancel">Cancelar</button>
@@ -2910,7 +2915,20 @@ const BASE = {
         attribution: '© OpenStreetMap contributors'
       }
     },
-    layers: [{ id: 'fxOsm', type: 'raster', source: 'fxOsm', minzoom: 0, maxzoom: 19 }]
+    layers: [{
+      id: 'fxOsm',
+      type: 'raster',
+      source: 'fxOsm',
+      minzoom: 0,
+      maxzoom: 19,
+      paint: {
+        'raster-saturation': -0.72,
+        'raster-contrast': 0.34,
+        'raster-brightness-min': 0.08,
+        'raster-brightness-max': 0.58,
+        'raster-opacity': 0.98
+      }
+    }]
   }
 } ;
 const SK = {
@@ -3275,25 +3293,42 @@ function saveAll() {
   }
 }
 // ─── D-PAD CONTROLS ────────────────────────────────────────────
+const FX_MOVE_STEP = 22;
+const FX_MOVE_REPEAT = 34;
+const FX_MOVE_DURATION = 24;
+
 function dpadAction(dir) {
-  vibra();
   const offset = {
-    up: [0, -96],
-    rt: [96, 0],
-    dn: [0, 96],
-    lt: [-96, 0]
+    up: [0, -FX_MOVE_STEP],
+    rt: [FX_MOVE_STEP, 0],
+    dn: [0, FX_MOVE_STEP],
+    lt: [-FX_MOVE_STEP, 0]
   }[dir];
   if (!offset) return;
   const center = map.project(map.getCenter());
   const destination = map.unproject([center.x + offset[0], center.y + offset[1]]);
-  map.easeTo({ center: [destination.lng, destination.lat], duration: 190, essential: true });
+  map.easeTo({
+    center: [destination.lng, destination.lat],
+    duration: FX_MOVE_DURATION,
+    easing: t => t,
+    essential: true
+  });
 }
 function startHold(dir) {
+  vibra();
   dpadAction(dir);
-  const iv = setInterval(() => dpadAction(dir), 180);
-  const stop = () => { clearInterval(iv); document.removeEventListener('mouseup', stop); document.removeEventListener('touchend', stop); };
-  document.addEventListener('mouseup', stop);
-  document.addEventListener('touchend', stop);
+  const iv = setInterval(() => dpadAction(dir), FX_MOVE_REPEAT);
+  const stop = () => {
+    clearInterval(iv);
+    document.removeEventListener('mouseup', stop);
+    document.removeEventListener('touchend', stop);
+    document.removeEventListener('pointerup', stop);
+    document.removeEventListener('pointercancel', stop);
+  };
+  document.addEventListener('mouseup', stop, { once: true });
+  document.addEventListener('touchend', stop, { once: true });
+  document.addEventListener('pointerup', stop, { once: true });
+  document.addEventListener('pointercancel', stop, { once: true });
 }
 function setCtrlMode(mode) {
   ctrlMode = mode;
