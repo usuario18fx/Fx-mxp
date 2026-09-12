@@ -13,8 +13,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-<link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet"/>
-<script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet"/>
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
 <style>:root{
   --bg:#060606;--surface:rgba(9,9,9,.96);--surface2:rgba(14,14,14,.88);
@@ -32,8 +32,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sa
 button,input,textarea,select{font:inherit;border:none;background:none;color:inherit}
 button{cursor:pointer}
 #map{position:absolute;inset:0}
-.mapboxgl-ctrl-attrib,.mapboxgl-compact-button,.mapboxgl-ctrl-logo{display:none!important}
-.mapboxgl-ctrl-bottom-right,.mapboxgl-ctrl-bottom-left,.mapboxgl-ctrl-top-right,.mapboxgl-ctrl-top-left{display:none!important}
+.maplibregl-ctrl-attrib,.maplibregl-compact-button,.maplibregl-ctrl-logo{display:none!important}
+.maplibregl-ctrl-bottom-right,.maplibregl-ctrl-bottom-left,.maplibregl-ctrl-top-right,.maplibregl-ctrl-top-left{display:none!important}
 .brand-pill-bl{position:fixed;left:14px;bottom:calc(14px + var(--safe-bottom));z-index:70;display:inline-flex;align-items:center;gap:9px;height:48px;padding:0 18px;border-radius:14px;font-size:11px;font-weight:900;letter-spacing:.22em;text-transform:uppercase;border:1.5px solid rgba(0,134,223,.35);background:linear-gradient(180deg,rgba(0,134,223,.1),rgba(9,9,9,.94));backdrop-filter:blur(22px);box-shadow:0 4px 18px rgba(0,0,0,.5),0 0 24px rgba(0,134,223,.08),inset 0 1px 0 rgba(255,255,255,.06);color:var(--accent-blue);cursor:pointer;transition:all .2s}
 .brand-pill-bl:active{transform:scale(.96)}
 .brand-dot{width:8px;height:8px;border-radius:50%;background:var(--accent-blue);box-shadow:0 0 6px var(--accent-blue);animation:pdot 2s ease-in-out infinite}
@@ -2890,8 +2890,6 @@ input::placeholder,textarea::placeholder{color:#6d6d72!important}
 </div>
 <script>
 // FX MAP — private, offline-first place intelligence
-mapboxgl.accessToken = '';
-try { mapboxgl.config.EVENTS_URL = ''; } catch (e) {}
 // ─── CONFIGURATION ──────────────────────────────────────────────
 const BASE = {
   center: [-79.86125, 43.25295],
@@ -2939,7 +2937,7 @@ const COLORS = [
 ];
 const FLAG_ORDER = ['save', 'flag'];
 // ─── MAP INIT ──────────────────────────────────────────────────
-const map = new mapboxgl.Map({
+const map = new maplibregl.Map({
   container: 'map',
   style: BASE.style,
   center: BASE.center,
@@ -3555,7 +3553,7 @@ function renderActiveRoute(fit = false) {
   if (coords.length >= 2) features.unshift({ type: 'Feature', geometry: { type: 'LineString', coordinates: coords }, properties: {} });
   src.setData({ type: 'FeatureCollection', features });
   if (fit && coords.length) {
-    const bounds = coords.reduce((b, c) => b.extend(c), new mapboxgl.LngLatBounds(coords[0], coords[0]));
+    const bounds = coords.reduce((b, c) => b.extend(c), new maplibregl.LngLatBounds(coords[0], coords[0]));
     map.fitBounds(bounds, { padding: 70, maxZoom: 17, duration: 700 });
   }
 }
@@ -4812,30 +4810,32 @@ async function geocodeSearch(term) {
   try {
     if (searchAbort) searchAbort.abort();
     searchAbort = new AbortController();
-    const proximity = `${userLocation[0]},${userLocation[1]}`;
-    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(q)}.json?access_token=${mapboxgl.accessToken}&limit=6&language=es&proximity=${proximity}`;
-    const r = await fetch(url, { signal: searchAbort.signal });
+    const url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=6&accept-language=es&q=' + encodeURIComponent(q);
+    const r = await fetch(url, { signal: searchAbort.signal, headers: { Accept: 'application/json' } });
     if (!r.ok) throw new Error('geocode http ' + r.status);
     const data = await r.json();
-    const feats = data?.features || [];
+    const feats = (data || []).map(item => ({
+      center: [Number(item.lon), Number(item.lat)],
+      text: item.name || String(item.display_name || '').split(',')[0],
+      place_name: item.display_name || item.name || ''
+    })).filter(f => Number.isFinite(f.center[0]) && Number.isFinite(f.center[1]));
     if (!feats.length) {
       res.innerHTML = '<div class="sr-empty">Sin resultados para "' + esc(q) + '"</div>';
       return;
-}
+    }
     res.innerHTML = feats.map((f, i) => {
       const [flng, flat] = f.center || [];
       const nearby = places.find(p => distM([flng, flat], [p.lng, p.lat]) < 40);
       const flagColor = nearby ? (nearby.customFlag?.color || CLASS_META[nearby.classification]?.c || nearby.color || '#888') : '';
-      const flagHtml = flagColor ? `<span style="color:${flagColor}">⚑</span>` : `<span>⚑</span>`;
+      const flagHtml = flagColor ? `<span style="color:${flagColor}">⚑</span>` : '<span>⚑</span>';
       return `<div class="sr" data-idx="${i}">
       ${flagHtml}<div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:700;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${esc(f.text||f.place_name||'')}</div><div style="font-size:10px;color:var(--text-muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${esc(f.place_name||'')}</div></div>${nearby ? `<span class="sr-tag local" style="background:${flagColor}22;color:${flagColor}">GUARDADO</span>` : '<span class="sr-tag map">MAPA</span>'}</div>`;
-} ) .join('') ;
+    }).join('');
     res.querySelectorAll('.sr[data-idx]').forEach(item => item.addEventListener('click', () => {
       const f = feats[parseInt(item.dataset.idx)];
       if (!f) return;
       const [lng, lat] = f.center;
       map.flyTo({ center: [lng, lat], zoom: 17, pitch: BASE.pitch, bearing: BASE.bearing, duration: 900, essential: true });
-      // Ocultar search PRIMERO, antes de crear la tarjeta de confirmación
       $('search-wrap').classList.remove('open');
       $('search-explore-btn').classList.remove('active');
       $('srch-lbl').textContent = 'Buscar lugar o #hashtag';
@@ -4844,21 +4844,21 @@ async function geocodeSearch(term) {
       map.scrollZoom.disable();
       map.touchZoomRotate.disable();
       if (ctrlVisible) $('orbital').classList.remove('hidden');
-      // Ahora sí crear la tarjeta de confirmación (ya no se borra)
       showSearchConfirmMarker(lng, lat, f.place_name || f.text || '');
-} ) ) ;
-} catch (e) {
+    }));
+  } catch (e) {
     if (e?.name === 'AbortError') return;
     res.innerHTML = '<div class="sr-empty">Error de búsqueda. Intenta de nuevo.</div>';
-} }
+  }
+}
 async function reverseGeocode(lng, lat) {
   try {
-    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${mapboxgl.accessToken}&language=es&limit=1`;
-    const r = await fetch(url);
+    const url = 'https://nominatim.openstreetmap.org/reverse?format=jsonv2&accept-language=es&zoom=18&lat=' + encodeURIComponent(lat) + '&lon=' + encodeURIComponent(lng);
+    const r = await fetch(url, { headers: { Accept: 'application/json' } });
     if (!r.ok) return '';
     const data = await r.json();
-    return data?.features?.[0]?.place_name || '';
-} catch (e) { return ''; }
+    return data?.display_name || '';
+  } catch (e) { return ''; }
 }
 // ─── SEARCH CONFIRM MARKER ─────────────────────────────────────
 function clearSearchConfirmMarker() {
@@ -4877,7 +4877,7 @@ function showSearchConfirmMarker(lng, lat, address = '', placeId = null) {
   el.textContent = '📍';
   el.style.cursor = 'pointer';
   el.addEventListener('click', () => { openPhotoModal(lng, lat, address, placeId); });
-  searchConfirmMarker = new mapboxgl.Marker({ element: el, anchor: 'bottom' }).setLngLat([lng, lat]).addTo(map);
+  searchConfirmMarker = new maplibregl.Marker({ element: el, anchor: 'bottom' }).setLngLat([lng, lat]).addTo(map);
   map.once('moveend', () => { try { if (searchConfirmMarker) searchConfirmMarker.setLngLat([lng, lat]); } catch (e) {} });
   const res = $('search-results');
   if (res) {
@@ -5970,7 +5970,7 @@ map.on('style.load', () => {
 map.on('load', () => {
   map.easeTo({ center: BASE.center, zoom: BASE.zoom, pitch: BASE.pitch, bearing: BASE.bearing, duration: 0, essential: true });
   // Geolocate control (oculto)
-  const geo = new mapboxgl.GeolocateControl({
+  const geo = new maplibregl.GeolocateControl({
     positionOptions: { enableHighAccuracy: true },
     trackUserLocation: true,
     showUserHeading: true,
@@ -5979,7 +5979,7 @@ map.on('load', () => {
   map.addControl(geo, 'bottom-right');
   geo.on('geolocate', e => { userLocation = [e.coords.longitude, e.coords.latitude]; });
   setTimeout(() => {
-    const gc = document.querySelector('.mapboxgl-ctrl-geolocate');
+    const gc = document.querySelector('.maplibregl-ctrl-geolocate');
     if (gc) gc.style.display = 'none';
 }, 600);
   ensureBuildingHighlightLayers();
