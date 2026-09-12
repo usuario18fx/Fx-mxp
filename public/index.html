@@ -2890,7 +2890,8 @@ input::placeholder,textarea::placeholder{color:#6d6d72!important}
 </div>
 <script>
 // FX MAP — private, offline-first place intelligence
-mapboxgl.accessToken = 'pk.eyJ1IjoiLXVzZXIxOGZ4IiwiYSI6ImNtczg1dmhnbjBiOG4yenE1aWJsdTVsdDMifQ.DCpulj_HXHw2KBfQWIeUYw';
+mapboxgl.accessToken = '';
+try { mapboxgl.config.EVENTS_URL = ''; } catch (e) {}
 // ─── CONFIGURATION ──────────────────────────────────────────────
 const BASE = {
   center: [-79.86125, 43.25295],
@@ -5968,14 +5969,6 @@ map.on('style.load', () => {
 } ) ;
 map.on('load', () => {
   map.easeTo({ center: BASE.center, zoom: BASE.zoom, pitch: BASE.pitch, bearing: BASE.bearing, duration: 0, essential: true });
-  try {
-    map.setConfigProperty('basemap', 'lightPreset', 'night');
-    map.setConfigProperty('basemap', 'show3dObjects', true);
-    map.setConfigProperty('basemap', 'showPlaceLabels', false);
-    map.setConfigProperty('basemap', 'showPointOfInterestLabels', false);
-    map.setConfigProperty('basemap', 'showRoadLabels', false);
-    map.setConfigProperty('basemap', 'showTransitLabels', false);
-  } catch (e) {}
   // Geolocate control (oculto)
   const geo = new mapboxgl.GeolocateControl({
     positionOptions: { enableHighAccuracy: true },
