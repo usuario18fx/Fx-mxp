@@ -156,10 +156,11 @@ function patchHardMapFallback(html) {
   const patch = `
 <!-- FX_OSM_HARD_FALLBACK_V1 -->
 <style>
-#fx-osm-hard-fallback{position:fixed;inset:0;width:100vw;height:100dvh;min-height:100vh;border:0;z-index:0;background:#0b0f17;display:block;opacity:0;pointer-events:none;transition:opacity .18s ease}
-body.fx-hard-map-fallback #fx-osm-hard-fallback{opacity:1;pointer-events:auto}
-body.fx-hard-map-fallback #map{opacity:0!important;pointer-events:none!important}
-body.fx-hard-map-fallback #fx-leaflet-map{opacity:0!important;pointer-events:none!important}
+#fx-osm-hard-fallback{position:fixed;inset:0;width:100vw;height:100dvh;min-height:100vh;border:0;z-index:1!important;background:#0b0f17;display:block;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .18s ease}
+body.fx-hard-map-fallback #fx-osm-hard-fallback{z-index:3!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important}
+body.fx-hard-map-fallback #map{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+body.fx-hard-map-fallback #fx-leaflet-map{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+body.fx-hard-map-fallback .topbar,body.fx-hard-map-fallback .search,body.fx-hard-map-fallback .searchbar,body.fx-hard-map-fallback .dpad,body.fx-hard-map-fallback .bottom-nav,body.fx-hard-map-fallback nav{z-index:20!important}
 </style>
 <iframe id="fx-osm-hard-fallback" title="FX Map backup" loading="eager" referrerpolicy="no-referrer-when-downgrade"></iframe>
 <script>
@@ -179,7 +180,6 @@ body.fx-hard-map-fallback #fx-leaflet-map{opacity:0!important;pointer-events:non
     frame.src=embed(lat,lng);
   }
   function show(){
-    if(mapboxReady||leafletReady)return;
     hard=true;
     document.body.classList.add('fx-hard-map-fallback');
     var b=document.getElementById('fx-map-status');
@@ -210,7 +210,7 @@ body.fx-hard-map-fallback #fx-leaflet-map{opacity:0!important;pointer-events:non
   var tries=0,t=setInterval(function(){
     tries++;
     if(checkPrimary()||checkLeaflet()){clearInterval(t);return;}
-    if(tries===18)show();
+    if(tries===8)show();
     if(tries>80)clearInterval(t);
   },150);
 
