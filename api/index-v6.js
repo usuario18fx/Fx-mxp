@@ -232,13 +232,22 @@ body.fx-hard-map-fallback .topbar,body.fx-hard-map-fallback .search,body.fx-hard
   return html.includes('</body>') ? html.replace('</body>', patch + '\n</body>') : html + patch;
 }
 
+
+function patchRasterPrimary(html) {
+  if (html.includes('FX_RASTER_PRIMARY_V1')) return html;
+  const rasterStyle = "{version:8,sources:{fxOsm:{type:'raster',tiles:['https://a.tile.openstreetmap.org/{z}/{x}/{y}.png','https://b.tile.openstreetmap.org/{z}/{x}/{y}.png','https://c.tile.openstreetmap.org/{z}/{x}/{y}.png'],tileSize:256,attribution:'© OpenStreetMap contributors'}},layers:[{id:'fxOsm',type:'raster',source:'fxOsm',minzoom:0,maxzoom:19}]}";
+  let out = html.replace(/style:\s*['\"]mapbox:\/\/styles\/mapbox\/(?:standard|dark-v11)['\"]/i, "style: "+rasterStyle);
+  const marker = '<!-- FX_RASTER_PRIMARY_V1 -->';
+  return out.includes('</body>') ? out.replace('</body>', marker+'\n</body>') : out+marker;
+}
+
 module.exports = function handler(req, res) {
   let statusCode = 200;
   const proxy = Object.create(res);
   proxy.setHeader = function(name, value){ res.setHeader(name, value); return proxy; };
   proxy.status = function(code){ statusCode = code; return proxy; };
   proxy.send = function(body){
-    if (statusCode === 200 && typeof body === 'string') { body = patchPrecisionControls(body); body = patchMapDiagnostics(body); body = patchHardMapFallback(body); }
+    if (statusCode === 200 && typeof body === 'string') { body = patchRasterPrimary(body); body = patchPrecisionControls(body); body = patchMapDiagnostics(body); body = patchHardMapFallback(body); }
     return res.status(statusCode).send(body);
   };
   return v5(req, proxy);
