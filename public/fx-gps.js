@@ -124,7 +124,7 @@
     el.innerHTML = `
       <div class="fx-gps-face-wrap">
         <img class="fx-gps-face" alt="Memoji" />
-        <div class="fx-gps-face-fallback">🙂</div>
+        <div class="fx-gps-face-fallback">🧑🏻</div>
       </div>
       <div class="fx-gps-accuracy">± -- m</div>
     `;
@@ -144,7 +144,7 @@
     card.innerHTML = `
       <div class="fx-gps-head">
         <img class="fx-gps-avatar" id="fx-gps-avatar" alt="Memoji" />
-        <div class="fx-gps-avatar-fallback" id="fx-gps-avatar-fallback">🙂</div>
+        <div class="fx-gps-avatar-fallback" id="fx-gps-avatar-fallback">🧑🏻</div>
         <div class="fx-gps-head-copy"><div class="fx-gps-title">Mi ubicación</div><div class="fx-gps-sub" id="fx-gps-time">Esperando GPS…</div></div>
         <button class="fx-gps-close" id="fx-gps-close" type="button">×</button>
       </div>
@@ -371,6 +371,7 @@
   }
 
   function onPositionError(error) {
+    ensureVisibleCharacter();
     if (error && error.code === 1) toast('Activa ubicación precisa para FX Map');
   }
 
@@ -421,9 +422,20 @@
     window.location.href = `shortcuts://run-shortcut?name=${encodeURIComponent(name)}&input=text&text=${encodeURIComponent(text)}`;
   }
 
+  function ensureVisibleCharacter() {
+    if (!FX_GPS.map || FX_GPS.marker) return;
+    const markerEl = FX_GPS.markerEl || buildMarker();
+    const center = FX_GPS.map.getCenter ? FX_GPS.map.getCenter() : {lng:-79.86125, lat:43.25295};
+    FX_GPS.marker = new maplibregl.Marker({element:markerEl, anchor:'center', offset:[0,-10]})
+      .setLngLat([center.lng, center.lat]).addTo(FX_GPS.map);
+    restoreMedia();
+    updateMarkerAccuracy(0);
+  }
+
   function bindMap(map) {
     if (!map || FX_GPS.map === map) return;
     FX_GPS.map = map;
+    ensureVisibleCharacter();
     const styleHandler = () => {
       ensureAccuracyLayer();
       if (FX_GPS.lastPosition) {
