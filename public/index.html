@@ -2897,7 +2897,22 @@ const BASE = {
   zoom: 16.22,
   pitch: 61.5,
   bearing: 15,
-  style: 'mapbox://styles/mapbox/standard'
+  style: {
+    version: 8,
+    sources: {
+      fxOsm: {
+        type: 'raster',
+        tiles: [
+          'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png'
+        ],
+        tileSize: 256,
+        attribution: '© OpenStreetMap contributors'
+      }
+    },
+    layers: [{ id: 'fxOsm', type: 'raster', source: 'fxOsm', minzoom: 0, maxzoom: 19 }]
+  }
 } ;
 const SK = {
   places: 'fxmap.v8.places',
@@ -2935,17 +2950,7 @@ const map = new mapboxgl.Map({
   doubleClickZoom: false,
   touchZoomRotate: false,
   boxZoom: false,
-  keyboard: false,
-  config: {
-    basemap: {
-      theme: 'monochrome',
-      lightPreset: 'night',
-      show3dObjects: true,
-      showPlaceLabels: false,
-      showPointOfInterestLabels: false,
-      showRoadLabels: false,
-      showTransitLabels: false
-} } } ) ;
+  keyboard: false} ) ;
 // Disable all zoom controls
 map.scrollZoom.disable();
 map.doubleClickZoom.disable();
