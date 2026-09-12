@@ -10,10 +10,6 @@
 <meta name="apple-mobile-web-app-title" content="FX Map"/>
 <title>FX Map — Tu mapa privado</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%230a84ff'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-family='Arial,sans-serif' font-size='28' font-weight='700' fill='white'%3EFX%3C/text%3E%3C/svg%3E"/>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet"/>
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
@@ -2250,11 +2246,13 @@ input::placeholder,textarea::placeholder{color:#6d6d72!important}
 #map{background:#05070a}
 .maplibregl-canvas{filter:brightness(.86) contrast(1.08)}
 /* FX_MAP_DARK_TUNING_V1 */
+
+input[data-fx-secret="1"]{-webkit-text-security:disc;text-security:disc}
+ /* FX_SECRET_INPUTS_V1 */
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 </head>
-<body>\n<form id="fx-password-form" autocomplete="off" style="display:none"></form>
-
+<body>\n
 <div id="map"></div>
 <div id="press-ring"></div>
 <div id="overlay"></div>
@@ -2389,7 +2387,7 @@ input::placeholder,textarea::placeholder{color:#6d6d72!important}
         <div class="priv-lock-icon">⌾</div>
         <h3>Vista protegida</h3>
         <p>Confirma tu código de UserFx para ver accesos rápidos y etiquetas privadas.</p>
-        <input type="password" class="priv-input" id="priv-pass" placeholder="● ● ● ● ● ●"/ form="fx-password-form"/>
+        <input type="text" class="priv-input" id="priv-pass" placeholder="● ● ● ● ● ●"/ data-fx-secret="1" autocomplete="off">
         <button class="btn-p" id="priv-unlock" style="max-width:200px;margin:0 auto">Desbloquear</button>
 
       </div>
@@ -2460,11 +2458,11 @@ input::placeholder,textarea::placeholder{color:#6d6d72!important}
         <div class="cfield"><div class="clbl">Nombre</div><input type="text" class="cinput" id="cfg-name" placeholder="Nombre del contacto" autocomplete="name"/></div>
         <div class="cfield"><div class="clbl">Teléfono / iMessage</div><input type="tel" class="cinput" id="cfg-phone" placeholder="+1 416 555 0000" autocomplete="tel"/></div>
         <div class="cfield"><div class="clbl">Correo electrónico</div><input type="email" class="cinput" id="cfg-email" placeholder="contacto@correo.com" autocomplete="email"/></div>
-        <div class="cfield" style="margin-bottom:0"><div class="clbl">Código de emergencia</div><input type="password" inputmode="numeric" maxlength="8" class="cinput" id="cfg-soscode" placeholder="4 a 8 dígitos" autocomplete="new-password"/ form="fx-password-form"/></div>
+        <div class="cfield" style="margin-bottom:0"><div class="clbl">Código de emergencia</div><input type="text" inputmode="numeric" maxlength="8" class="cinput" id="cfg-soscode" placeholder="4 a 8 dígitos" autocomplete="new-password"/ data-fx-secret="1"></div>
       </div>
       <div class="settings-group">
         <div class="settings-group-title"><span>FX</span>UserFx</div>
-        <div class="cfield" style="margin-bottom:0"><div class="clbl">Nuevo código de la bodega</div><input type="password" class="cinput" id="cfg-privpass" placeholder="Deja vacío para conservarlo" autocomplete="new-password"/ form="fx-password-form"/></div>
+        <div class="cfield" style="margin-bottom:0"><div class="clbl">Nuevo código de la bodega</div><input type="text" class="cinput" id="cfg-privpass" placeholder="Deja vacío para conservarlo" autocomplete="new-password"/ data-fx-secret="1"></div>
       </div>
       <div class="settings-group">
         <div class="settings-group-title"><span>◎</span>Mapa</div>
@@ -2488,7 +2486,7 @@ input::placeholder,textarea::placeholder{color:#6d6d72!important}
     <div class="enc-title">⚿ Cifrado local completo</div>
     <div class="enc-sub">Protege lugares, rutas, notas, multimedia y configuración. La clave nunca sale de tu dispositivo.</div>
     <div class="enc-status locked" id="enc-status">⚿ Datos sin cifrar</div>
-    <div class="cfield"><div class="clbl">Clave de cifrado</div><input type="password" class="cinput" id="enc-key" placeholder="Tu clave secreta..."/ form="fx-password-form"/></div>
+    <div class="cfield"><div class="clbl">Clave de cifrado</div><input type="text" class="cinput" id="enc-key" placeholder="Tu clave secreta..."/ data-fx-secret="1" autocomplete="off"></div>
     <div class="arow"><button class="btn-p" id="enc-toggle">Activar cifrado</button><button class="btn-g" id="enc-cancel">Cancelar</button></div>
     <div style="margin-top:12px;padding:10px;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid var(--border2);font-size:9px;color:var(--muted);line-height:1.7"><b style="color:var(--text)">Cifrado local AES</b> — Mientras esté activo, la sincronización cloud queda pausada para no enviar copias sin cifrar.</div>
   </div>
@@ -2600,7 +2598,7 @@ input::placeholder,textarea::placeholder{color:#6d6d72!important}
         </div>
         <label class="clbl" for="sos-code" style="margin-bottom:7px">Código de emergencia</label>
         <div class="sos-code-row">
-          <input type="password" inputmode="numeric" maxlength="8" class="cinput" id="sos-code" placeholder="••••" autocomplete="off"/ form="fx-password-form"/>
+          <input type="text" inputmode="numeric" maxlength="8" class="cinput" id="sos-code" placeholder="••••" autocomplete="off"/ data-fx-secret="1">
           <button class="btn-p" id="sos-unlock">Activar</button>
         </div>
         <div class="sos-security-note"><span>⌾</span><span id="sos-code-help">Nada se envía sin tu confirmación. iMessage y correo se abrirán con el expediente listo para revisar.</span></div>
@@ -2673,7 +2671,7 @@ input::placeholder,textarea::placeholder{color:#6d6d72!important}
     <div class="auth-lock-mark">⌾</div>
     <div class="auth-title" id="auth-title-text">Desbloquear UserFx</div>
     <div class="auth-copy" id="fx-auth-copy">Tu bodega contiene archivos y notas privadas. El código se valida solo en este dispositivo.</div>
-    <input type="password" id="fx-auth-pass" class="auth-input" placeholder="••••" autocomplete="off" aria-label="Código UserFx"/ form="fx-password-form"/>
+    <input type="text" id="fx-auth-pass" class="auth-input" placeholder="••••" autocomplete="off" aria-label="Código UserFx"/ data-fx-secret="1">
     <button id="fx-auth-submit" class="btn-full" style="width:100%;margin-bottom:8px">Desbloquear bodega</button>
     <button id="fx-auth-bio" class="btn-dim" style="width:100%;display:none">Usar Face ID / huella</button>
     <button id="fx-auth-cancel" class="auth-cancel">Cancelar</button>
