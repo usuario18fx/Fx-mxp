@@ -1,7 +1,7 @@
 const v2 = require('./index-v2');
 
 function patchMapHtml(html) {
-  const rasterStyle = `{version:8,sources:{fxRaster:{type:'raster',tiles:['https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png','https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png','https://c.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'],tileSize:256,attribution:'© OpenStreetMap © CARTO'}},layers:[{id:'fxRaster',type:'raster',source:'fxRaster',minzoom:0,maxzoom:22}]}`;
+  const rasterStyle = `{version:8,sources:{fxRaster:{type:'raster',tiles:['https://a.tile.openstreetmap.org/{z}/{x}/{y}.png','https://b.tile.openstreetmap.org/{z}/{x}/{y}.png','https://c.tile.openstreetmap.org/{z}/{x}/{y}.png'],tileSize:256,attribution:'© OpenStreetMap contributors'}},layers:[{id:'fxRaster',type:'raster',source:'fxRaster',minzoom:0,maxzoom:19}]}`;
 
   html = html.replace(/#map\s*\{[^}]*position\s*:\s*absolute[^}]*\}/i,
     '#map{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;min-height:100vh!important;z-index:1!important;background:transparent!important}'
