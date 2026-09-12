@@ -14,14 +14,15 @@
     db: null
   };
 
-  // Capture the Mapbox map instance without touching the existing app code.
-  if (window.mapboxgl && mapboxgl.Map && !window.__fxMapboxCaptured) {
-    window.__fxMapboxCaptured = true;
-    const OriginalMap = mapboxgl.Map;
-    mapboxgl.Map = new Proxy(OriginalMap, {
+  // Capture the MapLibre map instance without touching the existing app code.
+  if (window.maplibregl && maplibregl.Map && !window.__fxMapLibreCaptured) {
+    window.__fxMapLibreCaptured = true;
+    const OriginalMap = maplibregl.Map;
+    maplibregl.Map = new Proxy(OriginalMap, {
       construct(target, args, newTarget) {
         const instance = Reflect.construct(target, args, newTarget);
         window.__fxMapInstance = instance;
+        window.dispatchEvent(new CustomEvent('fx-map-ready', { detail: { map: instance } }));
         return instance;
       }
     });
@@ -287,16 +288,14 @@
     if (now - FX_GPS.lastGeocodeAt < 30000 && distanceMeters(FX_GPS.lastGeocodePoint, point) < 25) return;
     FX_GPS.lastGeocodeAt = now;
     FX_GPS.lastGeocodePoint = point;
-    const token = window.mapboxgl && mapboxgl.accessToken;
-    if (!token) return;
     try {
-      const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?types=address,poi,place,locality,neighborhood&limit=1&language=es&access_token=${encodeURIComponent(token)}`;
-      const response = await fetch(url);
+      const url = 'https://nominatim.openstreetmap.org/reverse?format=jsonv2&accept-language=es&zoom=18&lat=' +
+        encodeURIComponent(lat) + '&lon=' + encodeURIComponent(lng);
+      const response = await fetch(url, { headers: { Accept: 'application/json' } });
       if (!response.ok) return;
       const data = await response.json();
-      const feature = data.features && data.features[0];
-      if (feature) {
-        FX_GPS.lastAddress = feature.place_name || feature.text || 'Ubicación actual';
+      if (data && data.display_name) {
+        FX_GPS.lastAddress = data.display_name;
         refreshCard();
       }
     } catch (_) {}
@@ -357,9 +356,9 @@
   function onPosition(position) {
     FX_GPS.lastPosition = position;
     const {latitude:lat, longitude:lng, accuracy} = position.coords;
-    if (!FX_GPS.marker && FX_GPS.map && window.mapboxgl) {
+    if (!FX_GPS.marker && FX_GPS.map && window.maplibregl) {
       const markerEl = FX_GPS.markerEl || buildMarker();
-      FX_GPS.marker = new mapboxgl.Marker({element:markerEl, anchor:'center', offset:[0,-10]}).setLngLat([lng,lat]).addTo(FX_GPS.map);
+      FX_GPS.marker = new maplibregl.Marker({element:markerEl, anchor:'center', offset:[0,-10]}).setLngLat([lng,lat]).addTo(FX_GPS.map);
       restoreMedia();
     } else if (FX_GPS.marker) {
       FX_GPS.marker.setLngLat([lng, lat]);
