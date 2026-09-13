@@ -30,33 +30,33 @@
 
   const CSS = `
     .fx-gps-marker{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;user-select:none;-webkit-user-select:none;transform:translateZ(0)}
-    .fx-gps-face-wrap{position:relative;width:58px;height:58px;border-radius:50%;display:grid;place-items:center}
+    .fx-gps-face-wrap{position:relative;width:60px;height:60px;display:grid;place-items:center}
     .fx-gps-face-wrap::before,.fx-gps-face-wrap::after{content:'';position:absolute;inset:-7px;border-radius:50%;border:1px solid rgba(0,134,223,.48);box-shadow:0 0 18px rgba(0,134,223,.28);animation:fxGpsPulse 2.2s ease-out infinite}
     .fx-gps-face-wrap::after{inset:-13px;border-color:rgba(0,134,223,.2);animation-delay:1.1s}
-    .fx-gps-face{position:relative;z-index:2;width:52px;height:52px;border-radius:50%;object-fit:cover;background:#10131a;border:2px solid rgba(255,255,255,.9);box-shadow:0 5px 18px rgba(0,0,0,.55),0 0 20px rgba(0,134,223,.25);display:none}
-    .fx-gps-face-fallback{position:relative;z-index:2;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 50% 35%,#1c2531,#080b10 72%);border:2px solid rgba(255,255,255,.9);box-shadow:0 5px 18px rgba(0,0,0,.55),0 0 20px rgba(0,134,223,.25);font-size:30px}
+    .fx-gps-face{position:relative;z-index:2;width:54px;height:54px;object-fit:contain;background:transparent;border:0;box-shadow:none;filter:drop-shadow(0 6px 12px rgba(0,0,0,.55));display:none}
+    .fx-gps-face-fallback{position:relative;z-index:2;width:54px;height:54px;display:grid;place-items:center;background:transparent;border:0;box-shadow:none;font-size:34px;filter:drop-shadow(0 6px 12px rgba(0,0,0,.55))}
     .fx-gps-accuracy{position:relative;z-index:3;min-width:48px;height:20px;padding:0 7px;border-radius:999px;display:flex;align-items:center;justify-content:center;background:rgba(6,8,12,.92);border:1px solid rgba(0,134,223,.35);color:#9fd9ff;font:800 10px/1 -apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;letter-spacing:.03em;box-shadow:0 4px 12px rgba(0,0,0,.35);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
     .fx-gps-accuracy.good{color:#70e59a;border-color:rgba(78,207,122,.42)}
     .fx-gps-accuracy.mid{color:#f5cf58;border-color:rgba(245,207,88,.42)}
     .fx-gps-accuracy.poor{color:#ff8d8d;border-color:rgba(255,59,59,.42)}
     @keyframes fxGpsPulse{0%{transform:scale(.78);opacity:.72}70%,100%{transform:scale(1.35);opacity:0}}
 
-    #fx-gps-card{position:fixed;left:12px;right:12px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:1000;max-width:390px;margin:0 auto;padding:16px;border-radius:22px;background:rgba(7,9,15,.94);border:1px solid rgba(255,255,255,.1);box-shadow:0 22px 60px rgba(0,0,0,.56),0 0 0 1px rgba(0,134,223,.04) inset;backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);color:#fff;display:none;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif}
-    #fx-gps-card.show{display:block;animation:fxGpsCardIn .22s cubic-bezier(.22,1,.36,1)}
-    @keyframes fxGpsCardIn{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+    #fx-gps-card{position:fixed;left:50%;top:50%;z-index:1000;width:min(390px,calc(100vw - 26px));padding:14px;transform:translate(-50%,-50%);border-radius:18px;background:linear-gradient(180deg,rgba(35,40,47,.98),rgba(19,23,28,.99));border:1px solid rgba(140,154,171,.26);box-shadow:0 28px 80px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.04);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);color:#eef3f8;display:none;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif}
+    #fx-gps-card.show{display:block;animation:fxGpsCardIn .2s cubic-bezier(.22,1,.36,1)}
+    @keyframes fxGpsCardIn{from{opacity:0;transform:translate(-50%,calc(-50% + 10px)) scale(.985)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}to{opacity:1;transform:none}}
     .fx-gps-head{display:flex;align-items:center;gap:12px;margin-bottom:13px}
-    .fx-gps-avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;background:#111722;border:1px solid rgba(255,255,255,.12);display:none}
-    .fx-gps-avatar-fallback{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:#111722;border:1px solid rgba(255,255,255,.12);font-size:26px}
+    .fx-gps-avatar{width:52px;height:52px;object-fit:contain;background:transparent;border:0;display:none;filter:drop-shadow(0 5px 10px rgba(0,0,0,.5))}
+    .fx-gps-avatar-fallback{width:52px;height:52px;display:grid;place-items:center;background:transparent;border:0;font-size:31px;filter:drop-shadow(0 5px 10px rgba(0,0,0,.5))}
     .fx-gps-head-copy{min-width:0;flex:1}.fx-gps-title{font-size:14px;font-weight:900;letter-spacing:.01em}.fx-gps-sub{margin-top:3px;color:#7f8a99;font-size:10px;font-weight:700}
     .fx-gps-close{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:#9aa4b2;font-size:18px}
-    .fx-gps-location{padding:12px;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07);cursor:pointer}
+    .fx-gps-location{padding:11px 12px;border-radius:13px;background:#11161c;border:1px solid rgba(140,154,171,.18);cursor:pointer}
     .fx-gps-address{font-size:12px;line-height:1.45;font-weight:800;color:#f1f5f9}.fx-gps-coords{margin-top:5px;font:700 10px/1.35 ui-monospace,SFMono-Regular,Menlo,monospace;color:#748093}.fx-gps-copyhint{margin-top:7px;font-size:9px;color:#0086df;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
-    .fx-gps-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.fx-gps-stat{padding:10px 11px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}.fx-gps-stat b{display:block;font-size:12px;color:#fff}.fx-gps-stat span{display:block;margin-top:3px;color:#697586;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
-    .fx-gps-photo-row{display:grid;grid-template-columns:72px 1fr;gap:10px;margin-top:10px}.fx-gps-photo{width:72px;height:72px;border-radius:13px;object-fit:cover;background:#0d1118;border:1px solid rgba(255,255,255,.08);display:none}.fx-gps-photo-empty{width:72px;height:72px;border-radius:13px;display:grid;place-items:center;background:#0d1118;border:1px dashed rgba(255,255,255,.13);color:#4f5b69;font-size:22px}.fx-gps-photo-copy{display:flex;flex-direction:column;justify-content:center}.fx-gps-photo-copy strong{font-size:11px}.fx-gps-photo-copy span{margin-top:4px;color:#697586;font-size:9px;line-height:1.35}
-    .fx-gps-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px}.fx-gps-btn{height:40px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.045);color:#e7edf5;font-size:10px;font-weight:900;letter-spacing:.02em}.fx-gps-btn.primary{background:#0086df;border-color:#0086df;color:#fff}.fx-gps-btn:active{transform:scale(.97)}
+    .fx-gps-stats{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.fx-gps-stat{padding:9px 10px;border-radius:11px;background:#171c22;border:1px solid rgba(140,154,171,.14)}.fx-gps-stat b{display:block;font-size:12px;color:#fff}.fx-gps-stat span{display:block;margin-top:3px;color:#697586;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+    .fx-gps-photo-row{display:grid;grid-template-columns:58px 1fr;gap:9px;margin-top:9px}.fx-gps-photo{width:58px;height:58px;border-radius:11px;object-fit:cover;background:#0d1118;border:1px solid rgba(255,255,255,.08);display:none}.fx-gps-photo-empty{width:58px;height:58px;border-radius:11px;display:grid;place-items:center;background:#0d1118;border:1px dashed rgba(255,255,255,.12);color:#657181;font-size:20px}.fx-gps-photo-copy{display:flex;flex-direction:column;justify-content:center}.fx-gps-photo-copy strong{font-size:11px}.fx-gps-photo-copy span{margin-top:4px;color:#697586;font-size:9px;line-height:1.35}
+    .fx-gps-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:11px}.fx-gps-btn{height:36px;border-radius:10px;border:1px solid rgba(140,154,171,.16);background:#1a2027;color:#e7edf5;font-size:9.5px;font-weight:850;letter-spacing:.01em}.fx-gps-btn.primary{background:#0a84ff;border-color:#0a84ff;color:#fff}.fx-gps-btn:active{transform:scale(.97)}
     .fx-gps-hidden-input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
     .fx-gps-toast{position:fixed;left:50%;bottom:calc(132px + env(safe-area-inset-bottom,0px));z-index:1200;transform:translateX(-50%) translateY(8px);padding:9px 12px;border-radius:10px;background:rgba(7,9,15,.95);border:1px solid rgba(0,134,223,.24);color:#dcecff;font-size:10px;font-weight:800;opacity:0;pointer-events:none;transition:.18s}.fx-gps-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-    @media(max-width:430px){#fx-gps-card{max-width:none}.fx-gps-actions{grid-template-columns:1fr 1fr}.fx-gps-btn.primary{grid-column:span 2}}
+    @media(max-width:430px){#fx-gps-card{width:calc(100vw - 22px)}.fx-gps-actions{grid-template-columns:repeat(2,1fr)}.fx-gps-btn.primary{grid-column:span 1}}
     @media(prefers-reduced-motion:reduce){.fx-gps-face-wrap::before,.fx-gps-face-wrap::after{animation:none}#fx-gps-card.show{animation:none}}
   `;
 
@@ -145,13 +145,13 @@
       <div class="fx-gps-head">
         <img class="fx-gps-avatar" id="fx-gps-avatar" alt="Memoji" />
         <div class="fx-gps-avatar-fallback" id="fx-gps-avatar-fallback">🧑🏻</div>
-        <div class="fx-gps-head-copy"><div class="fx-gps-title">Mi ubicación</div><div class="fx-gps-sub" id="fx-gps-time">Esperando GPS…</div></div>
+        <div class="fx-gps-head-copy"><div class="fx-gps-title">Mi ubicación</div><div class="fx-gps-sub" id="fx-gps-time">Esperando GPS…</div><div class="fx-gps-sub" id="fx-gps-edit-label">Ficha personal · toca Editar para cambiar Memoji</div></div>
         <button class="fx-gps-close" id="fx-gps-close" type="button">×</button>
       </div>
       <div class="fx-gps-location" id="fx-gps-copy">
         <div class="fx-gps-address" id="fx-gps-address">Esperando ubicación precisa…</div>
         <div class="fx-gps-coords" id="fx-gps-coords">--</div>
-        <div class="fx-gps-copyhint">Toca para copiar ubicación</div>
+        <div class="fx-gps-copyhint">Toca para copiar</div>
       </div>
       <div class="fx-gps-stats">
         <div class="fx-gps-stat"><b id="fx-gps-accuracy-card">± -- m</b><span>Precisión GPS</span></div>
@@ -164,7 +164,7 @@
       </div>
       <div class="fx-gps-actions">
         <button class="fx-gps-btn" id="fx-gps-center" type="button">Centrar</button>
-        <button class="fx-gps-btn" id="fx-gps-memoji" type="button">Memoji</button>
+        <button class="fx-gps-btn" id="fx-gps-memoji" type="button">Editar</button>
         <button class="fx-gps-btn" id="fx-gps-photo-btn" type="button">Foto hoy</button>
         <button class="fx-gps-btn" id="fx-gps-shortcut" type="button">Atajo</button>
         <button class="fx-gps-btn primary" id="fx-gps-message" type="button">iMessage</button>
