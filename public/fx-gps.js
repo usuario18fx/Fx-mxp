@@ -423,13 +423,11 @@
   }
 
   function ensureVisibleCharacter() {
-    if (!FX_GPS.map || FX_GPS.marker) return;
-    const markerEl = FX_GPS.markerEl || buildMarker();
-    const center = FX_GPS.map.getCenter ? FX_GPS.map.getCenter() : {lng:-79.86125, lat:43.25295};
-    FX_GPS.marker = new maplibregl.Marker({element:markerEl, anchor:'center', offset:[0,-10]})
-      .setLngLat([center.lng, center.lat]).addTo(FX_GPS.map);
-    restoreMedia();
-    updateMarkerAccuracy(0);
+    // Memoji intentionally remains invisible in FX Map.
+    if (FX_GPS.marker) {
+      try { FX_GPS.marker.remove(); } catch (_) {}
+      FX_GPS.marker = null;
+    }
   }
 
   function bindMap(map) {
