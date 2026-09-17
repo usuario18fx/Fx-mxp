@@ -2250,40 +2250,7 @@ input::placeholder,textarea::placeholder{color:#6d6d72!important}
 input[data-fx-secret="1"]{-webkit-text-security:disc;text-security:disc}
  /* FX_SECRET_INPUTS_V1 */
 
-/* FX_DPAD_FLEX_4WAY_V1 */
-#orbital{right:14px!important;bottom:calc(88px + var(--safe-bottom))!important;width:144px!important;z-index:80!important}
-.dpad{
-  display:grid!important;
-  grid-template-areas:". up ." "lt mid rt" ". dn ."!important;
-  grid-template-columns:50px 44px 50px!important;
-  grid-template-rows:38px 44px 38px!important;
-  gap:0!important;width:144px!important;padding:0!important;border:0!important;
-  background:transparent!important;box-shadow:none!important;backdrop-filter:none!important
-}
-#dp-up{grid-area:up!important}
-#dp-lt{grid-area:lt!important}
-#dp-home{grid-area:mid!important}
-#dp-rt{grid-area:rt!important}
-#dp-dn{grid-area:dn!important}
-#dp-lt,#dp-rt{display:grid!important}
-.dp-ud,#dp-home,#dp-lt,#dp-rt{
-  cursor:pointer!important;touch-action:none!important;user-select:none!important;-webkit-user-select:none!important
-}
-#dp-up::before{content:"⌃"!important;font-size:22px!important;font-weight:800!important}
-#dp-dn::before{content:"⌄"!important;font-size:22px!important;font-weight:800!important}
-#dp-lt::before{content:"‹"!important;font-size:28px!important;font-weight:800!important}
-#dp-rt::before{content:"›"!important;font-size:28px!important;font-weight:800!important}
-#dp-home::before{content:"◎"!important;font-size:18px!important}
-#dp-up,#dp-dn{
- width:38px!important;height:34px!important;border-radius:10px!important;
- background:rgba(14,14,14,.88)!important;border:1px solid rgba(255,255,255,.07)!important;
- color:#e2e2e2!important;box-shadow:0 3px 10px rgba(0,0,0,.4)!important
-}
-#dp-lt,#dp-rt{
- width:46px!important;height:40px!important;border-radius:12px!important;
- background:rgba(9,9,9,.96)!important;border:1px solid rgba(255,255,255,.07)!important;
- color:#e2e2e2!important;box-shadow:0 4px 12px rgba(0,0,0,.4)!important
-}
+/* FX_DPAD_PRECISION_V2: original 3D joystick restored; hit-zones remain four-way */
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 </head>
