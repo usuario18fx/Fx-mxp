@@ -5,6 +5,10 @@ module.exports = function handler(req, res) {
   try {
     const file = path.join(process.cwd(), 'public', 'index.html');
     let html = fs.readFileSync(file, 'utf8');
+    // The v2 overlay is the single GPS/Memoji owner. Remove legacy GPS injectors
+    // so they cannot replace/hide the persistent head a few seconds after boot.
+    html = html.replace(/<script src="\/fx-gps\.js[^"]*"><\/script>\\n?/g, '');
+    html = html.replace(/<script src="\/fx-memoji-fix\.js[^"]*"><\/script>\\n?/g, '');
 
     const mapboxToken = [
       'pk.eyJ1IjoiLXVzZXIxOGZ4IiwiYSI6ImNtdG43NXJjNjA4YjMyeG9hc2xpNW40enIifQ',
@@ -17,6 +21,10 @@ module.exports = function handler(req, res) {
     if (!html.includes('window.__fxMapInstance = map;') && html.includes(mapNeedle)) {
       html = html.replace(mapNeedle, mapBridge + mapNeedle);
     }
+
+    html = html.replace('const FX_MOVE_STEP = 18;', 'const FX_MOVE_STEP = 42;')
+               .replace('const FX_MOVE_REPEAT = 16;', 'const FX_MOVE_REPEAT = 52;')
+               .replace('const FX_MOVE_DURATION = 10;', 'const FX_MOVE_DURATION = 45;');
 
     const injected = `
 <style id="fx-v2-style">
@@ -98,7 +106,7 @@ function installJoystick(){var pad=qs('.dpad');if(!pad||pad.getAttribute('data-f
  pad.addEventListener('pointerdown',start,true);pad.addEventListener('pointermove',move,true);pad.addEventListener('pointerup',finish,true);pad.addEventListener('pointercancel',finish,true);pad.addEventListener('click',function(e){e.stopImmediatePropagation();e.preventDefault()},true);pad.addEventListener('dblclick',function(e){e.stopImmediatePropagation();e.preventDefault()},true);return true}
 function bootJoystick(){if(installJoystick())return;var n=0,t=setInterval(function(){n++;if(installJoystick()||n>120)clearInterval(t)},100)}
 function ensureGpsOverlay(){var u=qs('#fx-v2-user'),a=qs('#fx-v2-accuracy'),c=qs('#fx-v2-card');if(u&&u.parentNode!==document.body)document.body.appendChild(u);if(a&&a.parentNode!==document.body)document.body.appendChild(a);if(c&&c.parentNode!==document.body)document.body.appendChild(c);if(u){u.style.setProperty('display','flex','important');u.style.setProperty('visibility','visible','important');u.style.setProperty('opacity','1','important');u.style.setProperty('z-index','500','important')}if(state.lat!=null)render()}
-function boot(){build();ensureGpsOverlay();bootJoystick();if(navigator.geolocation)navigator.geolocation.watchPosition(updatePos,gpsError,{enableHighAccuracy:true,maximumAge:0,timeout:15000});bindMap();window.addEventListener('fx-map-ready',function(){bindMap();bootJoystick()});new MutationObserver(function(){scanFrames();bootJoystick();ensureGpsOverlay()}).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['class','style','open','aria-hidden']});window.addEventListener('resize',render);setInterval(ensureGpsOverlay,1200);setTimeout(scanFrames,100);setTimeout(scanFrames,700)}
+function boot(){build();ensureGpsOverlay();if(navigator.geolocation)navigator.geolocation.watchPosition(updatePos,gpsError,{enableHighAccuracy:true,maximumAge:0,timeout:15000});bindMap();window.addEventListener('fx-map-ready',function(){bindMap();ensureGpsOverlay()});new MutationObserver(function(){scanFrames();ensureGpsOverlay()}).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['class','style','open','aria-hidden']});window.addEventListener('resize',render);setInterval(ensureGpsOverlay,1200);setTimeout(scanFrames,100);setTimeout(scanFrames,700)}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
 </script>`;
